@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:three_youth_app/main_screen/main_screen.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:three_youth_app/profile_setting_screen/init_profile_setting_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     //로고
                     Image.asset(
                       'assets/icons/logo.png',
-                      width: 110.0,
+                      width: 144.0,
                     ),
                     const SizedBox(height: 150.0),
                     //로그인버튼
@@ -71,7 +71,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const MainScreen(),
+                            builder: (context) =>
+                                const InitProfileSettingScreen(),
                           ),
                         );
                       },
