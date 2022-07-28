@@ -15,6 +15,8 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
   int _currentPage = 0;
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -38,13 +40,13 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    const SizedBox(height: 140.0),
+                    SizedBox(height: height * 0.08),
                     //로고
                     Image.asset(
                       'assets/icons/logo.png',
-                      width: 144.0,
+                      width: width * 0.25,
                     ),
-                    const SizedBox(height: 155.0),
+                    SizedBox(height: height * 0.18),
                     Text(
                       _currentPage == 0
                           ? '당신의 이름은 무엇인가요?'
@@ -56,7 +58,7 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                       style:
                           const TextStyle(color: Colors.white, fontSize: 22.0),
                     ),
-                    const SizedBox(height: 50.0),
+                    SizedBox(height: height * 0.05),
                     //input form
                     Expanded(
                       child: PageView(
@@ -76,7 +78,7 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                         ],
                       ),
                     ),
-                    const Spacer(),
+                    // const Spacer(),
                     //dots indicator
                     DotsIndicator(
                       dotsCount: 4,
@@ -89,7 +91,7 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24.0),
+                    SizedBox(height: height * 0.05),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -106,8 +108,8 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                                   });
                                 },
                                 child: Container(
-                                  width: 190.0,
-                                  height: 50.0,
+                                  width: width * 0.38,
+                                  height: height * 0.053,
                                   decoration: BoxDecoration(
                                     color: const Color(0xffffffff)
                                         .withOpacity(0.3),
@@ -135,7 +137,7 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                                 ),
                               )
                             : Container(),
-                        const SizedBox(width: 20.0),
+                        SizedBox(width: width * 0.05),
                         //다음버튼
                         GestureDetector(
                           onTap: () {
@@ -155,8 +157,9 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                             }
                           },
                           child: Container(
-                            width: _currentPage == 0 ? 268.0 : 190.0,
-                            height: 50.0,
+                            width:
+                                _currentPage == 0 ? width * 0.6 : width * 0.38,
+                            height: height * 0.053,
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
                                 begin: Alignment.topCenter,
@@ -177,7 +180,9 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                                   spreadRadius: 5,
                                   blurRadius: 7,
                                   offset: Offset(
-                                      0, 3), // changes position of shadow
+                                    0,
+                                    3,
+                                  ), // changes position of shadow
                                 ),
                               ],
                               borderRadius: BorderRadius.circular(25.0),
@@ -195,7 +200,7 @@ class _InitProfileSettingScreenState extends State<InitProfileSettingScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 50.0),
+                    SizedBox(height: height * 0.05),
                   ],
                 ),
               ),

@@ -14,16 +14,17 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
   int _gender = 0;
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return widget.page != 3
         ? Container(
-            // width: 308.0,
-            height: 50.0,
-            padding: const EdgeInsets.symmetric(horizontal: 60.0),
+            padding: EdgeInsets.symmetric(horizontal: width * 0.1),
             child: TextField(
               keyboardType: TextInputType.text,
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
                 hintText: widget.page == 0
                     ? '이름'
                     : widget.page == 1
@@ -51,14 +52,15 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                 children: [
                   //년도
                   SizedBox(
-                    width: 90.0,
-                    height: 50.0,
+                    width: width * 0.2,
+                    height: height * 0.045,
                     child: TextField(
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       maxLength: 4,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
                         hintText: '년도',
                         hintStyle: const TextStyle(color: Colors.white),
                         counterText: '',
@@ -74,7 +76,7 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8.0),
+                  SizedBox(width: width * 0.02),
                   const Text(
                     '년',
                     style: TextStyle(
@@ -82,11 +84,11 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                       fontSize: 20.0,
                     ),
                   ),
-                  const SizedBox(width: 22.0),
+                  SizedBox(width: width * 0.06),
                   //월
                   SizedBox(
-                    width: 64.0,
-                    height: 50.0,
+                    width: width * 0.15,
+                    height: height * 0.045,
                     child: TextField(
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
@@ -95,6 +97,7 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                       decoration: InputDecoration(
                         hintText: '월',
                         hintStyle: const TextStyle(color: Colors.white),
+                        contentPadding: EdgeInsets.zero,
                         counterText: '',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(40.0),
@@ -108,7 +111,7 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8.0),
+                  SizedBox(width: width * 0.02),
                   const Text(
                     '월',
                     style: TextStyle(
@@ -116,11 +119,11 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                       fontSize: 20.0,
                     ),
                   ),
-                  const SizedBox(width: 22.0),
+                  SizedBox(width: width * 0.06),
                   //일
                   SizedBox(
-                    width: 64.0,
-                    height: 50.0,
+                    width: width * 0.15,
+                    height: height * 0.045,
                     child: TextField(
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
@@ -129,6 +132,7 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                       decoration: InputDecoration(
                         hintText: '일',
                         hintStyle: const TextStyle(color: Colors.white),
+                        contentPadding: EdgeInsets.zero,
                         counterText: '',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(40.0),
@@ -142,7 +146,7 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8.0),
+                  SizedBox(width: width * 0.02),
                   const Text(
                     '일',
                     style: TextStyle(
@@ -150,10 +154,10 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
                       fontSize: 20.0,
                     ),
                   ),
-                  const SizedBox(width: 22.0),
+                  SizedBox(width: width * 0.06),
                 ],
               ),
-              const SizedBox(height: 60.0),
+              SizedBox(height: height * 0.05),
               //성별
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
