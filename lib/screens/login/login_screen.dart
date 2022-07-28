@@ -19,6 +19,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -42,13 +45,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    const SizedBox(height: 90.0),
+                    SizedBox(height: height * 0.08),
                     //제목, 부제목
                     const Text(
                       '제3의 청춘',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 36.0,
+                        fontSize: 30.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -57,16 +60,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Social Value Creation',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14.0,
+                        fontSize: 12.0,
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    SizedBox(height: height * 0.04),
                     //로고
                     Image.asset(
                       'assets/icons/logo.png',
-                      width: 144.0,
+                      width: width * 0.25,
                     ),
-                    const SizedBox(height: 150.0),
+                    SizedBox(height: height * 0.06),
                     //로그인버튼
                     GestureDetector(
                       onTap: () {
@@ -79,8 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       child: Container(
-                        width: 220.0,
-                        height: 50.0,
+                        width: width * 0.48,
+                        height: height * 0.05,
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
                             begin: Alignment.topCenter,
@@ -109,28 +112,28 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             '로그인',
                             style:
-                                TextStyle(color: Colors.white, fontSize: 20.0),
+                                TextStyle(color: Colors.white, fontSize: 18.0),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 40.0),
+                    SizedBox(height: height * 0.03),
                     const Text(
                       'SNS 회원가입',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20.0,
+                        fontSize: 16.0,
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    SizedBox(height: height * 0.02),
 
                     //애플 회원가입
                     isIos
                         ? GestureDetector(
                             onTap: () {},
                             child: Container(
-                              width: 220.0,
-                              height: 50.0,
+                              width: width * 0.48,
+                              height: height * 0.05,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 12.0),
                               decoration: BoxDecoration(
@@ -147,21 +150,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ), // changes position of shadow
                                   ),
                                 ],
-                                borderRadius: BorderRadius.circular(25.0),
+                                borderRadius:
+                                    BorderRadius.circular(width * 0.048),
                               ),
                               child: Row(
                                 children: [
                                   Image.asset(
                                     'assets/icons/apple.png',
-                                    width: 26.0,
-                                    height: 25.0,
+                                    width: width * 0.05,
                                   ),
-                                  const SizedBox(width: 20.0),
+                                  SizedBox(width: width * 0.048),
                                   const Text(
                                     '애플 회원가입',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 18.0,
+                                      fontSize: 16.0,
                                     ),
                                   ),
                                 ],
@@ -169,13 +172,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           )
                         : Container(),
-                    const SizedBox(height: 20.0),
+                    SizedBox(height: height * 0.02),
                     //구글 회원가입
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: 220.0,
-                        height: 50.0,
+                        width: width * 0.48,
+                        height: height * 0.05,
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -197,29 +200,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Image.asset(
                               'assets/icons/google.png',
-                              width: 26.0,
-                              height: 25.0,
+                              width: width * 0.05,
                             ),
-                            const SizedBox(width: 20.0),
+                            SizedBox(width: width * 0.048),
                             const Text(
                               '구글 회원가입',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 18.0,
+                                fontSize: 16.0,
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20.0),
-
+                    SizedBox(height: height * 0.02),
                     //카카오 회원가입
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: 220.0,
-                        height: 50.0,
+                        width: width * 0.48,
+                        height: height * 0.05,
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -235,35 +236,33 @@ class _LoginScreenState extends State<LoginScreen> {
                               ), // changes position of shadow
                             ),
                           ],
-                          borderRadius: BorderRadius.circular(25.0),
+                          borderRadius: BorderRadius.circular(width * 0.048),
                         ),
                         child: Row(
                           children: [
                             Image.asset(
                               'assets/icons/kakao.png',
-                              width: 26.0,
-                              height: 25.0,
+                              width: width * 0.05,
                             ),
-                            const SizedBox(width: 20.0),
+                            SizedBox(width: width * 0.048),
                             const Text(
                               '카카오 회원가입',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 18.0,
+                                fontSize: 16.0,
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20.0),
-
+                    SizedBox(height: height * 0.02),
                     //네이버 회원가입
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: 220.0,
-                        height: 50.0,
+                        width: width * 0.48,
+                        height: height * 0.05,
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -271,36 +270,35 @@ class _LoginScreenState extends State<LoginScreen> {
                             BoxShadow(
                               color:
                                   const Color(0xff00000026).withOpacity(0.15),
-                              spreadRadius: 5,
-                              blurRadius: 7,
+                              spreadRadius: 5.0,
+                              blurRadius: 7.0,
                               offset: const Offset(
                                 6,
                                 8,
                               ), // changes position of shadow
                             ),
                           ],
-                          borderRadius: BorderRadius.circular(25.0),
+                          borderRadius: BorderRadius.circular(width * 0.048),
                         ),
                         child: Row(
                           children: [
                             Image.asset(
                               'assets/icons/naver.png',
-                              width: 26.0,
-                              height: 25.0,
+                              width: width * 0.04,
                             ),
-                            const SizedBox(width: 20.0),
+                            SizedBox(width: width * 0.048),
                             const Text(
                               '네이버 회원가입',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 18.0,
+                                fontSize: 16.0,
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    SizedBox(height: height * 0.02),
                     const Spacer(),
                     Text(
                       '제3의 청춘 주식회사',
@@ -309,7 +307,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 16.0,
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    SizedBox(height: height * 0.03),
                   ],
                 ),
               ),
