@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/screens/custom/gradient_small_button.dart';
-import 'package:three_youth_app/php/cube_class_api.dart';
+import 'package:three_youth_app/services/php/cube_class_api.dart';
 import 'package:three_youth_app/screens/login/resetpwd_screen.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/toast.dart';

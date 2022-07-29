@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/php/classCubeAPI.dart';
+import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/toast.dart';
 

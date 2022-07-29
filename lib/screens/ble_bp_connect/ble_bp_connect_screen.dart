@@ -4,7 +4,7 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:three_youth_app/php/classCubeAPI.dart';
+import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/screens/custom/common_button.dart';
 import 'package:three_youth_app/screens/custom/gradient_small_button.dart';

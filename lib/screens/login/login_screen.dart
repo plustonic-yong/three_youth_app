@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:provider/provider.dart';
+import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/screens/profile_setting/init_profile_setting_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -175,7 +176,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: height * 0.02),
                     //구글 회원가입
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        var result = await context
+                            .read<AuthProvider>()
+                            .signInWithGoogle();
+                        print('google sign in result: $result');
+                      },
                       child: Container(
                         width: width * 0.48,
                         height: height * 0.05,
