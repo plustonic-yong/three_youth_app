@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>620834252127-gfep92avvtggm430a2bb4amno7svjrrt.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.620834252127-gfep92avvtggm430a2bb4amno7svjrrt</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDYFopIuPWupDdI_FerGgaydUZFW81jpRw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>620834252127</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.three-youth-app.bleapp</string>
+	<key>PROJECT_ID</key>
+	<string>three-youth-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>three-youth-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:620834252127:ios:601facd5c10724ce3e82ea</string>
+</dict>
+</plist>

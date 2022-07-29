@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "620834252127",
+    "project_id": "three-youth-app",
+    "storage_bucket": "three-youth-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620834252127:android:a3f911ecde775c413e82ea",
+        "android_client_info": {
+          "package_name": "com.three_youth_app.bleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620834252127-paj2vmvg9q2g7bhlqb4prbpq8gmk76nn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp37SGKg2aX-8PhDH1ty33LVRgNbIslLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620834252127-paj2vmvg9q2g7bhlqb4prbpq8gmk76nn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "620834252127-rult3gtpb8oq6nor6oo5hsnhsbrcd65b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.three-youth-app.bleapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
