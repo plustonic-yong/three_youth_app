@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/firebase_options.dart';
@@ -21,6 +22,7 @@ import 'package:three_youth_app/utils/current_user.dart';
 late final SharedPreferences prefsmain;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  KakaoSdk.init(nativeAppKey: 'e36a07410b2e00cd113dbf6a2102876a');
 
   prefsmain = await SharedPreferences.getInstance();
   await Firebase.initializeApp(

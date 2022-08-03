@@ -117,8 +117,10 @@ class BleECGConnectScreenState extends State<BleECGConnectScreen> {
         }
         doPacket(ll);
       }
-      if (dataCnt > 0) {
-        setState(() {});
+      if (mounted) {
+        if (dataCnt > 0) {
+          setState(() {});
+        }
       }
     });
 

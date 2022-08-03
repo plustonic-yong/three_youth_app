@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () async {
                         var result = await context
                             .read<AuthProvider>()
-                            .signInWithGoogle();
+                            .signinWithGoogle();
                         print('google sign in result: $result');
                       },
                       child: Container(
@@ -223,7 +223,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: height * 0.02),
                     //카카오 회원가입
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        var result = await context
+                            .read<AuthProvider>()
+                            .signinWithKakao();
+                      },
                       child: Container(
                         width: width * 0.48,
                         height: height * 0.05,
