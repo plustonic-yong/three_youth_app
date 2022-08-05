@@ -5,7 +5,8 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
-import 'package:three_youth_app/screens/signup/signup_agreements/signup_agreement_screen.dart';
+import 'package:three_youth_app/screens/main/main_screen.dart';
+import 'package:three_youth_app/screens/signup_agreement/signup_agreement_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -89,7 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const SignupAgreementScreen(),
+                                      // const SignupAgreementScreen(),
+                                      const MainScreen(),
                                 ),
                               );
                             },

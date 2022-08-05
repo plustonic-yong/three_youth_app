@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:three_youth_app/providers/signup_provider.dart';
+import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/screens/signup/signup_screen.dart';
 
 class SignupAgreementScreen extends StatefulWidget {
@@ -17,10 +17,10 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
     double height = MediaQuery.of(context).size.height;
     PageController _pageController = PageController(initialPage: 0);
     bool _isInfoAgreeChecked =
-        context.watch<SignupProvider>().isInfoAgreeChecked;
+        context.watch<SignupAgreementProvider>().isInfoAgreeChecked;
     bool _isTermsAgreeChecked =
-        context.watch<SignupProvider>().isTermsAgreeChecked;
-    int _currentPage = context.watch<SignupProvider>().currentPage;
+        context.watch<SignupAgreementProvider>().isTermsAgreeChecked;
+    int _currentPage = context.watch<SignupAgreementProvider>().currentPage;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -54,7 +54,7 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
                 pageSnapping: false,
                 onPageChanged: (page) {
                   context
-                      .read<SignupProvider>()
+                      .read<SignupAgreementProvider>()
                       .onChangeAgreementCurrentPage(page: page);
                 },
                 children: [
@@ -78,18 +78,22 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
             ),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        if (_currentPage == 0) {
-                          context.read<SignupProvider>().onChangeInfoAgree();
-                        } else {
-                          context.read<SignupProvider>().onChangeTermsAgree();
-                        }
-                      },
-                      child: Container(
+                GestureDetector(
+                  onTap: () {
+                    if (_currentPage == 0) {
+                      context
+                          .read<SignupAgreementProvider>()
+                          .onChangeInfoAgree();
+                    } else {
+                      context
+                          .read<SignupAgreementProvider>()
+                          .onChangeTermsAgree();
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
                         decoration: const BoxDecoration(color: Colors.white),
                         child: _currentPage == 0
                             ? Icon(
@@ -105,13 +109,13 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
                                     : Colors.transparent,
                               ),
                       ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    const Text(
-                      '위 약관에 동의합니다.',
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
-                    ),
-                  ],
+                      const SizedBox(width: 8.0),
+                      const Text(
+                        '위 약관에 동의합니다.',
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 30.0),
                 Row(

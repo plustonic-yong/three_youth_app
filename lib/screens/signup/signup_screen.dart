@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
+import 'package:three_youth_app/screens/signup/signup_birth_gender_screen.dart';
+import 'package:three_youth_app/screens/signup/signup_name_screen.dart';
+import 'package:three_youth_app/screens/signup/signup_tall_screen.dart';
+import 'package:three_youth_app/screens/signup/signup_weight_screen.dart';
+import 'package:three_youth_app/widget/common_button_large.dart';
+import 'package:three_youth_app/widget/common_button_small.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -11,11 +17,11 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenScreenState extends State<SignupScreen> {
   final _pageController = PageController();
-  int _currentPage = 0;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    int _currentPage = context.watch<SignupProvider>().currentPage;
 
     return GestureDetector(
       onTap: () {
@@ -35,20 +41,89 @@ class _SignupScreenScreenState extends State<SignupScreen> {
               ),
             ),
             //contents
-            PageView(
-              children: const [],
-            ),
-            DotsIndicator(
-              dotsCount: 4,
-              position: _currentPage.roundToDouble(),
-              decorator: DotsDecorator(
-                size: const Size.square(9.0),
-                activeSize: const Size(30.0, 9.0),
-                activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
+            Column(
+              children: [
+                Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    // physics: const NeverScrollableScrollPhysics(),
+                    onPageChanged: (page) => context
+                        .read<SignupProvider>()
+                        .onChangeCurrentPage(page: page),
+                    children: const [
+                      SignupNameScreen(),
+                      SignupTallScreen(),
+                      SignupWeightScreen(),
+                      SignupBirthGenderScreen(),
+                    ],
+                  ),
                 ),
-              ),
+                DotsIndicator(
+                  dotsCount: 4,
+                  position: _currentPage.roundToDouble(),
+                  decorator: DotsDecorator(
+                    size: const Size.square(9.0),
+                    activeSize: const Size(30.0, 9.0),
+                    activeShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: height * 0.05),
+                _currentPage == 0
+                    //첫페이지 다음버튼
+                    ? CommonButtonLarge(
+                        title: '다음',
+                        isActive: true,
+                        onTap: () {
+                          setState(() {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeIn,
+                            );
+                          });
+                        })
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //이전버튼
+                          CommonButtonSmall(
+                            title: '이전',
+                            isActive: false,
+                            onTap: () {
+                              setState(() {
+                                _pageController.previousPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn,
+                                );
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            width: 15.0,
+                          ),
+                          //다음버튼
+                          CommonButtonSmall(
+                            title: '다음',
+                            isActive: true,
+                            onTap: () {
+                              if (_currentPage == 3) {
+                                Navigator.of(context).pushNamed('/main');
+                              }
+                              setState(() {
+                                _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn,
+                                );
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                SizedBox(height: height * 0.045),
+              ],
             ),
+
             // SafeArea(
             //   child: Align(
             //     alignment: Alignment.center,

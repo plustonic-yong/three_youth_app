@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:three_youth_app/providers/signup_provider.dart';
 
 class SignupInput extends StatefulWidget {
   const SignupInput({Key? key, required this.page}) : super(key: key);
@@ -22,7 +20,7 @@ class _SignupInputState extends State<SignupInput> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return widget.page != 5
+    return widget.page != 3
         ? _textInput(width: width, height: height)
         : Column(
             children: [
@@ -217,9 +215,9 @@ class _SignupInputState extends State<SignupInput> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: width * 0.1),
       child: TextField(
-        controller: widget.page == 2
+        controller: widget.page == 0
             ? _nameController
-            : widget.page == 3
+            : widget.page == 1
                 ? _tallController
                 : _weightController,
         keyboardType: TextInputType.text,
@@ -227,9 +225,9 @@ class _SignupInputState extends State<SignupInput> {
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
-          hintText: widget.page == 2
+          hintText: widget.page == 0
               ? '이름'
-              : widget.page == 3
+              : widget.page == 1
                   ? 'cm'
                   : 'kg',
           hintStyle: const TextStyle(color: Colors.white),

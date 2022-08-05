@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:three_youth_app/providers/signup_provider.dart';
+import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 
 class SignupAgreement extends StatelessWidget {
   const SignupAgreement({
@@ -13,9 +13,9 @@ class SignupAgreement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool _isInfoAgreeChecked =
-        context.watch<SignupProvider>().isInfoAgreeChecked;
+        context.watch<SignupAgreementProvider>().isInfoAgreeChecked;
     bool _isTermsAgreeChecked =
-        context.watch<SignupProvider>().isTermsAgreeChecked;
+        context.watch<SignupAgreementProvider>().isTermsAgreeChecked;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Container(
