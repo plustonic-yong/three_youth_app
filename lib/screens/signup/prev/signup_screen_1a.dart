@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:three_youth_app/screens/base/base_app_bar.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/signup/pagecontroller_widget.dart';
+import 'package:three_youth_app/screens/signup/prev/pagecontroller_widget.dart';
 import 'package:three_youth_app/utils/color.dart';
 
 class SignupScreen1a extends StatefulWidget {

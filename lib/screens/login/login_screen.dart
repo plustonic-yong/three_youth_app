@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
-import 'package:three_youth_app/screens/profile_setting/init_profile_setting_screen.dart';
+import 'package:three_youth_app/screens/signup/signup_agreements/signup_agreement_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -71,54 +72,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: width * 0.25,
                     ),
                     SizedBox(height: height * 0.06),
-                    //로그인버튼
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const InitProfileSettingScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: width * 0.48,
-                        height: height * 0.05,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            stops: [
-                              0.05,
-                              0.5,
-                            ],
-                            colors: [
-                              Color(0xff46DFFF),
-                              Color(0xff00B1E9),
-                            ],
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff00000029),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            '로그인',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 18.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: height * 0.03),
                     const Text(
                       'SNS 회원가입',
                       style: TextStyle(
@@ -131,7 +84,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     //애플 회원가입
                     isIos
                         ? GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SignupAgreementScreen(),
+                                ),
+                              );
+                            },
                             child: Container(
                               width: width * 0.48,
                               height: height * 0.05,
@@ -162,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   SizedBox(width: width * 0.048),
                                   const Text(
-                                    '애플 회원가입',
+                                    '애플 로그인',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16.0,
@@ -172,61 +133,80 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           )
-                        : Container(),
-                    SizedBox(height: height * 0.02),
-                    //구글 회원가입
-                    GestureDetector(
-                      onTap: () async {
-                        var result = await context
-                            .read<AuthProvider>()
-                            .signinWithGoogle();
-                        print('google sign in result: $result');
-                      },
-                      child: Container(
-                        width: width * 0.48,
-                        height: height * 0.05,
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  const Color(0xff00000026).withOpacity(0.15),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: const Offset(
-                                6,
-                                8,
-                              ), // changes position of shadow
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/icons/google.png',
-                              width: width * 0.05,
-                            ),
-                            SizedBox(width: width * 0.048),
-                            const Text(
-                              '구글 회원가입',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.0,
+                        :
+                        //구글 회원가입
+                        GestureDetector(
+                            onTap: () async {
+                              var result = await context
+                                  .read<AuthProvider>()
+                                  .signinWithGoogle();
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SignupAgreementScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: width * 0.48,
+                              height: height * 0.05,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xff00000026)
+                                        .withOpacity(0.15),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: const Offset(
+                                      6,
+                                      8,
+                                    ), // changes position of shadow
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(25.0),
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    'assets/icons/google.png',
+                                    width: width * 0.05,
+                                  ),
+                                  SizedBox(width: width * 0.048),
+                                  const Text(
+                                    '구글 로그인',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          ),
                     SizedBox(height: height * 0.02),
                     //카카오 회원가입
                     GestureDetector(
                       onTap: () async {
-                        var result = await context
-                            .read<AuthProvider>()
-                            .signinWithKakao();
+                        String kakaoId;
+                        try {
+                          await context.read<AuthProvider>().signinWithKakao();
+                          User user = await UserApi.instance.me();
+                          kakaoId = '${user.id}';
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const SignupAgreementScreen(),
+                            ),
+                          );
+                        } catch (e) {
+                          print(e);
+                        }
                       },
                       child: Container(
                         width: width * 0.48,
@@ -256,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(width: width * 0.048),
                             const Text(
-                              '카카오 회원가입',
+                              '카카오 로그인',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16.0,
@@ -298,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(width: width * 0.048),
                             const Text(
-                              '네이버 회원가입',
+                              '네이버 로그인',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16.0,

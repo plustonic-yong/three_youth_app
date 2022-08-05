@@ -1,50 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:three_youth_app/providers/signup_provider.dart';
 
-class InitProfileSettingInput extends StatefulWidget {
-  const InitProfileSettingInput({Key? key, required this.page})
-      : super(key: key);
+class SignupInput extends StatefulWidget {
+  const SignupInput({Key? key, required this.page}) : super(key: key);
   final int page;
 
   @override
-  State<InitProfileSettingInput> createState() =>
-      _InitProfileSettingInputState();
+  State<SignupInput> createState() => _SignupInputState();
 }
 
-class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
+class _SignupInputState extends State<SignupInput> {
   int _gender = 0;
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _tallController = TextEditingController();
+  TextEditingController _weightController = TextEditingController();
+  TextEditingController _yearController = TextEditingController();
+  TextEditingController _monthController = TextEditingController();
+  TextEditingController _dayController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return widget.page != 3
-        ? Container(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-            child: TextField(
-              keyboardType: TextInputType.text,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
-                hintText: widget.page == 0
-                    ? '이름'
-                    : widget.page == 1
-                        ? 'cm'
-                        : 'kg',
-                hintStyle: const TextStyle(color: Colors.white),
-                // ignore: use_full_hex_values_for_flutter_colors
-                fillColor: const Color(0xff00000033).withOpacity(0.25),
-                filled: true,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  borderSide: const BorderSide(color: Colors.white, width: 1.5),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  borderSide: const BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
-          )
+    return widget.page != 5
+        ? _textInput(width: width, height: height)
         : Column(
             children: [
               Row(
@@ -229,5 +208,45 @@ class _InitProfileSettingInputState extends State<InitProfileSettingInput> {
               )
             ],
           );
+  }
+
+  Widget _textInput({
+    required double width,
+    required double height,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+      child: TextField(
+        controller: widget.page == 2
+            ? _nameController
+            : widget.page == 3
+                ? _tallController
+                : _weightController,
+        keyboardType: TextInputType.text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
+          hintText: widget.page == 2
+              ? '이름'
+              : widget.page == 3
+                  ? 'cm'
+                  : 'kg',
+          hintStyle: const TextStyle(color: Colors.white),
+          // ignore: use_full_hex_values_for_flutter_colors
+          fillColor: const Color(0xff00000033).withOpacity(0.25),
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40.0),
+            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40.0),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+        ),
+        onChanged: (value) {},
+      ),
+    );
   }
 }

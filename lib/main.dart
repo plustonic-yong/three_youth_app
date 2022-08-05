@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/firebase_options.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
+import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/agreement/agreement_screen.dart';
 import 'package:three_youth_app/screens/agreement/safecontent_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_screen.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => SignupProvider()),
         ChangeNotifierProvider.value(value: CurrentUser()),
       ],
       child: MaterialApp(
