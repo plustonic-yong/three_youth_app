@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:three_youth_app/screens/signup/components/signup_input.dart';
+import 'package:three_youth_app/providers/signup_provider.dart';
+import 'package:provider/provider.dart';
 
 class SignupNameScreen extends StatelessWidget {
   const SignupNameScreen({Key? key}) : super(key: key);
@@ -23,8 +24,45 @@ class SignupNameScreen extends StatelessWidget {
         ),
         SizedBox(height: height * 0.06),
         const SizedBox(height: 30.0),
-        const SignupInput(page: 0),
+        _nameInput(context: context, width: width, height: height)
       ],
+    );
+  }
+
+  Widget _nameInput({
+    required BuildContext context,
+    required double width,
+    required double height,
+  }) {
+    TextEditingController _nameController =
+        context.watch<SignupProvider>().nameController;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+      child: TextFormField(
+        controller: _nameController,
+        keyboardType: TextInputType.text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
+          hintText: '홍길동',
+          hintStyle: const TextStyle(color: Colors.white),
+          // ignore: use_full_hex_values_for_flutter_colors
+          fillColor: const Color(0xff00000033).withOpacity(0.25),
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40.0),
+            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40.0),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+        ),
+        onChanged: (value) =>
+            context.read<SignupProvider>().onChangeName(value: value),
+      ),
     );
   }
 }
