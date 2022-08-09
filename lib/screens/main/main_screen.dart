@@ -57,71 +57,80 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     //isFairing = Provider.of<CurrentUser>(context, listen: true).isFairing;
     return Container(
-      color: Colors.white,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/bg.png'),
+        ),
+      ),
       child: Scaffold(
-        backgroundColor: ColorAssets.commonBackgroundDark,
-        appBar: const BaseAppBar(),
-        //drawer: ,
-        bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: Colors.blueGrey,
-            unselectedItemColor: Colors.grey,
-            backgroundColor: ColorAssets.white,
-            onTap: (index) => {
-                  setState(() {
-                    _currentIndex = index;
-                  })
-                },
-            currentIndex: _currentIndex,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  size: 27,
+        backgroundColor: Colors.transparent,
+        appBar: _currentIndex == 0 ? null : const BaseAppBar(),
+        bottomNavigationBar: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+          child: BottomNavigationBar(
+              selectedItemColor: Colors.blueGrey,
+              unselectedItemColor: Colors.grey,
+              backgroundColor: ColorAssets.white,
+              onTap: (index) => {
+                    setState(() {
+                      _currentIndex = index;
+                    })
+                  },
+              currentIndex: _currentIndex,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                    size: 27,
+                  ),
+                  activeIcon: Icon(
+                    Icons.home,
+                    color: ColorAssets.greenGradient1,
+                    size: 27,
+                  ),
+                  label: '홈',
                 ),
-                activeIcon: Icon(
-                  Icons.home,
-                  color: ColorAssets.greenGradient1,
-                  size: 27,
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.list,
+                    size: 27,
+                  ),
+                  activeIcon: Icon(
+                    Icons.list,
+                    color: ColorAssets.greenGradient1,
+                    size: 27,
+                  ),
+                  label: '히스토리',
                 ),
-                label: '홈',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.list,
-                  size: 27,
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.bar_chart,
+                    size: 27,
+                  ),
+                  activeIcon: Icon(
+                    Icons.bar_chart,
+                    color: ColorAssets.greenGradient1,
+                    size: 27,
+                  ),
+                  label: '데이터',
                 ),
-                activeIcon: Icon(
-                  Icons.list,
-                  color: ColorAssets.greenGradient1,
-                  size: 27,
-                ),
-                label: '히스토리',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.bar_chart,
-                  size: 27,
-                ),
-                activeIcon: Icon(
-                  Icons.bar_chart,
-                  color: ColorAssets.greenGradient1,
-                  size: 27,
-                ),
-                label: '데이터',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings,
-                  size: 27,
-                ),
-                activeIcon: Icon(
-                  Icons.settings,
-                  color: ColorAssets.greenGradient1,
-                  size: 27,
-                ),
-                label: '설정',
-              )
-            ]),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.settings,
+                    size: 27,
+                  ),
+                  activeIcon: Icon(
+                    Icons.settings,
+                    color: ColorAssets.greenGradient1,
+                    size: 27,
+                  ),
+                  label: '설정',
+                )
+              ]),
+        ),
         body: SingleChildScrollView(child: isLoading ? spinkit : getContent()),
       ),
     );

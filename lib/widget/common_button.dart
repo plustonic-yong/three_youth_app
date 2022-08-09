@@ -1,33 +1,53 @@
 import 'package:flutter/material.dart';
 
-class CommonButtonLarge extends StatelessWidget {
-  const CommonButtonLarge(
-      {Key? key, required this.title, required this.isActive, this.onTap})
-      : super(key: key);
+enum ButtonColor {
+  primary,
+  white,
+  orange,
+  inactive,
+}
+
+class CommonButton extends StatelessWidget {
+  const CommonButton({
+    required this.height,
+    required this.width,
+    required this.title,
+    required this.buttonColor,
+    this.onTap,
+  });
+  final double height;
+  final double width;
   final String title;
-  final bool isActive;
+  final ButtonColor buttonColor;
   final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 280.0,
-        // width: double.infinity,
-        height: 50.0,
-        decoration: isActive
+        // width: 150.0,
+        // height: 50.0,
+        width: width,
+        height: height,
+        decoration: buttonColor == ButtonColor.primary ||
+                buttonColor == ButtonColor.orange
             ? BoxDecoration(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: [
+                  stops: const [
                     0.05,
                     0.5,
                   ],
-                  colors: [
-                    Color(0xff46DFFF),
-                    Color(0xff00B1E9),
-                  ],
+                  colors: buttonColor == ButtonColor.primary
+                      ? const [
+                          Color(0xff46DFFF),
+                          Color(0xff00B1E9),
+                        ]
+                      : const [
+                          Color(0xffFFAE43),
+                          Color(0xffE58200),
+                        ],
                 ),
                 boxShadow: const [
                   BoxShadow(
@@ -44,7 +64,9 @@ class CommonButtonLarge extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25.0),
               )
             : BoxDecoration(
-                color: const Color(0xffffffff).withOpacity(0.3),
+                color: buttonColor == ButtonColor.inactive
+                    ? const Color(0xffffffff).withOpacity(0.3)
+                    : Color(0xFFF0F0F0),
                 boxShadow: const [
                   BoxShadow(
                     // ignore: use_full_hex_values_for_flutter_colors
@@ -60,8 +82,10 @@ class CommonButtonLarge extends StatelessWidget {
         child: Center(
           child: Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: buttonColor == ButtonColor.white
+                  ? Colors.black
+                  : Colors.white,
               fontSize: 20.0,
             ),
           ),

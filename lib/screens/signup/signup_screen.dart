@@ -5,8 +5,7 @@ import 'package:three_youth_app/screens/signup/signup_birth_gender_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_name_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_tall_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_weight_screen.dart';
-import 'package:three_youth_app/widget/common_button_large.dart';
-import 'package:three_youth_app/widget/common_button_small.dart';
+import 'package:three_youth_app/widget/common_button.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -77,9 +76,13 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                 SizedBox(height: height * 0.05),
                 _currentPage == 0
                     //첫페이지 다음버튼
-                    ? CommonButtonLarge(
+                    ? CommonButton(
+                        width: 280.0,
+                        height: 50.0,
                         title: '다음',
-                        isActive: _name != '' ? true : false,
+                        buttonColor: _name != ''
+                            ? ButtonColor.primary
+                            : ButtonColor.inactive,
                         onTap: () {
                           setState(() {
                             _pageController.nextPage(
@@ -92,9 +95,11 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           //이전버튼
-                          CommonButtonSmall(
+                          CommonButton(
+                            width: 150.0,
+                            height: 50.0,
                             title: '이전',
-                            isActive: false,
+                            buttonColor: ButtonColor.inactive,
                             onTap: () {
                               setState(() {
                                 _pageController.previousPage(
@@ -108,19 +113,21 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             width: 15.0,
                           ),
                           //다음버튼
-                          CommonButtonSmall(
+                          CommonButton(
+                            width: 150.0,
+                            height: 50.0,
                             title: '다음',
-                            isActive: _currentPage == 1
+                            buttonColor: _currentPage == 1
                                 ? _tall != ''
-                                    ? true
-                                    : false
+                                    ? ButtonColor.primary
+                                    : ButtonColor.inactive
                                 : _currentPage == 2
                                     ? _weight != ''
-                                        ? true
-                                        : false
+                                        ? ButtonColor.primary
+                                        : ButtonColor.inactive
                                     : _year != '' && _month != '' && _day != ''
-                                        ? true
-                                        : false,
+                                        ? ButtonColor.primary
+                                        : ButtonColor.inactive,
                             onTap: () {
                               if (_currentPage == 1 && _tall == '') {
                                 return;

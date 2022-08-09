@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/custom/gradient_small_button.dart';
-import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/current_user.dart';
+import 'package:three_youth_app/widget/common_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainSelectScreen extends StatefulWidget {
@@ -48,191 +47,270 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   Widget build(BuildContext context) {
     return isLoading
         ? spinkit
-        : Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                '기기 선택',
-                style: TextStyle(
-                    color: ColorAssets.fontDarkGrey,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/connectecg',
-                  );
-                  Provider.of<CurrentUser>(context, listen: false).isER2000S =
-                      true;
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorAssets.white,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    border: Border.all(
-                      color: ColorAssets.borderGrey,
-                      width: 1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0, 2),
-                        blurRadius: 5,
-                        color: Colors.white.withOpacity(0.4),
-                      ),
-                    ],
-                  ),
-                  width: _screenWidth * 0.8,
-                  height: 200,
-                  child: Column(
+        : SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20.0),
+                  Row(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Image.asset(
-                            'assets/images/electrocardiogram_front_1.png',
-                            fit: BoxFit.cover,
-                            height: 150,
-                            width: _screenWidth * 0.2,
+                      CircleAvatar(
+                        radius: 32.0,
+                        child: Image.asset(
+                          'assets/images/profile_img_1.png',
+                        ),
+                      ),
+                      const SizedBox(width: 10.0),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            '홍길동님',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                          Image.asset(
-                            'assets/images/electrocardiogram_front_2.png',
-                            fit: BoxFit.cover,
-                            height: 150,
-                            width: _screenWidth * 0.2,
-                          ),
-                          Image.asset(
-                            'assets/images/electrocardiogram_front_3.png',
-                            fit: BoxFit.cover,
-                            height: 150,
-                            width: _screenWidth * 0.2,
+                          Text(
+                            '60세 여성',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'ER-2000S 심전도',
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      )
                     ],
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              InkWell(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const BleBPConnectScreen()),
-                  // );
-
-                  Navigator.pushNamed(
-                    context,
-                    '/connect',
-                  );
-                  // Provider.of<CurrentUser>(context, listen: false).isER2000S = false;
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorAssets.white,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    border: Border.all(
-                      color: ColorAssets.borderGrey,
-                      width: 1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0, 2),
-                        blurRadius: 5,
-                        color: Colors.white.withOpacity(0.4),
-                      ),
-                    ],
-                  ),
-                  width: _screenWidth * 0.8,
-                  height: 200,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Image.asset(
-                            'assets/images/sphygmomanometer.png',
-                            fit: BoxFit.cover,
-                            height: 150,
-                            width: _screenWidth * 0.6,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'UA-651BLE 혈압계',
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              GradientSmallButton(
-                width: _screenWidth * 0.6,
-                height: 60,
-                radius: 50.0,
-                child: const Text(
-                  '신규 구매',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+                  const SizedBox(height: 20.0),
+                  const Text(
+                    '최근 심전도 측정기록',
+                    style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18.0),
-                ),
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    ColorAssets.greenGradient1,
-                    ColorAssets.purpleGradient2
-                  ],
-                ),
-                onPressed: () {
-                  //TODO: 구매링크 넣기
-                  _launchURL();
-                },
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/connectecg',
+                      );
+                      Provider.of<CurrentUser>(context, listen: false)
+                          .isER2000S = true;
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20.0,
+                        horizontal: 30.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        // border: Border.all(
+                        //   color: ColorAssets.borderGrey,
+                        //   width: 1,
+                        // ),
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     offset: const Offset(0, 2),
+                        //     blurRadius: 5,
+                        //     color: Colors.white.withOpacity(0.4),
+                        //   ),
+                        // ],
+                      ),
+                      // width: _screenWidth * 0.8,
+                      // height: 200,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/electrocardiogram_1.png',
+                                fit: BoxFit.cover,
+                                height: 70.0,
+                              ),
+                              const SizedBox(width: 20.0),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    '7.15(화) 오후 7:21',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: const [
+                                      Text(
+                                        '158',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 28.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'bpm',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 25.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              CommonButton(
+                                width: 135.0,
+                                height: 40.0,
+                                title: '측정하기',
+                                buttonColor: ButtonColor.inactive,
+                              ),
+                              CommonButton(
+                                width: 135.0,
+                                height: 40.0,
+                                title: '연동하기',
+                                buttonColor: ButtonColor.primary,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30.0),
+                  const Text(
+                    '최근 혈압 측정기록',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  InkWell(
+                    onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => const BleBPConnectScreen()),
+                      // );
+
+                      Navigator.pushNamed(
+                        context,
+                        '/connect',
+                      );
+                      // Provider.of<CurrentUser>(context, listen: false).isER2000S = false;
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        // border: Border.all(
+                        //   color: ColorAssets.borderGrey,
+                        //   width: 1,
+                        // ),
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     offset: const Offset(0, 2),
+                        //     blurRadius: 5,
+                        //     color: Colors.white.withOpacity(0.4),
+                        //   ),
+                        // ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 20.0,
+                          horizontal: 30.0,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  'assets/images/sphygmomanometer_1.png',
+                                  fit: BoxFit.cover,
+                                  height: 70.0,
+                                ),
+                                const SizedBox(width: 20.0),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      '7.15(화) 오후 7:21',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: const [
+                                        Text(
+                                          '167/88',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 28.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'mmHg',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 25.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                CommonButton(
+                                  width: 135.0,
+                                  height: 40.0,
+                                  title: '측정하기',
+                                  buttonColor: ButtonColor.white,
+                                ),
+                                CommonButton(
+                                  width: 135.0,
+                                  height: 40.0,
+                                  title: '연동하기',
+                                  buttonColor: ButtonColor.orange,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30.0),
+                ],
               ),
-              const SizedBox(height: 20),
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  'Ver 22.06.07d',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-            ],
+            ),
           );
   }
 
