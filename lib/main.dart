@@ -10,6 +10,7 @@ import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/agreement/agreement_screen.dart';
 import 'package:three_youth_app/screens/agreement/safecontent_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_screen.dart';
+import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_scan_camera_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_scan_measurement_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_scan_screen.dart';
 import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_screen.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
           '/connect': (context) => const BleBPConnectScreen(),
           '/scan': (context) => const BleBpScanScreen(),
           '/scan/mesurement': (context) => const BleBpScanMesurementScreen(),
+          '/scan/camera': (context) => const BleBpScanCameraScreen(),
           '/connectecg': (context) => const BleECGConnectScreen(),
           '/history': (context) => const HistoryScreen(),
           '/agreement': (context) => const AgreementScreen(),

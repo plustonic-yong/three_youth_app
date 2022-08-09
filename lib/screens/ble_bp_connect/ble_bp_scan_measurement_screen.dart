@@ -34,7 +34,7 @@ class _BleBpScanMesurementScreenState extends State<BleBpScanMesurementScreen> {
           backgroundColor: Colors.transparent,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: ListView(
+            child: Column(
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40.0),
@@ -129,7 +129,7 @@ class _BleBpScanMesurementScreenState extends State<BleBpScanMesurementScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 50.0),
+                const Spacer(),
                 CommonButton(
                   height: 50.0,
                   width: _screenWidth,
@@ -137,6 +137,7 @@ class _BleBpScanMesurementScreenState extends State<BleBpScanMesurementScreen> {
                   buttonColor: ButtonColor.inactive,
                   onTap: () => Navigator.of(context).pop(),
                 ),
+                const SizedBox(height: 20.0),
               ],
             ),
           ),

@@ -71,33 +71,36 @@ class BleBpScanScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30.0),
                 //촬영 측정
-                Container(
-                  padding: const EdgeInsets.all(40.0),
-                  width: _screenWidth,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    children: const [
-                      Text(
-                        '측정 결과 촬영 기록',
-                        style: TextStyle(
-                          color: ColorAssets.lightYellowGredient1,
-                          fontSize: 23.0,
-                          fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pushNamed('/scan/camera'),
+                  child: Container(
+                    padding: const EdgeInsets.all(40.0),
+                    width: _screenWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Column(
+                      children: const [
+                        Text(
+                          '측정 결과 촬영 기록',
+                          style: TextStyle(
+                            color: ColorAssets.lightYellowGredient1,
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 50.0),
-                      Text(
-                        '혈압계의 측정 결과를\n카메라를 통해 저장합니다.',
-                        style: TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                        SizedBox(height: 50.0),
+                        Text(
+                          '혈압계의 측정 결과를\n카메라를 통해 저장합니다.',
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 50.0),
+                const Spacer(),
                 CommonButton(
                   height: 50.0,
                   width: _screenWidth,
@@ -105,6 +108,7 @@ class BleBpScanScreen extends StatelessWidget {
                   buttonColor: ButtonColor.inactive,
                   onTap: () => Navigator.of(context).pop(),
                 ),
+                const SizedBox(height: 20.0),
               ],
             ),
           ),
