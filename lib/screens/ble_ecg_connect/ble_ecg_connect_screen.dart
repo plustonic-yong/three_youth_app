@@ -221,9 +221,10 @@ class BleECGConnectScreenState extends State<BleECGConnectScreen> {
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: TextStyle(
-            color: ColorAssets.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 18.0),
+          color: ColorAssets.white,
+          fontWeight: FontWeight.w500,
+          fontSize: 18.0,
+        ),
       ),
       gradient: const LinearGradient(
         begin: Alignment.topLeft,
@@ -502,9 +503,7 @@ class BleECGConnectScreenState extends State<BleECGConnectScreen> {
     return Container(
         decoration: BoxDecoration(
           color: ColorAssets.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
           border: Border.all(
             color: ColorAssets.borderGrey,
             width: 1,

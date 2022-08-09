@@ -179,47 +179,51 @@ class BleBPConnectScreenState extends State<BleBPConnectScreen> {
     lDataSYS.clear();
   }
 
+  // Widget getAppBar() {
+  //   return AppBar(
+  //     iconTheme: const IconThemeData(color: Colors.black),
+  //     elevation: 0,
+  //     backgroundColor: ColorAssets.white,
+  //     leading: SizedBox(
+  //       width: 50,
+  //       child: IconButton(
+  //         icon: const Icon(
+  //           Icons.arrow_back,
+  //           color: ColorAssets.fontDarkGrey,
+  //         ),
+  //         onPressed: () {
+  //           if (_isResult) {
+  //             setState(() {
+  //               _isResult = false;
+  //             });
+  //           } else {
+  //             Navigator.pushNamedAndRemoveUntil(
+  //                 context, '/main', (route) => false);
+  //           }
+  //         },
+  //       ),
+  //     ),
+  //     title: InkWell(
+  //       onTap: () {
+  //         //Navigator.pushNamedAndRemoveUntil(context, '/overview', (route) => false);
+  //       },
+  //       child: Image.asset(
+  //         'assets/images/logo_bg_none.png',
+  //         width: 320,
+  //         height: 65,
+  //       ),
+  //     ),
+  //     centerTitle: true,
+  //     actions: const [
+  //       SizedBox(
+  //         width: 55,
+  //       )
+  //     ],
+  //   );
+  // }
+
   Widget getAppBar() {
-    return AppBar(
-      iconTheme: const IconThemeData(color: Colors.black),
-      elevation: 0,
-      backgroundColor: ColorAssets.white,
-      leading: SizedBox(
-        width: 50,
-        child: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: ColorAssets.fontDarkGrey,
-          ),
-          onPressed: () {
-            if (_isResult) {
-              setState(() {
-                _isResult = false;
-              });
-            } else {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/main', (route) => false);
-            }
-          },
-        ),
-      ),
-      title: InkWell(
-        onTap: () {
-          //Navigator.pushNamedAndRemoveUntil(context, '/overview', (route) => false);
-        },
-        child: Image.asset(
-          'assets/images/logo_bg_none.png',
-          width: 320,
-          height: 65,
-        ),
-      ),
-      centerTitle: true,
-      actions: const [
-        SizedBox(
-          width: 55,
-        )
-      ],
-    );
+    return AppBar();
   }
 
   @override

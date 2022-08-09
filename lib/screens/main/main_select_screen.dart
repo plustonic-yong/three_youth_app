@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
+import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/widget/common_button.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,6 +20,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   late final double _screenHeight;
   // ignore: unused_field
   late final double _screenWidth;
+
+  TDataSet dsTagList = TDataSet();
 
   @override
   void initState() {
@@ -94,14 +97,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                   ),
                   const SizedBox(height: 10.0),
                   InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/connectecg',
-                      );
-                      Provider.of<CurrentUser>(context, listen: false)
-                          .isER2000S = true;
-                    },
+                    onTap: () {},
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 20.0,
@@ -150,6 +146,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                     ),
                                   ),
                                   Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: const [
                                       Text(
                                         '158',
@@ -163,6 +160,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                         'bpm',
                                         style: TextStyle(
                                           color: Colors.white,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
@@ -174,18 +173,28 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                           const SizedBox(height: 25.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               CommonButton(
                                 width: 135.0,
                                 height: 40.0,
                                 title: '측정하기',
                                 buttonColor: ButtonColor.inactive,
+                                onTap: () {},
                               ),
                               CommonButton(
                                 width: 135.0,
                                 height: 40.0,
                                 title: '연동하기',
                                 buttonColor: ButtonColor.primary,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/connectecg',
+                                  );
+                                  Provider.of<CurrentUser>(context,
+                                          listen: false)
+                                      .isER2000S = true;
+                                },
                               ),
                             ],
                           ),
@@ -208,10 +217,6 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                       //   MaterialPageRoute(builder: (context) => const BleBPConnectScreen()),
                       // );
 
-                      Navigator.pushNamed(
-                        context,
-                        '/connect',
-                      );
                       // Provider.of<CurrentUser>(context, listen: false).isER2000S = false;
                     },
                     child: Container(
@@ -287,18 +292,30 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                             const SizedBox(height: 25.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 CommonButton(
                                   width: 135.0,
                                   height: 40.0,
                                   title: '측정하기',
                                   buttonColor: ButtonColor.white,
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/scan',
+                                    );
+                                  },
                                 ),
                                 CommonButton(
                                   width: 135.0,
                                   height: 40.0,
                                   title: '연동하기',
-                                  buttonColor: ButtonColor.orange,
+                                  buttonColor: ButtonColor.primary,
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/connect',
+                                    );
+                                  },
                                 ),
                               ],
                             ),
