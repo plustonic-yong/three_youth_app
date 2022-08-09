@@ -251,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: height * 0.02),
                     //네이버 회원가입
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => Navigator.of(context).pushNamed('/main'),
                       child: Container(
                         width: width * 0.48,
                         height: height * 0.05,

@@ -59,6 +59,7 @@ class _MainScreenState extends State<MainScreen> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
+          fit: BoxFit.fill,
           image: AssetImage('assets/images/bg.png'),
         ),
       ),

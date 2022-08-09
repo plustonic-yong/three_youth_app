@@ -23,6 +23,7 @@ class BleBpScanScreen extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
+            centerTitle: true,
             title: const Text('혈압 측정 기록'),
           ),
           backgroundColor: Colors.transparent,
@@ -39,29 +40,33 @@ class BleBpScanScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40.0),
                 //직접 측정
-                Container(
-                  padding: const EdgeInsets.all(40.0),
-                  width: _screenWidth,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    children: const [
-                      Text(
-                        '직접 측정 후 기록',
-                        style: TextStyle(
-                          color: ColorAssets.lightYellowGredient1,
-                          fontSize: 23.0,
-                          fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () =>
+                      Navigator.of(context).pushNamed('/scan/mesurement'),
+                  child: Container(
+                    padding: const EdgeInsets.all(40.0),
+                    width: _screenWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Column(
+                      children: const [
+                        Text(
+                          '직접 측정 후 기록',
+                          style: TextStyle(
+                            color: ColorAssets.lightYellowGredient1,
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 50.0),
-                      Text(
-                        '혈압계를 앱과 연동 후 측정을 시작합니다.',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+                        SizedBox(height: 50.0),
+                        Text(
+                          '혈압계를 앱과 연동 후 측정을 시작합니다.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30.0),
@@ -76,7 +81,7 @@ class BleBpScanScreen extends StatelessWidget {
                   child: Column(
                     children: const [
                       Text(
-                        '직접 측정 후 기록',
+                        '측정 결과 촬영 기록',
                         style: TextStyle(
                           color: ColorAssets.lightYellowGredient1,
                           fontSize: 23.0,
@@ -85,8 +90,9 @@ class BleBpScanScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 50.0),
                       Text(
-                        '혈압계를 앱과 연동 후 측정을 시작합니다.',
+                        '혈압계의 측정 결과를\n카메라를 통해 저장합니다.',
                         style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
@@ -98,7 +104,7 @@ class BleBpScanScreen extends StatelessWidget {
                   title: '이전 화면으로',
                   buttonColor: ButtonColor.inactive,
                   onTap: () => Navigator.of(context).pop(),
-                )
+                ),
               ],
             ),
           ),
