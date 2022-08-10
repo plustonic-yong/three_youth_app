@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/firebase_options.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
+import 'package:three_youth_app/providers/ble_bp_connect_provider.dart';
 import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/agreement/agreement_screen.dart';
 import 'package:three_youth_app/screens/agreement/safecontent_screen.dart';
+import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_info_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_camera_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_measurement_screen.dart';
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => SignupAgreementProvider()),
         ChangeNotifierProvider(create: (context) => SignupProvider()),
+        ChangeNotifierProvider(create: (context) => BleBpConnectProvider()),
         ChangeNotifierProvider.value(value: CurrentUser()),
       ],
       child: MaterialApp(
@@ -59,6 +62,7 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/main': (context) => const MainScreen(),
           '/connect': (context) => const BleBpConnectScreen(),
+          '/connect/info': (context) => const BleBpConnectInfoScreen(),
           '/scan': (context) => const BleBpScanScreen(),
           '/scan/mesurement': (context) => const BleBpScanMesurementScreen(),
           '/scan/camera': (context) => const BleBpScanCameraScreen(),

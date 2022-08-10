@@ -2,14 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/widget/common_button.dart';
 
-class BleBpConnectScreen extends StatefulWidget {
+class BleBpConnectScreen extends StatelessWidget {
   const BleBpConnectScreen({Key? key}) : super(key: key);
-
-  @override
-  State<BleBpConnectScreen> createState() => _BleBpConnectScreenState();
-}
-
-class _BleBpConnectScreenState extends State<BleBpConnectScreen> {
   @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
@@ -47,7 +41,7 @@ class _BleBpConnectScreenState extends State<BleBpConnectScreen> {
                 const SizedBox(height: 40.0),
                 //직접 측정
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () => Navigator.of(context).pushNamed('/connect/info'),
                   child: Container(
                     padding: const EdgeInsets.all(40.0),
                     width: _screenWidth,
