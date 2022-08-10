@@ -25,7 +25,7 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: GestureDetector(
-          onTap: () {},
+          onTap: () => Navigator.of(context).pop(),
           child: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black,

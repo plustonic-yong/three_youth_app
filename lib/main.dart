@@ -10,9 +10,9 @@ import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/agreement/agreement_screen.dart';
 import 'package:three_youth_app/screens/agreement/safecontent_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_screen.dart';
-import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_scan_camera_screen.dart';
-import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_scan_measurement_screen.dart';
-import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_scan_screen.dart';
+import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_camera_screen.dart';
+import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_measurement_screen.dart';
+import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_screen.dart';
 import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_screen.dart';
 import 'package:three_youth_app/screens/electrocardiogram_setting/electrocardiogram_setting_screen.dart';
 import 'package:three_youth_app/screens/history/history_screen.dart';
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/login': (context) => const LoginScreen(),
           '/main': (context) => const MainScreen(),
-          '/connect': (context) => const BleBPConnectScreen(),
+          '/connect': (context) => const BleBpConnectScreen(),
           '/scan': (context) => const BleBpScanScreen(),
           '/scan/mesurement': (context) => const BleBpScanMesurementScreen(),
           '/scan/camera': (context) => const BleBpScanCameraScreen(),

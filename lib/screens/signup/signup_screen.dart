@@ -84,6 +84,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             ? ButtonColor.primary
                             : ButtonColor.inactive,
                         onTap: () {
+                          if (_name == '') return;
                           setState(() {
                             _pageController.nextPage(
                               duration: const Duration(milliseconds: 300),

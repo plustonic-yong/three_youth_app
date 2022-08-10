@@ -25,6 +25,13 @@ class BleBpScanScreen extends StatelessWidget {
             elevation: 0,
             centerTitle: true,
             title: const Text('혈압 측정 기록'),
+            leading: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
+            ),
           ),
           backgroundColor: Colors.transparent,
           body: Padding(
