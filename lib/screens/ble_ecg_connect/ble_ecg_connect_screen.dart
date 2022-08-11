@@ -42,7 +42,8 @@ class BleEcgConnectScreen extends StatelessWidget {
                 const SizedBox(height: 40.0),
                 //직접 측정
                 GestureDetector(
-                  // onTap: () => Navigator.of(context).pushNamed('/connect/info'),
+                  onTap: () =>
+                      Navigator.of(context).pushNamed('/connectecg/info'),
                   child: Container(
                     padding: const EdgeInsets.all(40.0),
                     width: _screenWidth,

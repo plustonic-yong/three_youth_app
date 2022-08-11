@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/firebase_options.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_connect_provider.dart';
+import 'package:three_youth_app/providers/ble_ecg_connect_provider.dart';
 import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/agreement/agreement_screen.dart';
@@ -16,6 +17,7 @@ import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_screen.dar
 import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_camera_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_measurement_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_screen.dart';
+import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_info_screen.dart';
 import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_screen.dart';
 import 'package:three_youth_app/screens/electrocardiogram_setting/electrocardiogram_setting_screen.dart';
 import 'package:three_youth_app/screens/history/history_screen.dart';
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SignupAgreementProvider()),
         ChangeNotifierProvider(create: (context) => SignupProvider()),
         ChangeNotifierProvider(create: (context) => BleBpConnectProvider()),
-        ChangeNotifierProvider(create: (context) => BleBpConnectProvider()),
+        ChangeNotifierProvider(create: (context) => BleEcgConnectProvider()),
         ChangeNotifierProvider.value(value: CurrentUser()),
       ],
       child: MaterialApp(
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
           '/scan/mesurement': (context) => const BleBpScanMesurementScreen(),
           '/scan/camera': (context) => const BleBpScanCameraScreen(),
           '/connectecg': (context) => const BleEcgConnectScreen(),
-          '/connectecg/info': (context) => const BleEcgConnectScreen(),
+          '/connectecg/info': (context) => const BleEcgConnectInfoScreen(),
           '/history': (context) => const HistoryScreen(),
           '/agreement': (context) => const AgreementScreen(),
           '/profile': (context) => const ProfileSettingScreen(),
