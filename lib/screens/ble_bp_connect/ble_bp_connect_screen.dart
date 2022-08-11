@@ -71,7 +71,8 @@ class BleBpConnectScreen extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 //촬영 측정
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () =>
+                      Navigator.of(context).pushNamed('/connect/pairing'),
                   child: Container(
                     padding: const EdgeInsets.all(40.0),
                     width: _screenWidth,
