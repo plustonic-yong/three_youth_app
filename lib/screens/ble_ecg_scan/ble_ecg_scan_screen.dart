@@ -47,8 +47,8 @@ class BleEcgScanScreen extends StatelessWidget {
                 const SizedBox(height: 50.0),
                 //심전도(30초)
                 GestureDetector(
-                  // onTap: () =>
-                  //     Navigator.of(context).pushNamed('/scan/mesurement'),
+                  onTap: () =>
+                      Navigator.of(context).pushNamed('/scanecg/mesurement'),
                   child: Container(
                     padding: const EdgeInsets.all(25.0),
                     width: _screenWidth,
@@ -71,8 +71,8 @@ class BleEcgScanScreen extends StatelessWidget {
                 const SizedBox(height: 50.0),
                 //연속 심전도 측정
                 GestureDetector(
-                  // onTap: () =>
-                  //     Navigator.of(context).pushNamed('/scan/mesurement'),
+                  onTap: () =>
+                      Navigator.of(context).pushNamed('/scanecg/mesurement'),
                   child: Container(
                     padding: const EdgeInsets.all(25.0),
                     width: _screenWidth,
@@ -94,8 +94,8 @@ class BleEcgScanScreen extends StatelessWidget {
                 const SizedBox(height: 50.0),
                 //실시간 심전도 측정
                 GestureDetector(
-                  // onTap: () =>
-                  //     Navigator.of(context).pushNamed('/scan/mesurement'),
+                  onTap: () =>
+                      Navigator.of(context).pushNamed('/scanecg/mesurement'),
                   child: Container(
                     padding: const EdgeInsets.all(25.0),
                     width: _screenWidth,

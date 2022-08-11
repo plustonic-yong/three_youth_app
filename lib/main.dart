@@ -20,6 +20,7 @@ import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_screen.dart';
 import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_info_screen.dart';
 import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_pairing_screen.dart';
 import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_screen.dart';
+import 'package:three_youth_app/screens/ble_ecg_scan/ble_ecg_scan_measurement_screen.dart';
 import 'package:three_youth_app/screens/ble_ecg_scan/ble_ecg_scan_screen.dart';
 import 'package:three_youth_app/screens/electrocardiogram_setting/electrocardiogram_setting_screen.dart';
 import 'package:three_youth_app/screens/history/history_screen.dart';
@@ -78,6 +79,8 @@ class MyApp extends StatelessWidget {
           '/connectecg/pairing': (context) =>
               const BleEcgConnectPairingScreen(),
           '/scanecg': (context) => const BleEcgScanScreen(),
+          '/scanecg/mesurement': (context) =>
+              const BleEcgScanMeasurementScreen(),
           '/history': (context) => const HistoryScreen(),
           '/agreement': (context) => const AgreementScreen(),
           '/profile': (context) => const ProfileSettingScreen(),
