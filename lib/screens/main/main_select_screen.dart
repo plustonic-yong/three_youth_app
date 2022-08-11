@@ -182,7 +182,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                 onTap: () {
                                   Navigator.pushNamed(
                                     context,
-                                    '/connectecg',
+                                    '/scanecg',
                                   );
                                   Provider.of<CurrentUser>(context,
                                           listen: false)
