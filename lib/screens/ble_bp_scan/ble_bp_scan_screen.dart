@@ -115,7 +115,7 @@ class BleBpScanScreen extends StatelessWidget {
                   buttonColor: ButtonColor.inactive,
                   onTap: () => Navigator.of(context).pop(),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 30.0),
               ],
             ),
           ),

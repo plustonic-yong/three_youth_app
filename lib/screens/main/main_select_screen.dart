@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_screen.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/widget/common_button.dart';
@@ -181,12 +180,13 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                 title: '측정하기',
                                 buttonColor: ButtonColor.inactive,
                                 onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BleECGConnectScreen(),
-                                    ),
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/connectecg',
                                   );
+                                  Provider.of<CurrentUser>(context,
+                                          listen: false)
+                                      .isER2000S = true;
                                 },
                               ),
                               CommonButton(
@@ -195,13 +195,14 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                 title: '연동하기',
                                 buttonColor: ButtonColor.primary,
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/connectecg',
-                                  );
-                                  Provider.of<CurrentUser>(context,
-                                          listen: false)
-                                      .isER2000S = true;
+                                  // Navigator.of(context).push(
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) =>
+                                  //         const BleECGConnectScreenPrev(),
+                                  //   ),
+                                  // );
+                                  Navigator.of(context)
+                                      .pushNamed('/connectecg');
                                 },
                               ),
                             ],

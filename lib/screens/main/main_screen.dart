@@ -39,6 +39,8 @@ class _MainScreenState extends State<MainScreen> {
       if (prefs.containsKey('ecgpincode') == false) {
         await prefs.setString('ecgpincode', '');
       }
+      var ecgpincode = prefs.getString('ecgpincode');
+      print('ecgpincode: $ecgpincode');
 
       // var isSphyFairing = prefs.getBool('isSphyFairing') ?? false;
       // var isErFairing = prefs.getBool('isErFairing') ?? false;

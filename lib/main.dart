@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SignupAgreementProvider()),
         ChangeNotifierProvider(create: (context) => SignupProvider()),
         ChangeNotifierProvider(create: (context) => BleBpConnectProvider()),
+        ChangeNotifierProvider(create: (context) => BleBpConnectProvider()),
         ChangeNotifierProvider.value(value: CurrentUser()),
       ],
       child: MaterialApp(
@@ -68,7 +69,8 @@ class MyApp extends StatelessWidget {
           '/scan': (context) => const BleBpScanScreen(),
           '/scan/mesurement': (context) => const BleBpScanMesurementScreen(),
           '/scan/camera': (context) => const BleBpScanCameraScreen(),
-          '/connectecg': (context) => const BleECGConnectScreen(),
+          '/connectecg': (context) => const BleEcgConnectScreen(),
+          '/connectecg/info': (context) => const BleEcgConnectScreen(),
           '/history': (context) => const HistoryScreen(),
           '/agreement': (context) => const AgreementScreen(),
           '/profile': (context) => const ProfileSettingScreen(),
