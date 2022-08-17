@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: height * 0.02),
 
-                    //애플 회원가입
+                    //애플 로그인
                     isIos
                         ? GestureDetector(
                             onTap: () {
@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           )
                         :
-                        //구글 회원가입
+                        //구글 로그인
                         GestureDetector(
                             onTap: () async {
                               var result = await context
@@ -227,23 +227,54 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                     SizedBox(height: height * 0.02),
-                    //카카오 회원가입
+                    //카카오 로그인
                     GestureDetector(
                       onTap: () async {
-                        String kakaoId;
-                        try {
-                          await context.read<AuthProvider>().signinWithKakao();
-                          User user = await UserApi.instance.me();
-                          kakaoId = '${user.id}';
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const SignupAgreementScreen(),
-                            ),
+                        var result =
+                            await context.read<AuthProvider>().loginKakao();
+                        if (result == LoginStatus.success) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/main',
+                            (route) => false,
                           );
-                        } catch (e) {
-                          print(e);
+                        } else if (result == LoginStatus.noAccount) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  actions: [
+                                    GestureDetector(
+                                      onTap: () => Navigator.of(context).pop(),
+                                      child: const Text('취소'),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () => Navigator.of(context)
+                                          .pushNamed('/signup'),
+                                      child: const Text('확인'),
+                                    ),
+                                  ],
+                                  content: Container(
+                                    child: const Text(
+                                        '회원가입이 되어있지 않습니다. 신규가입을 진행하시겠습니까?'),
+                                  ),
+                                );
+                              });
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  actions: [
+                                    GestureDetector(
+                                      onTap: () => Navigator.of(context).pop(),
+                                      child: const Text('확인'),
+                                    ),
+                                  ],
+                                  content: Container(
+                                    child: const Text('로그인에 실패하였습니다.'),
+                                  ),
+                                );
+                              });
                         }
                       },
                       child: Container(
@@ -285,7 +316,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(height: height * 0.02),
-                    //네이버 회원가입
+                    //네이버 로그인
                     GestureDetector(
                       onTap: () => Navigator.of(context).pushNamed('/main'),
                       child: Container(

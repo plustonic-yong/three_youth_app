@@ -62,6 +62,35 @@ class Api {
     }
   }
 
+  static Future<Response?> signupKakaoService({
+    required String token,
+    required String name,
+    required String birth,
+    required String gender,
+    required int height,
+    required int weight,
+  }) async {
+    try {
+      Client client = InterceptedClient.build(interceptors: [
+        AuthInterceptor(),
+      ]);
+      var response = await client.post(
+        Uri.parse('${Constants.API_HOST}/signup/google'),
+        body: json.encode({
+          'token': token,
+          "name": name,
+          "birth": birth,
+          "gender": gender,
+          "height": height,
+          "weight": weight,
+        }),
+      );
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static Future<Response?> loginGoogleService({required String token}) async {
     try {
       Client client = InterceptedClient.build(interceptors: [
@@ -81,24 +110,19 @@ class Api {
     }
   }
 
-  static Future<void> loginKakaoService({required String token}) async {
+  static Future<Response?> loginKakaoService({required String token}) async {
     try {
       Client client = InterceptedClient.build(interceptors: [
         AuthInterceptor(),
       ]);
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/login/kakao'),
+        headers: {"Content-Type": "application/json"},
         body: json.encode({
-          'token': "thiA9N477tQne05l5EjVFjLt6tTrlmVde3Ld1ttXCj10mQAAAYKQvEpd",
+          'token': token,
         }),
       );
-      final data = json.decode(utf8.decode(response.bodyBytes));
-      print('uri: ${Constants.API_HOST}/login/kakao');
-
-      print('kakao/ ${data}');
-      // if (response.statusCode == 200) {
-      //   AccountManager().accessToken = data['Authorization'];
-      // }
+      return response;
     } catch (e) {
       print(e);
     }

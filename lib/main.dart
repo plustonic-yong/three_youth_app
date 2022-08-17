@@ -36,7 +36,6 @@ late final SharedPreferences prefsmain;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(nativeAppKey: 'e36a07410b2e00cd113dbf6a2102876a');
-
   prefsmain = await SharedPreferences.getInstance();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -63,8 +62,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: '위드케어',
         //initialRoute: _auth.currentUser != null ? '/overview' : '/login',
-        initialRoute:
-            prefsmain.getBool('isLogin') ?? false ? '/main' : '/login',
+        initialRoute: prefsmain.containsKey('accessToken') ? '/main' : '/login',
         routes: {
           '/login': (context) => const LoginScreen(),
           '/main': (context) => const MainScreen(),

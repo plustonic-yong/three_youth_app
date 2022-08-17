@@ -5,3 +5,12 @@ enum LoginStatus {
   failed,
   noAccount,
 }
+
+enum SignupStatus {
+  success,
+  duplicatedEmailApple,
+  duplicatedEmailKakao,
+  duplicatedEmailNaver,
+  duplicatedEmailGoogle,
+  error,
+}
