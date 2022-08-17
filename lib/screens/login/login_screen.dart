@@ -173,6 +173,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
+                                        actions: [
+                                          GestureDetector(
+                                            onTap: () =>
+                                                Navigator.of(context).pop(),
+                                            child: const Text('확인'),
+                                          ),
+                                        ],
                                         content: Container(
                                           child: const Text('로그인에 실패하였습니다.'),
                                         ),

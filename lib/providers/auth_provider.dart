@@ -27,7 +27,7 @@ class AuthProvider extends ChangeNotifier {
 
     var response =
         await Api.loginGoogleService(token: '${googleAuth?.idToken}');
-    var statusCode = response!.statusCode;
+    int statusCode = response!.statusCode;
 
     final data = json.decode(utf8.decode(response.bodyBytes));
     if (statusCode == 200) {
