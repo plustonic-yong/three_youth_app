@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/screens/main/main_screen.dart';
 import 'package:three_youth_app/screens/signup_agreement/signup_agreement_screen.dart';
+import 'package:three_youth_app/utils/enums.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -141,15 +142,43 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: () async {
                               var result = await context
                                   .read<AuthProvider>()
-                                  .signinWithGoogle();
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SignupAgreementScreen(),
-                                ),
-                              );
+                                  .loginGoogle();
+                              if (result == LoginStatus.success) {
+                                Navigator.of(context).pushNamed('/main');
+                              } else if (result == LoginStatus.noAccount) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        actions: [
+                                          GestureDetector(
+                                            onTap: () =>
+                                                Navigator.of(context).pop(),
+                                            child: const Text('취소'),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () => Navigator.of(context)
+                                                .pushNamed('/signup'),
+                                            child: const Text('확인'),
+                                          ),
+                                        ],
+                                        content: Container(
+                                          child: const Text(
+                                              '회원가입이 되어있지 않습니다. 신규가입을 진행하시겠습니까?'),
+                                        ),
+                                      );
+                                    });
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: Container(
+                                          child: const Text('로그인에 실패하였습니다.'),
+                                        ),
+                                      );
+                                    });
+                              }
                             },
                             child: Container(
                               width: width * 0.48,

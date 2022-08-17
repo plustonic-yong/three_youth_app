@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/services/api/api.dart';
+import 'package:three_youth_app/utils/enums.dart';
 
 class AuthProvider extends ChangeNotifier {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  Future<UserCredential> signinWithGoogle() async {
+  Future<LoginStatus> loginGoogle() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
@@ -20,8 +25,19 @@ class AuthProvider extends ChangeNotifier {
       idToken: googleAuth?.idToken,
     );
 
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    var response =
+        await Api.loginGoogleService(token: '${googleAuth?.idToken}');
+    var statusCode = response!.statusCode;
+
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    if (statusCode == 200) {
+      sharedPreferences.setString('accessToken', data['accessToken']);
+      return LoginStatus.success;
+    } else if (statusCode == 404) {
+      return LoginStatus.noAccount;
+    } else {
+      return LoginStatus.failed;
+    }
   }
 
   //kakao login
@@ -42,7 +58,7 @@ class AuthProvider extends ChangeNotifier {
       }
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-        print('카카오계정으로 로그인 성공 ${token.accessToken}');
+        await Api.loginKakaoService(token: token.accessToken);
         sharedPreferencesInstance.setString('accessToken', token.accessToken);
       } catch (e) {
         print('카카오계정으로 로그인 실패 $e');
@@ -51,10 +67,25 @@ class AuthProvider extends ChangeNotifier {
       print('발급된 토큰 없음');
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        await Api.loginKakaoService(token: token.accessToken);
         print('로그인 성공 ${token.accessToken}');
       } catch (error) {
         print('로그인 실패 $error');
       }
     }
   }
+
+  // Future<void> logout() async {
+  //   try {
+  //     Client client = InterceptedClient.build(interceptors: [
+  //       AuthInterceptor(),
+  //     ]);
+  //     await client.post(
+  //       Uri.parse('${Constants.API_HOST}/logout'),
+  //       headers: _getHeader(),
+  //     );
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }
