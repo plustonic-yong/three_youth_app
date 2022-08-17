@@ -172,7 +172,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                           ),
                           const SizedBox(height: 25.0),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               CommonButton(
                                 width: 135.0,
@@ -300,7 +300,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                             ),
                             const SizedBox(height: 25.0),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 CommonButton(
                                   width: 135.0,

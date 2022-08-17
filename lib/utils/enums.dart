@@ -1,5 +1,10 @@
 library enums;
 
+enum GenderState {
+  woman,
+  man,
+}
+
 enum LoginStatus {
   success,
   failed,
@@ -13,4 +18,11 @@ enum SignupStatus {
   duplicatedEmailNaver,
   duplicatedEmailGoogle,
   error,
+}
+
+enum EcgScanStatus {
+  waiting,
+  scanning,
+  complete,
+  failed,
 }

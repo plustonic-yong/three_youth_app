@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
-enum GenderState {
-  woman,
-  man,
-}
+import 'package:three_youth_app/utils/enums.dart';
 
 class SignupProvider extends ChangeNotifier {
   int _currentPage = 0;

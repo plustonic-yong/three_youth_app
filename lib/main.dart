@@ -7,6 +7,7 @@ import 'package:three_youth_app/firebase_options.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_connect_provider.dart';
 import 'package:three_youth_app/providers/ble_ecg_connect_provider.dart';
+import 'package:three_youth_app/providers/ble_ecg_scan_provider.dart';
 import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/agreement/agreement_screen.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SignupProvider()),
         ChangeNotifierProvider(create: (context) => BleBpConnectProvider()),
         ChangeNotifierProvider(create: (context) => BleEcgConnectProvider()),
+        ChangeNotifierProvider(create: (context) => BleEcgScanProvider()),
         ChangeNotifierProvider.value(value: CurrentUser()),
       ],
       child: MaterialApp(
