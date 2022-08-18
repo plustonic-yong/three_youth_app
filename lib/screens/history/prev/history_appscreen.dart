@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/screens/base/base_app_bar.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/history/history_screen.dart';
+import 'package:three_youth_app/screens/history/prev/history_screen.dart';
 import 'package:three_youth_app/utils/color.dart';
 
 class HistoryAppScreen extends StatefulWidget {

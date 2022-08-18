@@ -8,6 +8,7 @@ import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_connect_provider.dart';
 import 'package:three_youth_app/providers/ble_ecg_connect_provider.dart';
 import 'package:three_youth_app/providers/ble_ecg_scan_provider.dart';
+import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/agreement/agreement_screen.dart';
@@ -32,6 +33,7 @@ import 'package:three_youth_app/screens/profile_setting/profile_setting_screen.d
 import 'package:three_youth_app/screens/signup/signup_screen.dart';
 import 'package:three_youth_app/screens/sphygmomanometer_setting/sphygmomanometer_setting_screen.dart';
 import 'package:three_youth_app/utils/current_user.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 late final SharedPreferences prefsmain;
 void main() async {
@@ -41,7 +43,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -57,6 +59,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BleBpConnectProvider()),
         ChangeNotifierProvider(create: (context) => BleEcgConnectProvider()),
         ChangeNotifierProvider(create: (context) => BleEcgScanProvider()),
+        ChangeNotifierProvider(create: (context) => HistoryProvider()),
         ChangeNotifierProvider.value(value: CurrentUser()),
       ],
       child: MaterialApp(

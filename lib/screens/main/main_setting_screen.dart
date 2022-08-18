@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/screens/base/simple_dialog.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/screens/custom/common_button.dart';
-import 'package:three_youth_app/screens/history/locallog_appscreen.dart';
+import 'package:three_youth_app/screens/history/prev/locallog_appscreen.dart';
 
 class MainSettingScreen extends StatefulWidget {
   const MainSettingScreen({Key? key}) : super(key: key);
