@@ -10,6 +10,9 @@ import 'package:three_youth_app/utils/enums.dart';
 
 class AuthProvider extends ChangeNotifier {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  String? _lastLoginMethod = null;
+  String? get lastLoginMethod => _lastLoginMethod;
+
   Future<LoginStatus> loginGoogle() async {
     var sharedPreferences = await SharedPreferences.getInstance();
 
@@ -138,5 +141,12 @@ class AuthProvider extends ChangeNotifier {
     var sharedPreferences = await SharedPreferences.getInstance();
     await Api.logoutService();
     sharedPreferences.remove('accessToken');
+  }
+
+  Future<void> getLastLoginMethod() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    String? method = sharedPreferences.getString('lastLoginMethod');
+    _lastLoginMethod = method;
+    notifyListeners();
   }
 }

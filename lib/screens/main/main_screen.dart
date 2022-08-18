@@ -29,7 +29,6 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       prefs = await SharedPreferences.getInstance();
-
       if (prefs.containsKey('isLogin') == false) {
         await prefs.setBool('isLogin', false);
       }
