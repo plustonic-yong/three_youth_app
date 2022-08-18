@@ -78,29 +78,59 @@ class AuthProvider extends ChangeNotifier {
 
   //kakao login
   Future<LoginStatus> loginKakao() async {
-    if (await AuthApi.instance.hasToken()) {
-      String authCode = await AuthCodeClient.instance.request();
-      print(authCode);
-      // AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
-      // print('token info: ${tokenInfo}');
-      var sharedPreferences = await SharedPreferences.getInstance();
+    var sharedPreferences = await SharedPreferences.getInstance();
 
-      OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-      // print('kaka tok: ${token.accessToken}');
-      var response = await Api.loginKakaoService(token: '${token.accessToken}');
-      int statusCode = response!.statusCode;
-      final data = json.decode(utf8.decode(response.bodyBytes));
-      if (statusCode == 200) {
-        sharedPreferences.setString('accessToken', data['accessToken']);
-        sharedPreferences.setString('lastLoginMethod', 'kakao');
-        return LoginStatus.success;
-      } else if (statusCode == 404) {
-        return LoginStatus.noAccount;
-      } else {
+    if (await AuthApi.instance.hasToken()) {
+      try {
+        AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
+        debugPrint('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+      } catch (error) {
+        if (error is KakaoException && error.isInvalidTokenError()) {
+          debugPrint('토큰 만료 $error');
+        } else {
+          debugPrint('토큰 정보 조회 실패 $error');
+        }
+      }
+      try {
+        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        var response = await Api.loginKakaoService(token: token.accessToken);
+        int statusCode = response!.statusCode;
+        if (statusCode == 200) {
+          final data = json.decode(utf8.decode(response.bodyBytes));
+          sharedPreferences.setString('accessToken', data['accessToken']);
+          sharedPreferences.setString('lastLoginMethod', 'kakao');
+          return LoginStatus.success;
+        } else if (statusCode == 404) {
+          return LoginStatus.noAccount;
+        } else {
+          return LoginStatus.failed;
+        }
+      } catch (e) {
+        debugPrint('카카오계정으로 로그인 실패 $e');
         return LoginStatus.failed;
       }
     } else {
-      return LoginStatus.noAccount;
+      debugPrint('발급된 토큰 없음');
+      try {
+        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        await Api.loginKakaoService(token: token.accessToken);
+        debugPrint('로그인 성공 ${token.accessToken}');
+        var response = await Api.loginKakaoService(token: token.accessToken);
+        int statusCode = response!.statusCode;
+        if (statusCode == 200) {
+          final data = json.decode(utf8.decode(response.bodyBytes));
+          sharedPreferences.setString('accessToken', data['accessToken']);
+          sharedPreferences.setString('lastLoginMethod', 'kakao');
+          return LoginStatus.success;
+        } else if (statusCode == 404) {
+          return LoginStatus.noAccount;
+        } else {
+          return LoginStatus.failed;
+        }
+      } catch (error) {
+        debugPrint('로그인 실패 $error');
+        return LoginStatus.failed;
+      }
     }
   }
 

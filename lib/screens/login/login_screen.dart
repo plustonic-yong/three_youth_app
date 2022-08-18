@@ -2,11 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/screens/main/main_screen.dart';
-import 'package:three_youth_app/screens/signup_agreement/signup_agreement_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -150,42 +148,56 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
+                                        contentPadding:
+                                            const EdgeInsets.all(30.0),
+                                        actionsPadding:
+                                            const EdgeInsets.all(10.0),
                                         actions: [
                                           GestureDetector(
                                             onTap: () =>
                                                 Navigator.of(context).pop(),
-                                            child: const Text('취소'),
+                                            child: const Text(
+                                              '취소',
+                                              style: TextStyle(fontSize: 23.0),
+                                            ),
                                           ),
+                                          const SizedBox(width: 10.0),
                                           GestureDetector(
                                             onTap: () => Navigator.of(context)
                                                 .pushNamed('/signup'),
-                                            child: const Text('확인'),
+                                            child: const Text(
+                                              '확인',
+                                              style: TextStyle(fontSize: 23.0),
+                                            ),
                                           ),
                                         ],
                                         content: Container(
                                           child: const Text(
-                                              '회원가입이 되어있지 않습니다. 신규가입을 진행하시겠습니까?'),
-                                        ),
-                                      );
-                                    });
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        actions: [
-                                          GestureDetector(
-                                            onTap: () =>
-                                                Navigator.of(context).pop(),
-                                            child: const Text('확인'),
+                                            '회원가입이 되어있지 않습니다. 신규가입을 진행하시겠습니까?',
+                                            style: TextStyle(fontSize: 23.0),
                                           ),
-                                        ],
-                                        content: Container(
-                                          child: const Text('로그인에 실패하였습니다.'),
                                         ),
                                       );
                                     });
                               }
+                              // else {
+                              //   showDialog(
+                              //       context: context,
+                              //       builder: (context) {
+                              //         return AlertDialog(
+                              //           actions: [
+                              //             GestureDetector(
+                              //               onTap: () =>
+                              //                   Navigator.of(context).pop(),
+                              //               child: const Text('확인'),
+                              //             ),
+                              //           ],
+                              //           content: Container(
+                              //             child: const Text('로그인에 실패하였습니다.'),
+                              //           ),
+                              //         );
+                              //       });
+                              // }
                             },
                             child: Container(
                               width: width * 0.48,
@@ -242,40 +254,52 @@ class _LoginScreenState extends State<LoginScreen> {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
+                                  contentPadding: const EdgeInsets.all(30.0),
+                                  actionsPadding: const EdgeInsets.all(10.0),
                                   actions: [
                                     GestureDetector(
                                       onTap: () => Navigator.of(context).pop(),
-                                      child: const Text('취소'),
+                                      child: const Text(
+                                        '취소',
+                                        style: TextStyle(fontSize: 23.0),
+                                      ),
                                     ),
+                                    const SizedBox(width: 10.0),
                                     GestureDetector(
                                       onTap: () => Navigator.of(context)
                                           .pushNamed('/signup'),
-                                      child: const Text('확인'),
+                                      child: const Text(
+                                        '확인',
+                                        style: TextStyle(fontSize: 23.0),
+                                      ),
                                     ),
                                   ],
                                   content: Container(
                                     child: const Text(
-                                        '회원가입이 되어있지 않습니다. 신규가입을 진행하시겠습니까?'),
-                                  ),
-                                );
-                              });
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  actions: [
-                                    GestureDetector(
-                                      onTap: () => Navigator.of(context).pop(),
-                                      child: const Text('확인'),
+                                      '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
+                                      style: TextStyle(fontSize: 23.0),
                                     ),
-                                  ],
-                                  content: Container(
-                                    child: const Text('로그인에 실패하였습니다.'),
                                   ),
                                 );
                               });
                         }
+                        //  else {
+                        //   showDialog(
+                        //       context: context,
+                        //       builder: (context) {
+                        //         return AlertDialog(
+                        //           actions: [
+                        //             GestureDetector(
+                        //               onTap: () => Navigator.of(context).pop(),
+                        //               child: const Text('확인'),
+                        //             ),
+                        //           ],
+                        //           content: Container(
+                        //             child: const Text('로그인에 실패하였습니다.'),
+                        //           ),
+                        //         );
+                        //       });
+                        // }
                       },
                       child: Container(
                         width: width * 0.48,
