@@ -117,7 +117,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                           CommonButton(
                             width: 150.0,
                             height: 50.0,
-                            title: '다음',
+                            title: _currentPage == 3 ? '회원가입' : '다음',
                             buttonColor: _currentPage == 1
                                 ? _tall != ''
                                     ? ButtonColor.primary

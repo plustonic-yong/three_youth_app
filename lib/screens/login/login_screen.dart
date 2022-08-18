@@ -58,28 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    SizedBox(height: height * 0.08),
-                    //제목, 부제목
-                    const Text(
-                      '제3의 청춘',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 5.0),
-                    const Text(
-                      'Social Value Creation',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12.0,
-                      ),
-                    ),
-                    SizedBox(height: height * 0.04),
+                    SizedBox(height: height * 0.1),
                     //로고
                     Image.asset(
-                      'assets/icons/logo.png',
+                      'assets/icons/ic_logo.png',
                       width: width * 0.25,
                     ),
                     SizedBox(height: height * 0.06),

@@ -23,13 +23,12 @@ class AuthProvider extends ChangeNotifier {
         await googleUser?.authentication;
 
     // Create a new credential
-    // final credential = GoogleAuthProvider.credential(
-    //   accessToken: googleAuth?.accessToken,
-    //   idToken: googleAuth?.idToken,
-    // );
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
 
-    var response =
-        await Api.loginGoogleService(token: '${googleAuth?.idToken}');
+    var response = await Api.loginGoogleService(token: '${credential.idToken}');
     int statusCode = response!.statusCode;
 
     final data = json.decode(utf8.decode(response.bodyBytes));
@@ -139,7 +138,19 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> logout() async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    await Api.logoutService();
+    // await Api.logoutService();
+    var lastLoginMethod = sharedPreferences.getString('lastLoginMethod');
+    if (lastLoginMethod == 'google') {
+      FirebaseAuth.instance.signOut();
+    } else if (lastLoginMethod == 'kakao') {
+      try {
+        await UserApi.instance.unlink();
+        print('로그아웃 성공, SDK에서 토큰 삭제');
+      } catch (error) {
+        print('로그아웃 실패 $error');
+      }
+    }
+
     sharedPreferences.remove('accessToken');
   }
 

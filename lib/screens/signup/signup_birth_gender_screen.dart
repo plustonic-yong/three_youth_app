@@ -28,7 +28,7 @@ class SignupBirthGenderScreen extends StatelessWidget {
         SizedBox(height: height * 0.12),
         //로고
         Image.asset(
-          'assets/icons/logo.png',
+          'assets/icons/ic_logo.png',
           width: width * 0.25,
         ),
         SizedBox(height: height * 0.16),
@@ -49,6 +49,7 @@ class SignupBirthGenderScreen extends StatelessWidget {
                   height: height * 0.045,
                   child: TextField(
                     controller: _yearController,
+                    enableInteractiveSelection: false,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     maxLength: 4,
@@ -88,6 +89,7 @@ class SignupBirthGenderScreen extends StatelessWidget {
                   height: height * 0.045,
                   child: TextField(
                     controller: _monthController,
+                    enableInteractiveSelection: false,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     maxLength: 2,
@@ -127,6 +129,7 @@ class SignupBirthGenderScreen extends StatelessWidget {
                   height: height * 0.045,
                   child: TextField(
                     controller: _dayController,
+                    enableInteractiveSelection: false,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     maxLength: 2,

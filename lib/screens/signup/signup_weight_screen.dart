@@ -15,7 +15,7 @@ class SignupWeightScreen extends StatelessWidget {
         SizedBox(height: height * 0.12),
         //로고
         Image.asset(
-          'assets/icons/logo.png',
+          'assets/icons/ic_logo.png',
           width: width * 0.25,
         ),
         SizedBox(height: height * 0.16),
@@ -42,7 +42,8 @@ class SignupWeightScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: width * 0.1),
       child: TextField(
         controller: _weightController,
-        keyboardType: TextInputType.text,
+        enableInteractiveSelection: false,
+        keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
