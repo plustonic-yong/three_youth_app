@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/utils/color.dart';
 
-Widget ecgRecordCard(BuildContext context) {
+Widget ecgRecordCard({required BuildContext context}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 20.0),
     child: Container(

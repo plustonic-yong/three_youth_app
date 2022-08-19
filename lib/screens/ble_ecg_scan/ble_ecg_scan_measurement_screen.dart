@@ -4,6 +4,7 @@ import 'package:three_youth_app/providers/ble_ecg_scan_provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common_button.dart';
 import 'package:provider/provider.dart';
+import 'package:three_youth_app/widget/ecg/ecg_record_card.dart';
 
 class BleEcgScanMeasurementScreen extends StatefulWidget {
   const BleEcgScanMeasurementScreen({Key? key}) : super(key: key);
@@ -185,105 +186,106 @@ class _BleEcgScanMeasurementScreenState
         child: Column(
           children: [
             const SizedBox(height: 40.0),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 25.0),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Image.asset('assets/images/electrocardiogram_1.png'),
-                        const SizedBox(width: 20.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              '2022.7.05(화)',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 23.0,
-                              ),
-                            ),
-                            Text(
-                              '오후 7:21',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 23.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 15.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Divider(
-                        color: Colors.white.withOpacity(0.5),
-                        thickness: 1.0,
-                        indent: 1.0,
-                        endIndent: 1.0,
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              '30초 측정 기준',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                              ),
-                            ),
-                            Row(
-                              children: const [
-                                Text(
-                                  '158',
-                                  style: TextStyle(
-                                    color: Color(0xFFFFF898),
-                                    fontSize: 28.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(width: 5.0),
-                                Text(
-                                  'bpm',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 180.0),
-                  const Divider(
-                    color: Colors.white,
-                    thickness: 1.0,
-                    indent: 1.0,
-                    endIndent: 1.0,
-                  ),
-                  const SizedBox(height: 60.0),
-                ],
-              ),
-            ),
+            ecgRecordCard(context: context),
+            // Container(
+            //   padding: const EdgeInsets.symmetric(vertical: 25.0),
+            //   decoration: BoxDecoration(
+            //     color: Colors.white.withOpacity(0.2),
+            //     borderRadius: BorderRadius.circular(10.0),
+            //   ),
+            //   child: Column(
+            //     children: [
+            //       Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //         child: Row(
+            //           children: [
+            //             Image.asset('assets/images/electrocardiogram_1.png'),
+            //             const SizedBox(width: 20.0),
+            //             Column(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: const [
+            //                 Text(
+            //                   '2022.7.05(화)',
+            //                   style: TextStyle(
+            //                     color: Colors.white,
+            //                     fontSize: 23.0,
+            //                   ),
+            //                 ),
+            //                 Text(
+            //                   '오후 7:21',
+            //                   style: TextStyle(
+            //                     color: Colors.white,
+            //                     fontSize: 23.0,
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //       const SizedBox(height: 15.0),
+            //       Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //         child: SizedBox(
+            //           width: MediaQuery.of(context).size.width,
+            //           child: Divider(
+            //             color: Colors.white.withOpacity(0.5),
+            //             thickness: 1.0,
+            //             indent: 1.0,
+            //             endIndent: 1.0,
+            //           ),
+            //         ),
+            //       ),
+            //       Column(
+            //         children: [
+            //           Padding(
+            //             padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            //             child: Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 const Text(
+            //                   '30초 측정 기준',
+            //                   style: TextStyle(
+            //                     color: Colors.white,
+            //                     fontSize: 20.0,
+            //                   ),
+            //                 ),
+            //                 Row(
+            //                   children: const [
+            //                     Text(
+            //                       '158',
+            //                       style: TextStyle(
+            //                         color: Color(0xFFFFF898),
+            //                         fontSize: 28.0,
+            //                         fontWeight: FontWeight.bold,
+            //                       ),
+            //                     ),
+            //                     SizedBox(width: 5.0),
+            //                     Text(
+            //                       'bpm',
+            //                       style: TextStyle(
+            //                         color: Colors.white,
+            //                         fontSize: 20.0,
+            //                       ),
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ],
+            //             ),
+            //           )
+            //         ],
+            //       ),
+            //       const SizedBox(height: 180.0),
+            //       const Divider(
+            //         color: Colors.white,
+            //         thickness: 1.0,
+            //         indent: 1.0,
+            //         endIndent: 1.0,
+            //       ),
+            //       const SizedBox(height: 60.0),
+            //     ],
+            //   ),
+            // ),
             const Spacer(),
             CommonButton(
               height: 50.0,

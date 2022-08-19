@@ -127,9 +127,9 @@ class HistoryScreen extends StatelessWidget {
                     Expanded(
                       child: ListView(
                         children: [
-                          ecgRecordCard(context),
-                          ecgRecordCard(context),
-                          ecgRecordCard(context),
+                          ecgRecordCard(context: context),
+                          ecgRecordCard(context: context),
+                          ecgRecordCard(context: context),
                         ],
                       ),
                     ),
