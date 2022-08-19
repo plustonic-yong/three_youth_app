@@ -3,6 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/utils/color.dart';
+import 'package:three_youth_app/utils/enums.dart';
 
 class HistoryMonthCalendar extends StatelessWidget {
   const HistoryMonthCalendar({Key? key}) : super(key: key);
@@ -31,8 +32,12 @@ class HistoryMonthCalendar extends StatelessWidget {
           size: 23.0,
         ),
       ),
-      onDaySelected: (value, _) =>
-          context.read<HistoryProvider>().onDaySelect(value),
+      onDaySelected: (value, _) {
+        context.read<HistoryProvider>().onDaySelect(value);
+        context
+            .read<HistoryProvider>()
+            .onChangeHistoryCalendarType(HistoryCalendarType.week);
+      },
       selectedDayPredicate: (value) => isSameDay(_selectedDay, value),
       startingDayOfWeek: StartingDayOfWeek.sunday,
       daysOfWeekStyle: const DaysOfWeekStyle(
