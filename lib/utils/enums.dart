@@ -1,5 +1,13 @@
 library enums;
 
+enum ButtonColor {
+  primary,
+  white,
+  orange,
+  inactive,
+  warning,
+}
+
 enum GenderState {
   woman,
   man,

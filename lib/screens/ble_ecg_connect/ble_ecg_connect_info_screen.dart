@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/providers/ble_ecg_connect_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common_button.dart';
 
 class BleEcgConnectInfoScreen extends StatelessWidget {

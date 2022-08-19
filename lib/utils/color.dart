@@ -58,5 +58,4 @@ class ColorAssets {
 
   static const fontDarkGrey = Color(0xff353638);
   static const borderGrey = Color(0xffe3e3e3);
-
 }

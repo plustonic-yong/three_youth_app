@@ -4,6 +4,7 @@ import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/screens/history/history_screen.dart';
 import 'package:three_youth_app/screens/main/main_select_screen.dart';
 import 'package:three_youth_app/screens/main/main_setting_screen.dart';
+import 'package:three_youth_app/screens/profile_setting/profile_setting_screen.dart';
 import 'package:three_youth_app/utils/color.dart';
 
 class MainScreen extends StatefulWidget {
@@ -105,18 +106,30 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 label: '기록',
               ),
-              const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings,
-                  size: 27.0,
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  'assets/icons/ic_profile.png',
+                  width: 20.0,
                 ),
-                activeIcon: Icon(
-                  Icons.settings,
+                activeIcon: Image.asset(
+                  'assets/icons/ic_profile.png',
                   color: ColorAssets.greenGradient1,
-                  size: 27.0,
+                  width: 20.0,
                 ),
-                label: '설정',
+                label: '내 정보',
               ),
+              // const BottomNavigationBarItem(
+              //   icon: Icon(
+              //     Icons.settings,
+              //     size: 27.0,
+              //   ),
+              //   activeIcon: Icon(
+              //     Icons.settings,
+              //     color: ColorAssets.greenGradient1,
+              //     size: 27.0,
+              //   ),
+              //   label: '설정',
+              // ),
               // BottomNavigationBarItem(
               //   icon: Icon(
               //     Icons.list,
@@ -160,7 +173,9 @@ class _MainScreenState extends State<MainScreen> {
         child: HistoryScreen(),
       );
     } else if (_currentIndex == 2) {
-      return const Center(child: MainSettingScreen());
+      return const Center(
+        child: ProfileSettingScreen(),
+      );
     } else {
       return Container();
       // } else if (_currentIndex == 1) {

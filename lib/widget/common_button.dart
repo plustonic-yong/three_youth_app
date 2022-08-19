@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-
-enum ButtonColor {
-  primary,
-  white,
-  orange,
-  inactive,
-}
+import 'package:flutter_launcher_icons/xml_templates.dart';
+import 'package:three_youth_app/utils/color.dart';
+import 'package:three_youth_app/utils/enums.dart';
 
 class CommonButton extends StatelessWidget {
   const CommonButton({
@@ -14,12 +10,14 @@ class CommonButton extends StatelessWidget {
     required this.title,
     required this.buttonColor,
     this.onTap,
+    this.fontSize,
   });
   final double height;
   final double width;
   final String title;
   final ButtonColor buttonColor;
   final VoidCallback? onTap;
+  final double? fontSize;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -63,22 +61,27 @@ class CommonButton extends StatelessWidget {
                 ],
                 borderRadius: BorderRadius.circular(25.0),
               )
-            : BoxDecoration(
-                color: buttonColor == ButtonColor.inactive
-                    ? const Color(0xffffffff).withOpacity(0.3)
-                    : Color(0xFFF0F0F0),
-                boxShadow: const [
-                  BoxShadow(
-                    // ignore: use_full_hex_values_for_flutter_colors
-                    color: Color(0xff00000029),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    // changes position of shadow
-                    offset: Offset(0, 3),
+            : buttonColor == ButtonColor.warning
+                ? BoxDecoration(
+                    color: Color(0xffE94471).withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(25.0),
+                  )
+                : BoxDecoration(
+                    color: buttonColor == ButtonColor.inactive
+                        ? const Color(0xffffffff).withOpacity(0.3)
+                        : const Color(0xFFF0F0F0),
+                    boxShadow: const [
+                      BoxShadow(
+                        // ignore: use_full_hex_values_for_flutter_colors
+                        color: Color(0xff00000029),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        // changes position of shadow
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(25.0),
                   ),
-                ],
-                borderRadius: BorderRadius.circular(25.0),
-              ),
         child: Center(
           child: Text(
             title,
@@ -86,7 +89,7 @@ class CommonButton extends StatelessWidget {
               color: buttonColor == ButtonColor.white
                   ? Colors.black
                   : Colors.white,
-              fontSize: 20.0,
+              fontSize: fontSize ?? 20.0,
             ),
           ),
         ),

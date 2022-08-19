@@ -5,6 +5,7 @@ import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
+import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -87,20 +88,6 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(width: 30.0),
-                      CommonButton(
-                        height: 50.0,
-                        width: 110.0,
-                        title: '로그아웃',
-                        buttonColor: ButtonColor.orange,
-                        onTap: () {
-                          context.read<AuthProvider>().logout();
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/login',
-                            (route) => false,
-                          );
-                        },
-                      )
                     ],
                   ),
                   const SizedBox(height: 20.0),
