@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
-import 'package:three_youth_app/widget/common_button.dart';
+import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:three_youth_app/widget/ecg/ecg_record_card.dart';
 import 'package:three_youth_app/widget/history/history_month_calendar.dart';
 import 'package:three_youth_app/widget/history/history_week_calendar.dart';

@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/providers/ble_ecg_scan_provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
-import 'package:three_youth_app/widget/common_button.dart';
+import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/widget/ecg/ecg_record_card.dart';
 

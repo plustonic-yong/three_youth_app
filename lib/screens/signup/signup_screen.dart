@@ -6,7 +6,7 @@ import 'package:three_youth_app/screens/signup/signup_name_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_tall_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_weight_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
-import 'package:three_youth_app/widget/common_button.dart';
+import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {

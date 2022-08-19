@@ -6,7 +6,7 @@ import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/utils/enums.dart';
-import 'package:three_youth_app/widget/common_button.dart';
+import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainSelectScreen extends StatefulWidget {

@@ -4,8 +4,10 @@ import 'package:three_youth_app/screens/profile_setting/components/profile_setti
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_id_input_form.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_tall_input_form.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_weight_input_form.dart';
+import 'package:three_youth_app/screens/profile_setting/personal_info_policy_screen.dart';
+import 'package:three_youth_app/screens/profile_setting/use_of_terms_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
-import 'package:three_youth_app/widget/common_button.dart';
+import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
 
 class ProfileSettingScreen extends StatelessWidget {
@@ -87,13 +89,18 @@ class ProfileSettingScreen extends StatelessWidget {
               //이용약관, 개인정보처리방침
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   CommonButton(
                     height: 40.0,
                     width: 160.0,
                     title: '이용약관',
                     buttonColor: ButtonColor.inactive,
                     fontSize: 16.0,
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const UseOfTermsScreen(),
+                      ),
+                    ),
                   ),
                   CommonButton(
                     height: 40.0,
@@ -101,6 +108,11 @@ class ProfileSettingScreen extends StatelessWidget {
                     title: '개인정보 처리방침',
                     buttonColor: ButtonColor.inactive,
                     fontSize: 16.0,
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PersonalInfoPolicyScreen(),
+                      ),
+                    ),
                   ),
                 ],
               ),

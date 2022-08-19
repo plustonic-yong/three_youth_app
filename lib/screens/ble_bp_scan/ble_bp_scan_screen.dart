@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
-import 'package:three_youth_app/widget/common_button.dart';
+import 'package:three_youth_app/widget/common/common_button.dart';
 
 class BleBpScanScreen extends StatelessWidget {
   const BleBpScanScreen({Key? key}) : super(key: key);
