@@ -10,11 +10,14 @@ import 'package:three_youth_app/utils/enums.dart';
 
 class AuthProvider extends ChangeNotifier {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  String? _lastLoginMethod = null;
+  String? _lastLoginMethod = '';
   String? get lastLoginMethod => _lastLoginMethod;
 
   Future<LoginStatus> loginGoogle() async {
     var sharedPreferences = await SharedPreferences.getInstance();
+    // sharedPreferences.remove('accessToken');
+    // sharedPreferences.remove('lastLoginMethod');
+    // return LoginStatus.failed;
 
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -31,9 +34,13 @@ class AuthProvider extends ChangeNotifier {
     var response = await Api.loginGoogleService(token: '${credential.idToken}');
     int statusCode = response!.statusCode;
 
-    final data = json.decode(utf8.decode(response.bodyBytes));
     if (statusCode == 200) {
-      sharedPreferences.setString('accessToken', data['accessToken']);
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      String accessToken = data['accessToken'] ?? '';
+      if (accessToken == '') {
+        return LoginStatus.noAccount;
+      }
+      sharedPreferences.setString('accessToken', accessToken);
       sharedPreferences.setString('lastLoginMethod', 'google');
       return LoginStatus.success;
     } else if (statusCode == 404) {
@@ -99,7 +106,8 @@ class AuthProvider extends ChangeNotifier {
         int statusCode = response!.statusCode;
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
-          sharedPreferences.setString('accessToken', data['accessToken']);
+          String accessToken = data['accessToken'] ?? '';
+          sharedPreferences.setString('accessToken', accessToken);
           sharedPreferences.setString('lastLoginMethod', 'kakao');
           return LoginStatus.success;
         } else if (statusCode == 404) {

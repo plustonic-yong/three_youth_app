@@ -84,12 +84,12 @@ class _MainScreenState extends State<MainScreen> {
               const BottomNavigationBarItem(
                 icon: Icon(
                   Icons.home,
-                  size: 27,
+                  size: 27.0,
                 ),
                 activeIcon: Icon(
                   Icons.home,
                   color: ColorAssets.greenGradient1,
-                  size: 27,
+                  size: 27.0,
                 ),
                 label: '홈',
               ),
@@ -108,12 +108,12 @@ class _MainScreenState extends State<MainScreen> {
               const BottomNavigationBarItem(
                 icon: Icon(
                   Icons.settings,
-                  size: 27,
+                  size: 27.0,
                 ),
                 activeIcon: Icon(
                   Icons.settings,
                   color: ColorAssets.greenGradient1,
-                  size: 27,
+                  size: 27.0,
                 ),
                 label: '설정',
               ),
