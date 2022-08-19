@@ -3,6 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
+import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common_button.dart';
 import 'package:three_youth_app/widget/ecg/ecg_record_card.dart';
 
@@ -12,6 +13,8 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime _selectedDay = context.watch<HistoryProvider>().selectedDay;
+    HistoryTypes _historyType = context.watch<HistoryProvider>().historyType;
+
     return SafeArea(
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -72,20 +75,27 @@ class HistoryScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
+                  onTap: () => context
+                      .read<HistoryProvider>()
+                      .onChangeHistoryType(HistoryTypes.ecg),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.5,
                     height: 50.0,
                     decoration: BoxDecoration(
-                      color: const Color(0xff000000).withOpacity(0.5),
+                      color: _historyType == HistoryTypes.ecg
+                          ? const Color(0xff000000).withOpacity(0.5)
+                          : Colors.transparent,
                       borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(20.0),
                       ),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         '심전도',
                         style: TextStyle(
-                          color: ColorAssets.waterLevelWave1,
+                          color: _historyType == HistoryTypes.ecg
+                              ? ColorAssets.waterLevelWave1
+                              : ColorAssets.txtGrey,
                           fontSize: 20.0,
                         ),
                       ),
@@ -93,20 +103,27 @@ class HistoryScreen extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
+                  onTap: () => context
+                      .read<HistoryProvider>()
+                      .onChangeHistoryType(HistoryTypes.bp),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.5,
                     height: 50.0,
-                    decoration: const BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      color: _historyType == HistoryTypes.bp
+                          ? const Color(0xff000000).withOpacity(0.5)
+                          : Colors.transparent,
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20.0),
                       ),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         '혈압계',
                         style: TextStyle(
-                          color: ColorAssets.txtGrey,
+                          color: _historyType == HistoryTypes.bp
+                              ? ColorAssets.waterLevelWave1
+                              : ColorAssets.txtGrey,
                           fontSize: 20.0,
                         ),
                       ),

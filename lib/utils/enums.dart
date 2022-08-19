@@ -26,3 +26,8 @@ enum EcgScanStatus {
   complete,
   failed,
 }
+
+enum HistoryTypes {
+  ecg,
+  bp,
+}
