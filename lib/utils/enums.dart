@@ -27,7 +27,12 @@ enum EcgScanStatus {
   failed,
 }
 
-enum HistoryTypes {
+enum HistoryType {
   ecg,
   bp,
+}
+
+enum HistoryCalendarType {
+  week,
+  month,
 }

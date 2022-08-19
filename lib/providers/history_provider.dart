@@ -5,16 +5,24 @@ class HistoryProvider extends ChangeNotifier {
   DateTime _selectedDay = DateTime.now();
   DateTime get selectedDay => _selectedDay;
 
-  HistoryTypes _historyType = HistoryTypes.ecg;
-  HistoryTypes get historyType => _historyType;
+  HistoryType _historyType = HistoryType.ecg;
+  HistoryType get historyType => _historyType;
+
+  HistoryCalendarType _historyCalendarType = HistoryCalendarType.week;
+  HistoryCalendarType get historyCalendarType => _historyCalendarType;
 
   void onDaySelect(DateTime value) async {
     _selectedDay = value;
     notifyListeners();
   }
 
-  void onChangeHistoryType(HistoryTypes value) {
+  void onChangeHistoryType(HistoryType value) {
     _historyType = value;
+    notifyListeners();
+  }
+
+  void onChangeHistoryCalendarType(HistoryCalendarType value) {
+    _historyCalendarType = value;
     notifyListeners();
   }
 }
