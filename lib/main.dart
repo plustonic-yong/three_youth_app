@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/firebase_options.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_connect_provider.dart';
+import 'package:three_youth_app/providers/ble_bp_scan_provider.dart';
 import 'package:three_youth_app/providers/ble_ecg_connect_provider.dart';
 import 'package:three_youth_app/providers/ble_ecg_scan_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BleEcgScanProvider()),
         ChangeNotifierProvider(create: (context) => HistoryProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => BleBpScanProvider()),
         ChangeNotifierProvider.value(value: CurrentUser()),
       ],
       child: MaterialApp(

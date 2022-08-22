@@ -9,6 +9,7 @@ import 'package:three_youth_app/screens/profile_setting/use_of_terms_screen.dart
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart' as foundation;
 
 class ProfileSettingScreen extends StatelessWidget {
   const ProfileSettingScreen({Key? key}) : super(key: key);
@@ -16,9 +17,14 @@ class ProfileSettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    double botomNavigationBarHeight =
+        foundation.defaultTargetPlatform == foundation.TargetPlatform.android
+            ? kBottomNavigationBarHeight + 27.0
+            : 140.0;
     return SafeArea(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height - botomNavigationBarHeight,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 25.0),
           child: Column(
@@ -175,9 +181,9 @@ class ProfileSettingScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: kBottomNavigationBarHeight + 30.0,
-              ),
+              // SizedBox(
+              //   height: botomNavigationBarHeight,
+              // )
             ],
           ),
         ),
