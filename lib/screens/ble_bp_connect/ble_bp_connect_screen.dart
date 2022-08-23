@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_pairing_test_screen.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
@@ -72,8 +73,17 @@ class BleBpConnectScreen extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 //촬영 측정
                 GestureDetector(
-                  onTap: () =>
-                      Navigator.of(context).pushNamed('/connect/pairing'),
+                  onTap: () async {
+                    // await context.read<BleBpConnectProvider>().startPairing();
+                    // Navigator.of(context).pushNamed('/connect/pairing');
+
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const BleBpConnectPairingTestScreen(),
+                      ),
+                    );
+                  },
                   child: Container(
                     padding: const EdgeInsets.all(40.0),
                     width: _screenWidth,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:three_youth_app/providers/ble_bp_connect_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
@@ -49,6 +50,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool _isBpPaired = context.watch<BleBpConnectProvider>().isPaired;
+
     return isLoading
         ? spinkit
         : SafeArea(
@@ -315,18 +318,30 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                     );
                                   },
                                 ),
-                                CommonButton(
-                                  width: 135.0,
-                                  height: 40.0,
-                                  title: '연동하기',
-                                  buttonColor: ButtonColor.primary,
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/connect',
-                                    );
-                                  },
-                                ),
+                                _isBpPaired
+                                    ? CommonButton(
+                                        width: 135.0,
+                                        height: 40.0,
+                                        title: '연동해제',
+                                        buttonColor: ButtonColor.orange,
+                                        onTap: () async {
+                                          await context
+                                              .read<BleBpConnectProvider>()
+                                              .disConnectPairing();
+                                        },
+                                      )
+                                    : CommonButton(
+                                        width: 135.0,
+                                        height: 40.0,
+                                        title: '연동하기',
+                                        buttonColor: ButtonColor.primary,
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/connect',
+                                          );
+                                        },
+                                      ),
                               ],
                             ),
                           ],
