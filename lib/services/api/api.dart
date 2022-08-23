@@ -127,4 +127,25 @@ class Api {
       print(e);
     }
   }
+
+  static Future<String?> getAccessTokenService(
+      {required String refreshToken}) async {
+    try {
+      Client client = InterceptedClient.build(interceptors: [
+        AuthInterceptor(),
+      ]);
+      var response = await client.post(
+        Uri.parse('${Constants.API_HOST}/token/refresh'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
+          'refreshToken': refreshToken,
+        }),
+      );
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      var accessToken = data['accessToken'];
+      return accessToken;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

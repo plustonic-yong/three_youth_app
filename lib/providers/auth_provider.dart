@@ -24,7 +24,6 @@ class AuthProvider extends ChangeNotifier {
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
-
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
@@ -33,10 +32,11 @@ class AuthProvider extends ChangeNotifier {
 
     var response = await Api.loginGoogleService(token: '${credential.idToken}');
     int statusCode = response!.statusCode;
-
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      String accessToken = data['accessToken'] ?? '';
+
+      String accessToken = data['accessToken'] ??
+          await Api.getAccessTokenService(refreshToken: data['refreshToken']);
       if (accessToken == '') {
         return LoginStatus.noAccount;
       }
@@ -106,7 +106,9 @@ class AuthProvider extends ChangeNotifier {
         int statusCode = response!.statusCode;
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
-          String accessToken = data['accessToken'] ?? '';
+          String accessToken = data['accessToken'] ??
+              await Api.getAccessTokenService(
+                  refreshToken: data['refreshToken']);
           sharedPreferences.setString('accessToken', accessToken);
           sharedPreferences.setString('lastLoginMethod', 'kakao');
           return LoginStatus.success;
