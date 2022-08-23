@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
+import 'package:provider/provider.dart';
 
 class BleBpScanMeasurementResult extends StatelessWidget {
   const BleBpScanMeasurementResult({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool _dataIsOK = context.watch<BleBpProvider>().dataIsOK;
+
+    // bool _isUpdated = context.watch<BleBpProvider>().isUpdated;
+    List<double> _lDataSYS = context.read<BleBpProvider>().lDataSYS;
+    List<double> _lDataDIA = context.read<BleBpProvider>().lDataDIA;
+    List<double> _lDataPUL = context.read<BleBpProvider>().lDataPUL;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: const Text('측정결과 대기중'),
+        leading: GestureDetector(
+          onTap: () {
+            context.read<BleBpProvider>().dataClear();
+            Navigator.of(context).pop();
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+        title: const Text('측정결과'),
       ),
       backgroundColor: Colors.transparent,
       body: Padding(
@@ -42,9 +60,9 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                 'assets/icons/ic_heart.png',
                 width: 24.0,
               ),
-              const Text(
-                '72',
-                style: TextStyle(
+              Text(
+                _dataIsOK ? _lDataSYS.last.round().toString() : '-',
+                style: const TextStyle(
                   fontSize: 38.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -63,9 +81,9 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(
-                    children: const [
+                    children: [
                       //최저혈압
-                      CommonButton(
+                      const CommonButton(
                         height: 25.0,
                         width: 80.0,
                         title: '최저혈압',
@@ -73,14 +91,14 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                         fontSize: 13.0,
                       ),
                       Text(
-                        '85',
-                        style: TextStyle(
+                        _dataIsOK ? _lDataDIA.last.round().toString() : '-',
+                        style: const TextStyle(
                           fontSize: 38.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      Text(
+                      const Text(
                         'mmHg',
                         style: TextStyle(
                           fontSize: 13.0,
@@ -92,8 +110,8 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                   ),
                   //최고혈압
                   Column(
-                    children: const [
-                      CommonButton(
+                    children: [
+                      const CommonButton(
                         height: 25.0,
                         width: 80.0,
                         title: '최고혈압',
@@ -101,14 +119,14 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                         fontSize: 13.0,
                       ),
                       Text(
-                        '116',
-                        style: TextStyle(
+                        _dataIsOK ? _lDataPUL.last.round().toString() : '-',
+                        style: const TextStyle(
                           fontSize: 38.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      Text(
+                      const Text(
                         'mmHg',
                         style: TextStyle(
                           fontSize: 13.0,

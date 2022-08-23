@@ -1,6 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:three_youth_app/providers/ble_bp_connect_provider.dart';
+import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +11,7 @@ class BleBpConnectInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
-    int _currentPage = context.watch<BleBpConnectProvider>().currentPage;
+    int _currentPage = context.watch<BleBpProvider>().currentPage;
     PageController _pageController = PageController();
 
     return Stack(
@@ -41,7 +41,7 @@ class BleBpConnectInfoScreen extends StatelessWidget {
                   child: PageView(
                     controller: _pageController,
                     onPageChanged: (page) => context
-                        .read<BleBpConnectProvider>()
+                        .read<BleBpProvider>()
                         .onChangeCurrentPage(page: page),
                     children: [
                       _getInfo0(),
@@ -75,7 +75,7 @@ class BleBpConnectInfoScreen extends StatelessWidget {
                             curve: Curves.easeIn,
                           );
                           context
-                              .read<BleBpConnectProvider>()
+                              .read<BleBpProvider>()
                               .onChangeCurrentPage(page: _currentPage);
                         },
                       )
@@ -94,7 +94,7 @@ class BleBpConnectInfoScreen extends StatelessWidget {
                                 curve: Curves.easeIn,
                               );
                               context
-                                  .read<BleBpConnectProvider>()
+                                  .read<BleBpProvider>()
                                   .onChangeCurrentPage(page: _currentPage);
                             },
                           ),
@@ -115,7 +115,7 @@ class BleBpConnectInfoScreen extends StatelessWidget {
                                       curve: Curves.easeIn,
                                     );
                                     context
-                                        .read<BleBpConnectProvider>()
+                                        .read<BleBpProvider>()
                                         .onChangeCurrentPage(
                                             page: _currentPage);
                                   },
@@ -132,7 +132,7 @@ class BleBpConnectInfoScreen extends StatelessWidget {
                                       curve: Curves.easeIn,
                                     );
                                     context
-                                        .read<BleBpConnectProvider>()
+                                        .read<BleBpProvider>()
                                         .onChangeCurrentPage(
                                           page: _currentPage,
                                         );

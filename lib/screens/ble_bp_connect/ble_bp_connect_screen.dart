@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_pairing_test_screen.dart';
+import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_pairing_screen.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
@@ -79,8 +79,7 @@ class BleBpConnectScreen extends StatelessWidget {
 
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const BleBpConnectPairingTestScreen(),
+                        builder: (context) => const BleBpConnectPairingScreen(),
                       ),
                     );
                   },

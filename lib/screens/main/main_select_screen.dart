@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:three_youth_app/providers/ble_bp_connect_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
@@ -22,15 +23,18 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   late final double _screenHeight;
   // ignore: unused_field
   late final double _screenWidth;
+  bool _isSphyFairing = false;
 
   TDataSet dsTagList = TDataSet();
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
+      var prefs = await SharedPreferences.getInstance();
       setState(() {
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
+        _isSphyFairing = prefs.getBool('isSphyFairing') ?? false;
         isLoading = false;
       });
     });
@@ -50,8 +54,6 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isBpPaired = context.watch<BleBpConnectProvider>().isPaired;
-
     return isLoading
         ? spinkit
         : SafeArea(
@@ -318,7 +320,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                     );
                                   },
                                 ),
-                                _isBpPaired
+                                _isSphyFairing
                                     ? CommonButton(
                                         width: 135.0,
                                         height: 40.0,
@@ -326,7 +328,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                         buttonColor: ButtonColor.orange,
                                         onTap: () async {
                                           await context
-                                              .read<BleBpConnectProvider>()
+                                              .read<BleBpProvider>()
                                               .disConnectPairing();
                                         },
                                       )

@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/utils/enums.dart';
 
-class BleBpConnectProvider extends ChangeNotifier {
+class BleBpProvider extends ChangeNotifier {
   final _ble = FlutterReactiveBle();
   final Uuid _serviceUuid = Uuid.parse("00001810-0000-1000-8000-00805f9b34fb");
+  BpScanStatus _bpScanStatus = BpScanStatus.scanning;
+  BpScanStatus get bpScanStatus => _bpScanStatus;
 
   int _currentPage = 0;
   int get currentPage => _currentPage;
@@ -94,21 +97,28 @@ class BleBpConnectProvider extends ChangeNotifier {
   }
 
   Future<void> startPairing() async {
-    print('start!');
     _isPairing = true;
     _foundDeviceWaitingToConnect = false;
     _connected = false;
     notifyListeners();
   }
 
+  Future<void> dataClear() async {
+    _dataCnt = 0;
+    _isUpdated = false;
+    _lDataDIA.clear();
+    _lDataPUL.clear();
+    _lDataSYS.clear();
+    notifyListeners();
+  }
+
   Future<void> disConnectPairing() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("isSphyFairing", false);
-
     _isScanning = false;
     if (_scanStream != null) {
       try {
-        _scanStream?.cancel();
+        _scanStream!.cancel();
       } catch (err) {
         debugPrint('$err');
       }
@@ -122,7 +132,6 @@ class BleBpConnectProvider extends ChangeNotifier {
   }
 
   Future<void> loadCounter() async {
-    print('hello!');
     //YHR 추가  : 페어링 상태라면 기기인식 완료 라고 나오도록 추가함
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -142,7 +151,6 @@ class BleBpConnectProvider extends ChangeNotifier {
     debugPrint(
         '-------------------tiemr ON tttttttttttttttttttttttttttttttttttttt');
     _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
-      print('inz: $_iNeedDisconnect');
       if (_iNeedDisconnect > 0) {
         _iNeedDisconnect--;
         if (_iNeedDisconnect == 0) {
@@ -169,27 +177,21 @@ class BleBpConnectProvider extends ChangeNotifier {
 
       notifyListeners();
       if (_isScanning == false) {
-        _startScan();
+        await startScan();
       }
 
-      // if (mounted) {
-      //   if (isUpdated) {
-      //     isUpdated = false;
+      // if (isUpdated) {
+      //   _isUpdated = false;
 
-      //     if (dataIsOK) {
-      //       showSaveDialog(context);
-      //     }
-      //     setState(() {
-      //       debugPrint("-------------------UPDATE");
-      //     });
-      //   }
+      //   notifyListeners();
+      //   // if (dataIsOK) {
+      //   //   showSaveDialog(context);
+      //   // }
       // }
     });
   }
 
-  void _startScan() async {
-    // bool permGranted = false;
-
+  Future<void> startScan() async {
     _iFindCnt = 0;
     _isScanning = true;
 
@@ -200,9 +202,11 @@ class BleBpConnectProvider extends ChangeNotifier {
     });
 
     if (true) {
+      print('is _serviceUuid? $_serviceUuid');
       _scanStream =
           _ble.scanForDevices(withServices: [_serviceUuid]).listen((device) {
         debugPrint("########## SCAN = " + device.name);
+        print('is device?? $device');
         // Change this string to what you defined in Zephyr
         if (device.name.contains('A&D_UA-651BLE')) {
           _iFindCnt++;
@@ -213,7 +217,7 @@ class BleBpConnectProvider extends ChangeNotifier {
               _foundDeviceWaitingToConnect = true;
               _ubiqueDevice = device;
               notifyListeners();
-              _connectToDevice();
+              connectToDevice();
             }
           }
         }
@@ -227,7 +231,7 @@ class BleBpConnectProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _connectToDevice() {
+  Future<void> connectToDevice() async {
     // We're done scanning, we can cancel it
     _scanStream!.cancel();
     _isScanning = false;
@@ -367,7 +371,7 @@ class BleBpConnectProvider extends ChangeNotifier {
     }
   }
 
-  void doPacket(List<int> value) async {
+  Future<void> doPacket(List<int> value) async {
     // 114 82 73
     // 22, 114, 0, 82, 0, 90, 0, 230, 7, 1, 7, 0, 29, 59, 73, 0, 4, 0
 
@@ -383,6 +387,7 @@ class BleBpConnectProvider extends ChangeNotifier {
         _dataIsOK = false;
         _dataState = "측정 오류";
         _isUpdated = true;
+        notifyListeners();
         //});
       } else if (value[15] == 0x00 && value[16] == 0x08) {
         //setState(() {
@@ -390,6 +395,7 @@ class BleBpConnectProvider extends ChangeNotifier {
         _dataIsOK = false;
         _dataState = "범위 오류";
         _isUpdated = true;
+        notifyListeners();
         //});
       } else {
         //setState(() {

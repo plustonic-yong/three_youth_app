@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:three_youth_app/providers/ble_bp_scan_provider.dart';
+import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/components/ble_bp_scan_measurement_result.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/components/ble_bp_scan_measurement_scanning.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -21,10 +21,11 @@ class _BleBpScanMesurementScreenState extends State<BleBpScanMesurementScreen> {
           : 140.0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await context.read<BleBpScanProvider>().scanBp();
+      await context.read<BleBpProvider>().dataClear();
+      await context.read<BleBpProvider>().loadCounter();
       // Provider.of<BleEcgScanProvider>(context, listen: false).scanEcg();
     });
   }
@@ -32,9 +33,10 @@ class _BleBpScanMesurementScreenState extends State<BleBpScanMesurementScreen> {
   @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
-    BpScanStatus _bpScanStatus =
-        context.watch<BleBpScanProvider>().bpScanStatus;
-    double _ecgSeconds = context.watch<BleBpScanProvider>().bpSeconds;
+    BpScanStatus _bpScanStatus = context.watch<BleBpProvider>().bpScanStatus;
+    bool _isScanning = context.watch<BleBpProvider>().isScanning;
+    bool _dataIsOK = context.watch<BleBpProvider>().dataIsOK;
+    bool _isUpdated = context.watch<BleBpProvider>().isUpdated;
 
     return Stack(
       children: [
@@ -47,9 +49,9 @@ class _BleBpScanMesurementScreenState extends State<BleBpScanMesurementScreen> {
             ),
           ),
         ),
-        _bpScanStatus == BpScanStatus.scanning
-            ? const BleBpScanMeasurementScanning()
-            : const BleBpScanMeasurementResult()
+        _isUpdated
+            ? const BleBpScanMeasurementResult()
+            : const BleBpScanMeasurementScanning()
       ],
     );
   }
