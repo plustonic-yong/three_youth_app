@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:three_youth_app/services/api/api.dart';
+import 'package:three_youth_app/services/api/api_auth.dart';
 
 class AccountManager {
   String get accessToken {
@@ -14,7 +14,7 @@ class AccountManager {
   }
 
   Future<void> logout() async {
-    await Api.logoutService();
+    await ApiAuth.logoutService();
     _accessToken = null;
     var sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.remove("accessToken");

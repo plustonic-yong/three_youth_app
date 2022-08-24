@@ -2,17 +2,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
-import 'package:three_youth_app/managers/account_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/services/auth_interceptor.dart';
 import 'package:three_youth_app/utils/constants.dart' as Constants;
 
-class Api {
+class ApiAuth {
   static Map<String, String> _getHeader() {
-    if (AccountManager().accessToken != null) {
-      return {'accessToken': AccountManager().accessToken};
-    } else {
-      return {};
-    }
+    return {"Content-Type": "application/json"};
   }
 
   static Future<void> logoutService() async {
@@ -38,9 +34,9 @@ class Api {
     required int weight,
   }) async {
     try {
-      Client client = InterceptedClient.build(interceptors: [
-        AuthInterceptor(),
-      ]);
+      Client client = InterceptedClient.build(
+        interceptors: [AuthInterceptor()],
+      );
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/signup/google'),
         body: json.encode({
@@ -99,7 +95,7 @@ class Api {
 
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/login/google'),
-        headers: {"Content-Type": "application/json"},
+        headers: _getHeader(),
         body: json.encode({
           'token': token,
         }),
@@ -117,7 +113,7 @@ class Api {
       ]);
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/login/kakao'),
-        headers: {"Content-Type": "application/json"},
+        headers: _getHeader(),
         body: json.encode({
           'token': token,
         }),
@@ -128,22 +124,24 @@ class Api {
     }
   }
 
-  static Future<String?> getAccessTokenService(
-      {required String refreshToken}) async {
+  static Future<void> getTokenService({required String refreshToken}) async {
     try {
+      var pref = await SharedPreferences.getInstance();
       Client client = InterceptedClient.build(interceptors: [
         AuthInterceptor(),
       ]);
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/token/refresh'),
-        headers: {"Content-Type": "application/json"},
+        headers: _getHeader(),
         body: json.encode({
           'refreshToken': refreshToken,
         }),
       );
       final data = json.decode(utf8.decode(response.bodyBytes));
-      var accessToken = data['accessToken'];
-      return accessToken;
+      var newAccessToken = data['accessToken'];
+      var newRefreshToken = data['refreshToken'];
+      pref.setString('accessToken', newAccessToken);
+      pref.setString('refreshToken', newRefreshToken);
     } catch (e) {
       print(e);
     }

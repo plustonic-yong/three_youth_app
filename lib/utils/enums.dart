@@ -40,6 +40,11 @@ enum BpScanStatus {
   complete,
 }
 
+enum BpSaveDataStatus {
+  success,
+  failed,
+}
+
 enum HistoryType {
   ecg,
   bp,

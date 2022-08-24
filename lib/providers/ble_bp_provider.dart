@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/services/api/api_auth.dart';
+import 'package:three_youth_app/services/api/api_bp.dart';
 import 'package:three_youth_app/utils/enums.dart';
 
 class BleBpProvider extends ChangeNotifier {
@@ -96,6 +99,38 @@ class BleBpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getBloodPressure() async {
+    await ApiBp.getBloodPressureService();
+  }
+
+  Future<BpSaveDataStatus> postBloodPressure({
+    required int sys,
+    required int dia,
+    required int pul,
+  }) async {
+    var pref = await SharedPreferences.getInstance();
+    var response = await ApiBp.postBloodPressureService(
+      sys: sys,
+      dia: dia,
+      pul: pul,
+    );
+    int statusCode = response!.statusCode;
+    if (statusCode == 401) {
+      var refreshToken = pref.getString('refreshToken');
+      print('refreshToken: $refreshToken');
+      await ApiAuth.getTokenService(refreshToken: refreshToken!);
+      await ApiBp.postBloodPressureService(
+        sys: sys,
+        dia: dia,
+        pul: pul,
+      );
+    }
+    if (statusCode == 200) {
+      return BpSaveDataStatus.success;
+    }
+    return BpSaveDataStatus.failed;
+  }
+
   Future<void> startPairing() async {
     _isPairing = true;
     _foundDeviceWaitingToConnect = false;
@@ -127,6 +162,7 @@ class BleBpProvider extends ChangeNotifier {
     _connected = false;
     _isPairing = false;
     _isPaired = false;
+    prefs.setBool("isSphyFairing", false);
     _timer!.cancel();
     notifyListeners();
   }

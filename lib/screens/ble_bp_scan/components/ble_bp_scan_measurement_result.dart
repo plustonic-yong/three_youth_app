@@ -148,7 +148,42 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                     title: '저장',
                     buttonColor: ButtonColor.inactive,
                     fontSize: 16.0,
-                    onTap: () {},
+                    onTap: _dataIsOK
+                        ? () async {
+                            var result = await context
+                                .read<BleBpProvider>()
+                                .postBloodPressure(
+                                  sys: _lDataSYS.last.round(),
+                                  dia: _lDataDIA.last.round(),
+                                  pul: _lDataPUL.last.round(),
+                                );
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    contentPadding: const EdgeInsets.all(30.0),
+                                    actionsPadding: const EdgeInsets.all(10.0),
+                                    actions: [
+                                      GestureDetector(
+                                        onTap: () =>
+                                            Navigator.of(context).pop(),
+                                        child: const Text(
+                                          '확인',
+                                          style: TextStyle(fontSize: 18.0),
+                                        ),
+                                      ),
+                                    ],
+                                    content: Text(
+                                      // ignore: unrelated_type_equality_checks
+                                      result == BpSaveDataStatus.success
+                                          ? '데이터 저장에 성공했습니다.'
+                                          : '데이터 저장에 실패했습니다.',
+                                      style: const TextStyle(fontSize: 18.0),
+                                    ),
+                                  );
+                                });
+                          }
+                        : null,
                   ),
                   CommonButton(
                     height: 40.0,

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:three_youth_app/services/api/api.dart';
+import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/utils/enums.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -30,17 +30,19 @@ class AuthProvider extends ChangeNotifier {
       idToken: googleAuth?.idToken,
     );
 
-    var response = await Api.loginGoogleService(token: '${credential.idToken}');
+    var response =
+        await ApiAuth.loginGoogleService(token: '${credential.idToken}');
     int statusCode = response!.statusCode;
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
 
-      String accessToken = data['accessToken'] ??
-          await Api.getAccessTokenService(refreshToken: data['refreshToken']);
+      String accessToken = data['accessToken'] ?? '';
+      String refreshToken = data['refreshToken'] ?? '';
       if (accessToken == '') {
         return LoginStatus.noAccount;
       }
       sharedPreferences.setString('accessToken', accessToken);
+      sharedPreferences.setString('refreshToken', refreshToken);
       sharedPreferences.setString('lastLoginMethod', 'google');
       return LoginStatus.success;
     } else if (statusCode == 404) {
@@ -59,7 +61,7 @@ class AuthProvider extends ChangeNotifier {
     required int height,
     required int weight,
   }) async {
-    var response = await Api.signupKakaoService(
+    var response = await ApiAuth.signupKakaoService(
       token: token,
       name: name,
       birth: birth,
@@ -102,14 +104,15 @@ class AuthProvider extends ChangeNotifier {
       }
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-        var response = await Api.loginKakaoService(token: token.accessToken);
+        var response =
+            await ApiAuth.loginKakaoService(token: token.accessToken);
         int statusCode = response!.statusCode;
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
-          String accessToken = data['accessToken'] ??
-              await Api.getAccessTokenService(
-                  refreshToken: data['refreshToken']);
+          String accessToken = data['accessToken'] ?? '';
+          String refreshToken = data['refreshToken'] ?? '';
           sharedPreferences.setString('accessToken', accessToken);
+          sharedPreferences.setString('refreshToken', refreshToken);
           sharedPreferences.setString('lastLoginMethod', 'kakao');
           return LoginStatus.success;
         } else if (statusCode == 404) {
@@ -125,9 +128,10 @@ class AuthProvider extends ChangeNotifier {
       debugPrint('발급된 토큰 없음');
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-        await Api.loginKakaoService(token: token.accessToken);
+        await ApiAuth.loginKakaoService(token: token.accessToken);
         debugPrint('로그인 성공 ${token.accessToken}');
-        var response = await Api.loginKakaoService(token: token.accessToken);
+        var response =
+            await ApiAuth.loginKakaoService(token: token.accessToken);
         int statusCode = response!.statusCode;
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
@@ -156,12 +160,12 @@ class AuthProvider extends ChangeNotifier {
       try {
         await UserApi.instance.unlink();
         print('로그아웃 성공, SDK에서 토큰 삭제');
+        sharedPreferences.remove('accessToken');
+        sharedPreferences.remove('refreshToken');
       } catch (error) {
         print('로그아웃 실패 $error');
       }
     }
-
-    sharedPreferences.remove('accessToken');
   }
 
   Future<void> getLastLoginMethod() async {
