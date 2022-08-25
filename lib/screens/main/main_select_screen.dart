@@ -299,13 +299,17 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                 width: 135.0,
                                 height: 40.0,
                                 title: '측정하기',
-                                buttonColor: ButtonColor.white,
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/scan',
-                                  );
-                                },
+                                buttonColor: _isPaired
+                                    ? ButtonColor.white
+                                    : ButtonColor.inactive,
+                                onTap: _isPaired
+                                    ? () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/scan',
+                                        );
+                                      }
+                                    : null,
                               ),
                               _isPaired
                                   ? CommonButton(

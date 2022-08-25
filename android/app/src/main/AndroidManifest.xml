@@ -51,7 +51,7 @@
     </queries>
 
    <application
-        android:label="제3의청춘 BLE"
+        android:label="러닝하트"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
