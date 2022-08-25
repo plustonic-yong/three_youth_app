@@ -13,18 +13,23 @@ import 'package:three_youth_app/utils/constants.dart' as Constants;
 class ApiBp {
   late SharedPreferences pref;
 
-  static Future<void> getBloodPressureService() async {
+  static Future<Response?> getBloodPressureService() async {
     try {
+      var pref = await SharedPreferences.getInstance();
+      var accessToken = pref.getString('accessToken');
       Client client = InterceptedClient.build(
         interceptors: [
           AuthInterceptor(),
         ],
-        retryPolicy: ExpiredTokenRetryPolicy(),
       );
       var response = await client.get(
         Uri.parse('${Constants.API_HOST}/bloodpressure'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
       );
-      final data = json.decode(utf8.decode(response.bodyBytes));
+      return response;
     } catch (e) {
       print(e);
     }
@@ -42,7 +47,7 @@ class ApiBp {
         interceptors: [
           AuthInterceptor(),
         ],
-        // retryPolicy: ExpiredTokenRetryPolicy(),
+        retryPolicy: ExpiredTokenRetryPolicy(),
       );
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/bloodpressure'),

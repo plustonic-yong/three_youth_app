@@ -1,15 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:three_youth_app/models/bp.dart';
+import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/widget/bp/bpRecordCard.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
-import 'package:three_youth_app/widget/ecg/ecg_record_card.dart';
 import 'package:three_youth_app/widget/history/history_month_calendar.dart';
 import 'package:three_youth_app/widget/history/history_week_calendar.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await context.read<BleBpProvider>().getBloodPressure();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +33,7 @@ class HistoryScreen extends StatelessWidget {
     HistoryCalendarType _historyCalendarType =
         context.watch<HistoryProvider>().historyCalendarType;
 
+    List<Bp>? _bpHistories = context.read<BleBpProvider>().bpHistories;
     return SafeArea(
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -97,13 +114,21 @@ class HistoryScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           Expanded(
-                            child: ListView(
-                              children: [
-                                ecgRecordCard(context: context),
-                                ecgRecordCard(context: context),
-                                ecgRecordCard(context: context),
-                              ],
-                            ),
+                            child: _bpHistories != null
+                                ? ListView.builder(
+                                    itemCount: _bpHistories.length,
+                                    itemBuilder: (context, index) {
+                                      return bpRecordCard(
+                                        context: context,
+                                        measureDatetime:
+                                            _bpHistories[index].measureDatetime,
+                                        sys: _bpHistories[index].sys,
+                                        dia: _bpHistories[index].dia,
+                                        pul: _bpHistories[index].pul,
+                                      );
+                                    },
+                                  )
+                                : Container(),
                           ),
                           const SizedBox(height: 10.0),
                           CommonButton(

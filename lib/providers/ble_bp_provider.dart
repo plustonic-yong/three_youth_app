@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/models/bp.dart';
 import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/api/api_bp.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -94,6 +95,10 @@ class BleBpProvider extends ChangeNotifier {
   List<double> _lDataPUL = [0];
   List<double> get lDataPUL => _lDataPUL;
 
+  //혈압계 데이터
+  List<Bp>? _bpHistories = [];
+  List<Bp>? get bpHistories => _bpHistories;
+
   void onInitCurrentPage() {
     _currentPage = 0;
     notifyListeners();
@@ -105,7 +110,24 @@ class BleBpProvider extends ChangeNotifier {
   }
 
   Future<void> getBloodPressure() async {
-    await ApiBp.getBloodPressureService();
+    var pref = await SharedPreferences.getInstance();
+    var response = await ApiBp.getBloodPressureService();
+
+    int statusCode = response!.statusCode;
+    if (statusCode == 401) {
+      var refreshToken = pref.getString('refreshToken');
+      var accessToken = pref.getString('accessToken');
+      await ApiAuth.getTokenService(refreshToken: refreshToken!);
+      response = await ApiBp.getBloodPressureService();
+    }
+    if (statusCode == 200) {
+      final data = json.decode(utf8.decode(response!.bodyBytes));
+      List<Bp> bpList =
+          (data as List).map((json) => Bp.fromJson(json)).toList();
+      bpList.sort((a, b) => b.measureDatetime.compareTo(a.measureDatetime));
+      _bpHistories = bpList;
+      notifyListeners();
+    }
   }
 
   Future<BpSaveDataStatus> postBloodPressure({
