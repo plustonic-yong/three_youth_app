@@ -19,7 +19,9 @@ class _BleBpConnectInfoScreenState extends State<BleBpConnectInfoScreen> {
     // TODO: implement initState
     super.initState();
 
-    context.read<BleBpProvider>().onInitCurrentPage();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<BleBpProvider>().onInitCurrentPage();
+    });
   }
 
   @override

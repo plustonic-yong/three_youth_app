@@ -5,9 +5,10 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/custom/gradient_small_button.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:provider/provider.dart';
+import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/widget/common/common_button.dart';
 
 class BleBpConnectPairingScreen extends StatefulWidget {
   const BleBpConnectPairingScreen({Key? key}) : super(key: key);
@@ -111,6 +112,9 @@ class _BleBpConnectPairingTestScreenState
 
   Widget getAppBar() {
     return AppBar(
+      backgroundColor: Colors.transparent,
+      title: const Text('기기 연동'),
+      centerTitle: true,
       leading: GestureDetector(
         onTap: () async {
           await context.read<BleBpProvider>().disConnectPairing();
@@ -152,94 +156,87 @@ class _BleBpConnectPairingTestScreenState
     _lDataSYS = context.read<BleBpProvider>().lDataSYS;
     _lDataDIA = context.read<BleBpProvider>().lDataDIA;
     _lDataPUL = context.read<BleBpProvider>().lDataPUL;
-    return Scaffold(
-      backgroundColor: ColorAssets.commonBackgroundDark,
-      //appBar: getAppBar(),
-      //drawer: ,
-      body: SingleChildScrollView(
-        child: isLoading
-            ? spinkit
-            : Center(
-                child: Column(
-                  children: [
-                    getAppBar(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    uiMain(),
-                  ],
-                ),
-              ),
-      ),
-    );
-  }
-
-  Widget uiMain() {
-    return Column(
+    return Stack(
       children: [
-        Image.asset('assets/images/sphygmomanometer_1.png'),
-        const SizedBox(
-          height: 20,
+        //배경이미지
+        Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
-        _isPaired ? uiScan() : uiPairing(),
-        const SizedBox(
-          height: 30,
+        Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: const Text('기기 연동'),
+            centerTitle: true,
+            leading: GestureDetector(
+              onTap: () async {
+                await context.read<BleBpProvider>().disConnectPairing();
+                Navigator.of(context).pop();
+              },
+              child: const Icon(Icons.arrow_back_ios),
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          body: isLoading
+              ? spinkit
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: _isPaired ? uiScan(context) : uiPairing(context),
+                ),
         ),
       ],
     );
   }
 
-  Widget uiScan() {
+  Widget uiScan(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 50.0),
+        Center(
+          child: Image.asset(
+            'assets/images/sphygmomanometer_1@2x.png',
+            width: 108.0,
+          ),
+        ),
+        const SizedBox(height: 10.0),
+        Image.asset(
+          'assets/icons/ic_check_circle.png',
+          width: 30.0,
+        ),
         Container(
           child: const Text(
             "혈압계 연동 완료!",
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           margin: const EdgeInsets.all(20),
         ),
-        // Container(
-        //   margin: const EdgeInsets.all(20),
-        //   child: const CircularProgressIndicator(
-        //     backgroundColor: Colors.grey,
-        //     color: Colors.purple,
-        //     strokeWidth: 5,
-        //   ),
-        // ),
-        const SizedBox(
-          height: 20,
-        ),
-        GradientSmallButton(
-          width: _screenWidth * 0.6,
-          height: 60,
-          radius: 50.0,
-          child: const Text(
-            '측정화면으로 이동',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: ColorAssets.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 18.0),
+        const SizedBox(height: 50.0),
+        const Text(
+          "혈압계 연동 완료!\n혈압계 화면에 'End' 문자를\n확인하셨나요?\n이제 측정 기록이 스마트폰에\n자동으로 저장됩니다.",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
           ),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[
-              ColorAssets.greenGradient1,
-              ColorAssets.purpleGradient2
-            ],
-          ),
-          onPressed: () async {
-            // showAlertDialog(context);
-            Navigator.of(context).pushNamed('/scan/mesurement');
-          },
+          textAlign: TextAlign.center,
         ),
+        const Spacer(),
+        CommonButton(
+          width: MediaQuery.of(context).size.width,
+          height: 50.0,
+          title: '측정화면으로 이동',
+          buttonColor: ButtonColor.primary,
+          onTap: () => Navigator.of(context).pushNamed('/scan/mesurement'),
+        ),
+        const SizedBox(height: 30.0)
       ],
     );
   }
@@ -271,60 +268,48 @@ class _BleBpConnectPairingTestScreenState
     );
   }
 
-  Widget uiPairing() {
-    return Column(
-      children: [
-        _isPairing
-            ? Container(
-                child: Column(
-                  children: [
-                    const Text(
-                      "연동 중 입니다.",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      child: const CircularProgressIndicator(
-                        backgroundColor: Colors.grey,
-                        color: Colors.purple,
-                        strokeWidth: 5,
-                      ),
-                    ),
-                  ],
-                ),
-                margin: const EdgeInsets.all(20),
-              )
-            : const SizedBox(height: 10),
-        // _isPairing
-        //     ?
-        GradientSmallButton(
-          width: _screenWidth * 0.6,
-          height: 60,
-          radius: 50.0,
-          child: const Text(
-            '중단하기',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
+  Widget uiPairing(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          const SizedBox(height: 50.0),
+          Image.asset(
+            'assets/images/sphygmomanometer_1@2x.png',
+            width: 108.0,
+          ),
+          // _isPairing
+          //     ?
+          Container(
+            margin: const EdgeInsets.all(20),
+            child: const CircularProgressIndicator(
+              backgroundColor: Colors.grey,
+              color: Colors.purple,
+              strokeWidth: 5,
+            ),
+          ),
+          // const SizedBox(height: 50.0),
+          const Text(
+            "연동 중 입니다.",
             style: TextStyle(
-                color: ColorAssets.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 18.0),
+              color: Colors.white,
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[
-              ColorAssets.greenGradient1,
-              ColorAssets.purpleGradient2
-            ],
+          const Spacer(),
+          CommonButton(
+            width: MediaQuery.of(context).size.width,
+            height: 50.0,
+            title: '중단하기',
+            buttonColor: ButtonColor.orange,
+            onTap: () async {
+              await context.read<BleBpProvider>().disConnectPairing();
+              Navigator.of(context).pop();
+            },
           ),
-          onPressed: () async {
-            await context.read<BleBpProvider>().disConnectPairing();
-            Navigator.of(context).pop();
-          },
-        )
-      ],
+          const SizedBox(height: 30.0)
+        ],
+      ),
     );
   }
 
