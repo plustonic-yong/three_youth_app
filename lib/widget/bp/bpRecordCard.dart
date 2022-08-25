@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:three_youth_app/utils/color.dart';
+import 'package:three_youth_app/utils/utils.dart';
 
 Widget bpRecordCard({
   required BuildContext context,
@@ -35,14 +35,14 @@ Widget bpRecordCard({
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      formatDatetime(measureDatetime).split(' ')[0],
+                      Utils.formatDatetime(measureDatetime).split(' ')[0],
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 23.0,
                       ),
                     ),
                     Text(
-                      formatDatetime(measureDatetime).split(' ')[1],
+                      Utils.formatDatetime(measureDatetime).split(' ')[1],
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 23.0,
@@ -207,9 +207,4 @@ Widget bpRecordCard({
       ),
     ),
   );
-}
-
-String formatDatetime(DateTime dateTime) {
-  print(dateTime);
-  return DateFormat('yyyy.MM.dd(E) ahh:mm').format(dateTime);
 }

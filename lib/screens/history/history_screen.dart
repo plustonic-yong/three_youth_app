@@ -23,7 +23,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await context.read<BleBpProvider>().getBloodPressure();
+      await context.read<BleBpProvider>().getBloodPressure(DateTime.now());
     });
   }
 
@@ -33,7 +33,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     HistoryCalendarType _historyCalendarType =
         context.watch<HistoryProvider>().historyCalendarType;
 
-    List<Bp>? _bpHistories = context.read<BleBpProvider>().bpHistories;
+    List<Bp>? _bpHistories = context.watch<BleBpProvider>().bpHistories;
     return SafeArea(
       child: SizedBox(
         height: MediaQuery.of(context).size.height,

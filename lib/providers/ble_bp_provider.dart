@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -8,6 +9,7 @@ import 'package:three_youth_app/models/bp.dart';
 import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/api/api_bp.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/utils/utils.dart';
 
 class BleBpProvider extends ChangeNotifier {
   final _ble = FlutterReactiveBle();
@@ -109,7 +111,7 @@ class BleBpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getBloodPressure() async {
+  Future<void> getBloodPressure(DateTime measureDatetime) async {
     var pref = await SharedPreferences.getInstance();
     var response = await ApiBp.getBloodPressureService();
 
@@ -124,8 +126,15 @@ class BleBpProvider extends ChangeNotifier {
       final data = json.decode(utf8.decode(response!.bodyBytes));
       List<Bp> bpList =
           (data as List).map((json) => Bp.fromJson(json)).toList();
-      bpList.sort((a, b) => b.measureDatetime.compareTo(a.measureDatetime));
-      _bpHistories = bpList;
+      List<Bp> filtedBpList = [];
+      bpList.forEach((element) {
+        if (Utils.formatDatetime(element.measureDatetime).split(' ')[0] ==
+            Utils.formatDatetime(measureDatetime).split(' ')[0]) {
+          filtedBpList.add(element);
+        }
+      });
+
+      _bpHistories = filtedBpList;
       notifyListeners();
     }
   }

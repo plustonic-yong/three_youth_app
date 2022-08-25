@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/utils/color.dart';
@@ -37,6 +38,7 @@ class HistoryMonthCalendar extends StatelessWidget {
         context
             .read<HistoryProvider>()
             .onChangeHistoryCalendarType(HistoryCalendarType.week);
+        context.read<BleBpProvider>().getBloodPressure(value);
       },
       selectedDayPredicate: (value) => isSameDay(_selectedDay, value),
       startingDayOfWeek: StartingDayOfWeek.sunday,
