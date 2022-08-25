@@ -160,12 +160,12 @@ class AuthProvider extends ChangeNotifier {
       try {
         await UserApi.instance.unlink();
         print('로그아웃 성공, SDK에서 토큰 삭제');
-        sharedPreferences.remove('accessToken');
-        sharedPreferences.remove('refreshToken');
       } catch (error) {
         print('로그아웃 실패 $error');
       }
     }
+    sharedPreferences.remove('accessToken');
+    sharedPreferences.remove('refreshToken');
   }
 
   Future<void> getLastLoginMethod() async {

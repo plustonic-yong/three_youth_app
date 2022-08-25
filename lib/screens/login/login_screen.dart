@@ -76,71 +76,72 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     //애플 로그인
                     isIos
-                        ? Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          // const SignupAgreementScreen(),
-                                          const MainScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width: width * 0.48,
-                                  height: height * 0.05,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12.0),
-                                  decoration: BoxDecoration(
-                                    color: lastLoginMethod == 'apple'
-                                        ? ColorAssets.unselectedBottombar
-                                        : Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0xff00000026)
-                                            .withOpacity(0.15),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: const Offset(
-                                          6,
-                                          8,
-                                        ), // changes position of shadow
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.circular(width * 0.048),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        'assets/icons/apple.png',
-                                        width: width * 0.05,
-                                      ),
-                                      SizedBox(width: width * 0.048),
-                                      const Text(
-                                        '애플 로그인',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              lastLoginMethod == 'apple'
-                                  ? const Text(
-                                      '마지막으로 접속한 계정입니다.',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : Container(),
-                            ],
-                          )
+                        ? Container()
+                        // Column(
+                        //     children: [
+                        //       GestureDetector(
+                        //         onTap: () {
+                        //           Navigator.push(
+                        //             context,
+                        //             MaterialPageRoute(
+                        //               builder: (context) =>
+                        //                   // const SignupAgreementScreen(),
+                        //                   const MainScreen(),
+                        //             ),
+                        //           );
+                        //         },
+                        //         child: Container(
+                        //           width: width * 0.48,
+                        //           height: height * 0.05,
+                        //           padding: const EdgeInsets.symmetric(
+                        //               horizontal: 12.0),
+                        //           decoration: BoxDecoration(
+                        //             color: lastLoginMethod == 'apple'
+                        //                 ? ColorAssets.unselectedBottombar
+                        //                 : Colors.white,
+                        //             boxShadow: [
+                        //               BoxShadow(
+                        //                 color: const Color(0xff00000026)
+                        //                     .withOpacity(0.15),
+                        //                 spreadRadius: 5,
+                        //                 blurRadius: 7,
+                        //                 offset: const Offset(
+                        //                   6,
+                        //                   8,
+                        //                 ), // changes position of shadow
+                        //               ),
+                        //             ],
+                        //             borderRadius:
+                        //                 BorderRadius.circular(width * 0.048),
+                        //           ),
+                        //           child: Row(
+                        //             children: [
+                        //               Image.asset(
+                        //                 'assets/icons/apple.png',
+                        //                 width: width * 0.05,
+                        //               ),
+                        //               SizedBox(width: width * 0.048),
+                        //               const Text(
+                        //                 '애플 로그인',
+                        //                 style: TextStyle(
+                        //                   color: Colors.black,
+                        //                   fontSize: 16.0,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       lastLoginMethod == 'apple'
+                        //           ? const Text(
+                        //               '마지막으로 접속한 계정입니다.',
+                        //               style: TextStyle(
+                        //                 color: Colors.white,
+                        //               ),
+                        //             )
+                        //           : Container(),
+                        //     ],
+                        //   )
                         :
                         //구글 로그인
                         Column(
@@ -368,62 +369,62 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: height * 0.02),
                     //네이버 로그인
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () => Navigator.of(context).pushNamed('/main'),
-                          child: Container(
-                            width: width * 0.48,
-                            height: height * 0.05,
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            decoration: BoxDecoration(
-                              color: lastLoginMethod == 'naver'
-                                  ? ColorAssets.unselectedBottombar
-                                  : Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xff00000026)
-                                      .withOpacity(0.15),
-                                  spreadRadius: 5.0,
-                                  blurRadius: 7.0,
-                                  offset: const Offset(
-                                    6,
-                                    8,
-                                  ), // changes position of shadow
-                                ),
-                              ],
-                              borderRadius:
-                                  BorderRadius.circular(width * 0.048),
-                            ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  'assets/icons/naver.png',
-                                  width: width * 0.04,
-                                ),
-                                SizedBox(width: width * 0.048),
-                                const Text(
-                                  '네이버 로그인',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        lastLoginMethod == 'naver'
-                            ? const Text(
-                                '마지막으로 접속한 계정입니다.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Container(),
-                      ],
-                    ),
+                    // Column(
+                    //   children: [
+                    //     GestureDetector(
+                    //       onTap: () => Navigator.of(context).pushNamed('/main'),
+                    //       child: Container(
+                    //         width: width * 0.48,
+                    //         height: height * 0.05,
+                    //         padding:
+                    //             const EdgeInsets.symmetric(horizontal: 12.0),
+                    //         decoration: BoxDecoration(
+                    //           color: lastLoginMethod == 'naver'
+                    //               ? ColorAssets.unselectedBottombar
+                    //               : Colors.white,
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color: const Color(0xff00000026)
+                    //                   .withOpacity(0.15),
+                    //               spreadRadius: 5.0,
+                    //               blurRadius: 7.0,
+                    //               offset: const Offset(
+                    //                 6,
+                    //                 8,
+                    //               ), // changes position of shadow
+                    //             ),
+                    //           ],
+                    //           borderRadius:
+                    //               BorderRadius.circular(width * 0.048),
+                    //         ),
+                    //         child: Row(
+                    //           children: [
+                    //             Image.asset(
+                    //               'assets/icons/naver.png',
+                    //               width: width * 0.04,
+                    //             ),
+                    //             SizedBox(width: width * 0.048),
+                    //             const Text(
+                    //               '네이버 로그인',
+                    //               style: TextStyle(
+                    //                 color: Colors.black,
+                    //                 fontSize: 16.0,
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     lastLoginMethod == 'naver'
+                    //         ? const Text(
+                    //             '마지막으로 접속한 계정입니다.',
+                    //             style: TextStyle(
+                    //               color: Colors.white,
+                    //             ),
+                    //           )
+                    //         : Container(),
+                    //   ],
+                    // ),
                     SizedBox(height: height * 0.02),
                     const Spacer(),
                     Text(
