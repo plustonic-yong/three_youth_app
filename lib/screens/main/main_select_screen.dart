@@ -23,7 +23,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   late final double _screenHeight;
   // ignore: unused_field
   late final double _screenWidth;
-  bool _isSphyFairing = false;
+  // bool _isSphyFairing = false;
+  bool _isPaired = false;
 
   TDataSet dsTagList = TDataSet();
 
@@ -34,7 +35,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
       setState(() {
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
-        _isSphyFairing = prefs.getBool('isSphyFairing') ?? false;
+        // _isSphyFairing = prefs.getBool('isSphyFairing') ?? false;
         isLoading = false;
       });
     });
@@ -54,6 +55,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _isPaired = context.watch<BleBpProvider>().isPaired;
     return isLoading
         ? spinkit
         : SafeArea(
@@ -305,7 +307,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                   );
                                 },
                               ),
-                              _isSphyFairing
+                              _isPaired
                                   ? CommonButton(
                                       width: 135.0,
                                       height: 40.0,
