@@ -94,6 +94,11 @@ class BleBpProvider extends ChangeNotifier {
   List<double> _lDataPUL = [0];
   List<double> get lDataPUL => _lDataPUL;
 
+  void onInitCurrentPage() {
+    _currentPage = 0;
+    notifyListeners();
+  }
+
   void onChangeCurrentPage({required int page}) {
     _currentPage = page;
     notifyListeners();
@@ -117,7 +122,6 @@ class BleBpProvider extends ChangeNotifier {
     int statusCode = response!.statusCode;
     if (statusCode == 401) {
       var refreshToken = pref.getString('refreshToken');
-      print('refreshToken: $refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       await ApiBp.postBloodPressureService(
         sys: sys,

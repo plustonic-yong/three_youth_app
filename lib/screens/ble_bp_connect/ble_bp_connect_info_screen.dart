@@ -1,17 +1,32 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
+import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_pairing_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
 
-class BleBpConnectInfoScreen extends StatelessWidget {
+class BleBpConnectInfoScreen extends StatefulWidget {
   const BleBpConnectInfoScreen({Key? key}) : super(key: key);
+
+  @override
+  State<BleBpConnectInfoScreen> createState() => _BleBpConnectInfoScreenState();
+}
+
+class _BleBpConnectInfoScreenState extends State<BleBpConnectInfoScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    context.read<BleBpProvider>().onInitCurrentPage();
+  }
 
   @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
     int _currentPage = context.watch<BleBpProvider>().currentPage;
+
     PageController _pageController = PageController();
 
     return Stack(
@@ -109,15 +124,12 @@ class BleBpConnectInfoScreen extends StatelessWidget {
                                   title: '혈압계찾기',
                                   buttonColor: ButtonColor.primary,
                                   onTap: () {
-                                    _pageController.nextPage(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeIn,
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BleBpConnectPairingScreen(),
+                                      ),
                                     );
-                                    context
-                                        .read<BleBpProvider>()
-                                        .onChangeCurrentPage(
-                                            page: _currentPage);
                                   },
                                 )
                               : CommonButton(
