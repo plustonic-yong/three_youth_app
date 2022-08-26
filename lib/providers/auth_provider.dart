@@ -14,6 +14,28 @@ class AuthProvider extends ChangeNotifier {
   String? _lastLoginMethod = '';
   String? get lastLoginMethod => _lastLoginMethod;
 
+  Future<void> signupGoogle({
+    required String name,
+    required DateTime birth,
+    required GenderState gender,
+    required String height,
+    required String weight,
+  }) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    log('google acc: ${googleAuth?.accessToken}');
+  }
+
   Future<LoginStatus> loginGoogle() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     // sharedPreferences.remove('accessToken');

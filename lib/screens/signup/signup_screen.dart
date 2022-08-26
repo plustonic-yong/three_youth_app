@@ -2,10 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/signup/signup_birth_gender_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_name_screen.dart';
-import 'package:three_youth_app/screens/signup/signup_tall_screen.dart';
+import 'package:three_youth_app/screens/signup/signup_height_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_weight_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
@@ -21,12 +22,12 @@ class _SignupScreenScreenState extends State<SignupScreen> {
   final _pageController = PageController();
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double _screenHeight = MediaQuery.of(context).size.height;
     int _currentPage = context.watch<SignupProvider>().currentPage;
     String _name = context.watch<SignupProvider>().nameController.text;
-    String _tall = context.watch<SignupProvider>().tallController.text;
+    String _height = context.watch<SignupProvider>().heightController.text;
     String _weight = context.watch<SignupProvider>().weightController.text;
+    GenderState _gender = context.read<SignupProvider>().gender;
     DateTime _birth = context.watch<SignupProvider>().birth;
     return GestureDetector(
       onTap: () {
@@ -57,7 +58,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                         .onChangeCurrentPage(page: page),
                     children: const [
                       SignupNameScreen(),
-                      SignupTallScreen(),
+                      SignupHeightScreen(),
                       SignupWeightScreen(),
                       SignupBirthGenderScreen(),
                     ],
@@ -74,7 +75,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: height * 0.05),
+                SizedBox(height: _screenHeight * 0.05),
                 _currentPage == 0
                     //첫페이지 다음버튼
                     ? CommonButton(
@@ -120,7 +121,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             height: 50.0,
                             title: _currentPage == 3 ? '회원가입' : '다음',
                             buttonColor: _currentPage == 1
-                                ? _tall != ''
+                                ? _height != ''
                                     ? ButtonColor.primary
                                     : ButtonColor.inactive
                                 : _currentPage == 2
@@ -131,7 +132,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                         ? ButtonColor.primary
                                         : ButtonColor.inactive,
                             onTap: () {
-                              if (_currentPage == 1 && _tall == '') {
+                              if (_currentPage == 1 && _height == '') {
                                 return;
                               }
                               if (_currentPage == 2 && _weight == '') {
@@ -139,18 +140,40 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               }
                               if (_currentPage == 3) {
                                 if (_birth != '') {
-                                  var name =
-                                      context.read<SignupProvider>().name;
-                                  var tall =
-                                      context.read<SignupProvider>().tall;
-                                  var weight =
-                                      context.read<SignupProvider>().weight;
-                                  var birth =
-                                      context.read<SignupProvider>().birth;
+                                  // var name =
+                                  //     context.read<SignupProvider>().name;
+                                  // var height =
+                                  //     context.read<SignupProvider>().height;
+                                  // var weight =
+                                  //     context.read<SignupProvider>().weight;
+                                  // var birth =
+                                  //     context.read<SignupProvider>().birth;
 
-                                  var gender =
-                                      context.read<SignupProvider>().gender;
-                                  log('$name,$tall,$weight,$birth,$gender}');
+                                  var signupState = context
+                                      .read<SignupProvider>()
+                                      .signupState;
+                                  log('$signupState');
+                                  log(
+                                    '$_name, $_birth, $_gender, $_height, $_weight',
+                                  );
+                                  if (signupState == SignupState.google) {
+                                    context.read<AuthProvider>().signupGoogle(
+                                          name: _name,
+                                          birth: _birth,
+                                          gender: _gender,
+                                          height: _height,
+                                          weight: _weight,
+                                        );
+                                  } else if (signupState == SignupState.kakao) {
+                                    // context.read<AuthProvider>().signupKakao(
+                                    //       token: token,
+                                    //       name: _name,
+                                    //       birth: _birth,
+                                    //       gender: _gender,
+                                    //       height: _height,
+                                    //       weight: _weight,
+                                    //     );
+                                  }
                                 } else {
                                   return;
                                 }
@@ -168,7 +191,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                           ),
                         ],
                       ),
-                SizedBox(height: height * 0.045),
+                SizedBox(height: _screenHeight * 0.045),
               ],
             ),
           ],

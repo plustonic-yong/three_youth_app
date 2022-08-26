@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_birth_input_form.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_id_input_form.dart';
-import 'package:three_youth_app/screens/profile_setting/components/profile_setting_tall_input_form.dart';
+import 'package:three_youth_app/screens/profile_setting/components/profile_setting_height_input_form.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_weight_input_form.dart';
 import 'package:three_youth_app/screens/profile_setting/personal_info_policy_screen.dart';
 import 'package:three_youth_app/screens/profile_setting/use_of_terms_screen.dart';
@@ -68,7 +68,7 @@ class ProfileSettingScreen extends StatelessWidget {
               const ProfileSettingBirthInputForm(),
               const SizedBox(height: 20.0),
               //키
-              const ProfileSettingTallInputForm(),
+              const ProfileSettingHeightInputForm(),
               const SizedBox(height: 20.0),
               //몸무게
               const ProfileSettingWeightInputForm(),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
+import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/main/main_screen.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -174,11 +175,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                               ),
                                               const SizedBox(width: 10.0),
                                               GestureDetector(
-                                                onTap: () =>
-                                                    Navigator.of(context)
-                                                        .pushNamed(
-                                                  '/signup/agreement',
-                                                ),
+                                                onTap: () {
+                                                  context
+                                                      .read<SignupProvider>()
+                                                      .onChangeSignupState(
+                                                        value:
+                                                            SignupState.google,
+                                                      );
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                    '/signup/agreement',
+                                                  );
+                                                },
                                                 child: const Text(
                                                   '확인',
                                                   style:
@@ -282,8 +290,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                         const SizedBox(width: 10.0),
                                         GestureDetector(
-                                          onTap: () => Navigator.of(context)
-                                              .pushNamed('/signup/agreement'),
+                                          onTap: () {
+                                            context
+                                                .read<SignupProvider>()
+                                                .onChangeSignupState(
+                                                  value: SignupState.kakao,
+                                                );
+                                            Navigator.of(context)
+                                                .pushNamed('/signup/agreement');
+                                          },
                                           child: const Text(
                                             '확인',
                                             style: TextStyle(fontSize: 23.0),

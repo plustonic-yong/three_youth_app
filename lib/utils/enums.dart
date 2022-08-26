@@ -19,6 +19,13 @@ enum LoginStatus {
   noAccount,
 }
 
+enum SignupState {
+  apple,
+  google,
+  kakao,
+  naver,
+}
+
 enum SignupStatus {
   success,
   duplicatedEmailApple,

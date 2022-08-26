@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:provider/provider.dart';
 
-class SignupTallScreen extends StatelessWidget {
-  const SignupTallScreen({Key? key}) : super(key: key);
+class SignupHeightScreen extends StatelessWidget {
+  const SignupHeightScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +24,23 @@ class SignupTallScreen extends StatelessWidget {
         ),
         SizedBox(height: height * 0.06),
         const SizedBox(height: 30.0),
-        _tallInput(context: context, width: width, height: height)
+        _heightInput(context: context, width: width, height: height)
       ],
     );
   }
 
-  Widget _tallInput({
+  Widget _heightInput({
     required BuildContext context,
     required double width,
     required double height,
   }) {
-    TextEditingController _tallController =
-        context.watch<SignupProvider>().tallController;
+    TextEditingController _heightController =
+        context.watch<SignupProvider>().heightController;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: width * 0.1),
       child: TextField(
-        controller: _tallController,
+        controller: _heightController,
         enableInteractiveSelection: false,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
@@ -62,7 +62,7 @@ class SignupTallScreen extends StatelessWidget {
           ),
         ),
         onChanged: (value) =>
-            context.read<SignupProvider>().onChangeTall(value: value),
+            context.read<SignupProvider>().onChangeHeight(value: value),
       ),
     );
   }

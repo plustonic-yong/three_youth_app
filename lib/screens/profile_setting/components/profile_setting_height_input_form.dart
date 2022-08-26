@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-class ProfileSettingTallInputForm extends StatelessWidget {
-  const ProfileSettingTallInputForm({Key? key}) : super(key: key);
+class ProfileSettingHeightInputForm extends StatelessWidget {
+  const ProfileSettingHeightInputForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class ProfileSettingTallInputForm extends StatelessWidget {
               ),
             ),
             onChanged: (value) =>
-                context.read<UserProvider>().onChangeTall(value: value),
+                context.read<UserProvider>().onChangeHeight(value: value),
           ),
         ),
         const Text(

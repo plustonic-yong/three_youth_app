@@ -4,12 +4,16 @@ import 'package:three_youth_app/utils/enums.dart';
 class SignupProvider extends ChangeNotifier {
   int _currentPage = 0;
   int get currentPage => _currentPage;
+
+  SignupState _signupState = SignupState.kakao;
+  SignupState get signupState => _signupState;
+
   GenderState _gender = GenderState.woman;
   GenderState get gender => _gender;
   String _name = '';
   String get name => _name;
-  String _tall = '';
-  String get tall => _tall;
+  String _height = '';
+  String get height => _height;
   String _weight = '';
   String get weight => _weight;
   DateTime _birth = DateTime.now();
@@ -18,8 +22,8 @@ class SignupProvider extends ChangeNotifier {
   TextEditingController _nameController = TextEditingController();
   TextEditingController get nameController => _nameController;
 
-  TextEditingController _tallController = TextEditingController();
-  TextEditingController get tallController => _tallController;
+  TextEditingController _heightController = TextEditingController();
+  TextEditingController get heightController => _heightController;
 
   TextEditingController _weightController = TextEditingController();
   TextEditingController get weightController => _weightController;
@@ -43,8 +47,8 @@ class SignupProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onChangeTall({required String value}) {
-    _tall = value;
+  void onChangeHeight({required String value}) {
+    _height = value;
 
     notifyListeners();
   }
@@ -79,6 +83,11 @@ class SignupProvider extends ChangeNotifier {
 
   void onChangeGender({required GenderState genderState}) {
     _gender = genderState;
+    notifyListeners();
+  }
+
+  void onChangeSignupState({required SignupState value}) {
+    _signupState = value;
     notifyListeners();
   }
 }

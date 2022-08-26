@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/signup_agreement_provider.dart';
-import 'package:three_youth_app/screens/signup/signup_screen.dart';
 import 'package:three_youth_app/widget/agreement/personal_info_policy.dart';
 import 'package:three_youth_app/widget/agreement/use_of_terms.dart';
 
@@ -180,8 +179,12 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
                           });
                         } else {
                           if (!_isTermsAgreeChecked) return;
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const SignupScreen()));
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const SignupScreen(),
+                          //   ),
+                          // );
+                          Navigator.of(context).pushNamed('/signup');
                         }
                       },
                       child: Container(

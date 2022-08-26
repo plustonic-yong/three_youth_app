@@ -8,8 +8,8 @@ class UserProvider extends ChangeNotifier {
   GenderState get gender => _gender;
   String _name = '';
   String get name => _name;
-  String _tall = '';
-  String get tall => _tall;
+  String _height = '';
+  String get height => _height;
   String _weight = '';
   String get weight => _weight;
   String _year = '';
@@ -19,8 +19,8 @@ class UserProvider extends ChangeNotifier {
   String _day = '';
   String get day => _day;
 
-  void onChangeTall({required String value}) {
-    _tall = value;
+  void onChangeHeight({required String value}) {
+    _height = value;
     notifyListeners();
   }
 
