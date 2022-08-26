@@ -25,7 +25,7 @@ class ApiAuth {
     }
   }
 
-  static Future<void> signupGoogleService({
+  static Future<Response?> signupGoogleService({
     required String token,
     required String name,
     required String birth,
@@ -47,12 +47,10 @@ class ApiAuth {
           "height": height,
           "weight": weight,
         }),
+        headers: _getHeader(),
       );
       final data = json.decode(utf8.decode(response.bodyBytes));
-
-      // if (response.statusCode == 200) {
-      //   AccountManager().accessToken = data['Authorization'];
-      // }
+      return data;
     } catch (e) {
       print(e);
     }

@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
-import 'package:three_youth_app/screens/main/main_screen.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
 

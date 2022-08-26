@@ -131,7 +131,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                     : _birth != ''
                                         ? ButtonColor.primary
                                         : ButtonColor.inactive,
-                            onTap: () {
+                            onTap: () async {
                               if (_currentPage == 1 && _height == '') {
                                 return;
                               }
@@ -139,43 +139,50 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 return;
                               }
                               if (_currentPage == 3) {
-                                if (_birth != '') {
-                                  // var name =
-                                  //     context.read<SignupProvider>().name;
-                                  // var height =
-                                  //     context.read<SignupProvider>().height;
-                                  // var weight =
-                                  //     context.read<SignupProvider>().weight;
-                                  // var birth =
-                                  //     context.read<SignupProvider>().birth;
-
-                                  var signupState = context
-                                      .read<SignupProvider>()
-                                      .signupState;
-                                  log('$signupState');
-                                  log(
-                                    '$_name, $_birth, $_gender, $_height, $_weight',
-                                  );
-                                  if (signupState == SignupState.google) {
-                                    context.read<AuthProvider>().signupGoogle(
-                                          name: _name,
-                                          birth: _birth,
-                                          gender: _gender,
-                                          height: _height,
-                                          weight: _weight,
+                                var signupState =
+                                    context.read<SignupProvider>().signupState;
+                                if (signupState == SignupState.google) {
+                                  var result = await context
+                                      .read<AuthProvider>()
+                                      .signupGoogle(
+                                        name: _name,
+                                        birth: _birth,
+                                        gender: _gender,
+                                        height: _height,
+                                        weight: _weight,
+                                      );
+                                  if (result == SignupStatus.success) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: const Text('회원가입이 완료되었습니다.'),
+                                          actions: [
+                                            GestureDetector(
+                                              onTap: () => Navigator.of(context)
+                                                  .pushNamedAndRemoveUntil(
+                                                      '/main',
+                                                      (route) => false),
+                                              child: const Text(
+                                                '확인',
+                                                style:
+                                                    TextStyle(fontSize: 18.0),
+                                              ),
+                                            ),
+                                          ],
                                         );
-                                  } else if (signupState == SignupState.kakao) {
-                                    // context.read<AuthProvider>().signupKakao(
-                                    //       token: token,
-                                    //       name: _name,
-                                    //       birth: _birth,
-                                    //       gender: _gender,
-                                    //       height: _height,
-                                    //       weight: _weight,
-                                    //     );
+                                      },
+                                    );
                                   }
-                                } else {
-                                  return;
+                                } else if (signupState == SignupState.kakao) {
+                                  // context.read<AuthProvider>().signupKakao(
+                                  //       token: token,
+                                  //       name: _name,
+                                  //       birth: _birth,
+                                  //       gender: _gender,
+                                  //       height: _height,
+                                  //       weight: _weight,
+                                  //     );
                                 }
                               }
                               setState(() {

@@ -14,7 +14,7 @@ class AuthProvider extends ChangeNotifier {
   String? _lastLoginMethod = '';
   String? get lastLoginMethod => _lastLoginMethod;
 
-  Future<void> signupGoogle({
+  Future<SignupStatus> signupGoogle({
     required String name,
     required DateTime birth,
     required GenderState gender,
@@ -22,18 +22,25 @@ class AuthProvider extends ChangeNotifier {
     required String weight,
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
-
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+    String? idToken = sharedPreferences.getString('idToken');
+    String genderStr = gender == GenderState.man ? "W" : "W";
+    var response = await ApiAuth.signupGoogleService(
+      token: idToken!,
+      name: name,
+      birth: birth.toString(),
+      gender: genderStr,
+      height: int.parse(height),
+      weight: int.parse(weight),
     );
-    log('google acc: ${googleAuth?.accessToken}');
+    if (response!.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      String accessToken = data['accessToken'] ?? '';
+      String refreshToken = data['refreshToken'] ?? '';
+      sharedPreferences.setString('accessToken', accessToken);
+      sharedPreferences.setString('refreshToken', refreshToken);
+      return SignupStatus.success;
+    }
+    return SignupStatus.error;
   }
 
   Future<LoginStatus> loginGoogle() async {
@@ -48,10 +55,6 @@ class AuthProvider extends ChangeNotifier {
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
     // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
 
     var response =
         await ApiAuth.loginGoogleService(token: '${googleAuth?.idToken}');
@@ -62,6 +65,11 @@ class AuthProvider extends ChangeNotifier {
       String accessToken = data['accessToken'] ?? '';
       String refreshToken = data['refreshToken'] ?? '';
       if (accessToken == '') {
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+        sharedPreferences.setString('idToken', '${googleAuth?.idToken}');
         return LoginStatus.noAccount;
       }
       sharedPreferences.setString('accessToken', accessToken);
