@@ -56,7 +56,7 @@ class BleBpScanMeasurementScanning extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Text('\n'),
+                  const SizedBox(height: 10.0),
                   Row(
                     children: const [
                       Text('・'),
@@ -68,7 +68,7 @@ class BleBpScanMeasurementScanning extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Text('\n'),
+                  const SizedBox(height: 10.0),
                   Row(
                     children: const [
                       Text('・'),
@@ -80,7 +80,7 @@ class BleBpScanMeasurementScanning extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Text('\n'),
+                  const SizedBox(height: 10.0),
                   Row(
                     children: const [
                       Text('・'),
@@ -92,7 +92,7 @@ class BleBpScanMeasurementScanning extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Text('\n'),
+                  const SizedBox(height: 10.0),
                   Row(
                     children: const [
                       Text('・'),
