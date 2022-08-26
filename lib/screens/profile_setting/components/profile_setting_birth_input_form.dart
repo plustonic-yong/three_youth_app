@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:three_youth_app/providers/signup_provider.dart';
 
 class ProfileSettingBirthInputForm extends StatelessWidget {
   const ProfileSettingBirthInputForm({Key? key}) : super(key: key);
@@ -39,8 +37,8 @@ class ProfileSettingBirthInputForm extends StatelessWidget {
                     borderSide: const BorderSide(color: Colors.white),
                   ),
                 ),
-                onChanged: (value) =>
-                    context.read<SignupProvider>().onChangeYear(value: value),
+                // onChanged: (value) =>
+                //     context.read<SignupProvider>().onChangeYear(value: value),
               ),
             ),
             const SizedBox(width: 10.0),
@@ -82,8 +80,8 @@ class ProfileSettingBirthInputForm extends StatelessWidget {
                     borderSide: const BorderSide(color: Colors.white),
                   ),
                 ),
-                onChanged: (value) =>
-                    context.read<SignupProvider>().onChangeMonth(value: value),
+                // onChanged: (value) =>
+                //     context.read<SignupProvider>().onChangeMonth(value: value),
               ),
             ),
             const SizedBox(width: 10.0),
@@ -125,8 +123,8 @@ class ProfileSettingBirthInputForm extends StatelessWidget {
                     borderSide: const BorderSide(color: Colors.white),
                   ),
                 ),
-                onChanged: (value) =>
-                    context.read<SignupProvider>().onChangeDay(value: value),
+                // onChanged: (value) =>
+                //     context.read<SignupProvider>().onChangeDay(value: value),
               ),
             ),
             const SizedBox(width: 10.0),

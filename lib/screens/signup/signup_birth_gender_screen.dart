@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -23,6 +27,9 @@ class SignupBirthGenderScreen extends StatelessWidget {
     //성별
     GenderState _gender = context.watch<SignupProvider>().gender;
 
+    //생일
+    DateTime _birth = context.watch<SignupProvider>().birth;
+
     return Column(
       children: [
         SizedBox(height: height * 0.12),
@@ -36,134 +43,52 @@ class SignupBirthGenderScreen extends StatelessWidget {
           '생년월일과 성별을 입력해주세요.',
           style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
-        SizedBox(height: height * 0.06),
-        const SizedBox(height: 30.0),
+        // SizedBox(height: height * 0.06),
+        const SizedBox(height: 40.0),
         Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //년도
-                SizedBox(
-                  width: width * 0.2,
-                  height: height * 0.045,
-                  child: TextField(
-                    controller: _yearController,
-                    enableInteractiveSelection: false,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    maxLength: 4,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      hintText: '년도',
-                      hintStyle: const TextStyle(color: Colors.white),
-                      counterText: '',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                        borderSide:
-                            const BorderSide(color: Colors.white, width: 1.5),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                        borderSide: const BorderSide(color: Colors.white),
-                      ),
+            GestureDetector(
+              onTap: () {
+                log('pick');
+                showModalBottomSheet(
+                    context: context,
+                    enableDrag: false,
+                    builder: (context) {
+                      return SizedBox(
+                        height: 200.0,
+                        child: ScrollDatePicker(
+                          locale: const Locale('ko'),
+                          selectedDate: _birth,
+                          onDateTimeChanged: (value) async {
+                            context
+                                .read<SignupProvider>()
+                                .onChangeBirth(value: value);
+                          },
+                        ),
+                      );
+                    });
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50.0,
+                  vertical: 10.0,
+                ),
+                decoration: BoxDecoration(
+                    color: const Color(0xff00000033).withOpacity(0.25),
+                    border: Border.all(
+                      width: 1.0,
+                      color: Colors.white,
                     ),
-                    onChanged: (value) => context
-                        .read<SignupProvider>()
-                        .onChangeYear(value: value),
-                  ),
-                ),
-                SizedBox(width: width * 0.02),
-                const Text(
-                  '년',
-                  style: TextStyle(
+                    borderRadius: BorderRadius.circular(30.0)),
+                child: Text(
+                  DateFormat('yyyy년 MM월 dd일').format(_birth),
+                  style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 20.0,
+                    fontSize: 23.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: width * 0.06),
-                //월
-                SizedBox(
-                  width: width * 0.15,
-                  height: height * 0.045,
-                  child: TextField(
-                    controller: _monthController,
-                    enableInteractiveSelection: false,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    maxLength: 2,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: '월',
-                      hintStyle: const TextStyle(color: Colors.white),
-                      contentPadding: EdgeInsets.zero,
-                      counterText: '',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                        borderSide:
-                            const BorderSide(color: Colors.white, width: 1.5),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                        borderSide: const BorderSide(color: Colors.white),
-                      ),
-                    ),
-                    onChanged: (value) => context
-                        .read<SignupProvider>()
-                        .onChangeMonth(value: value),
-                  ),
-                ),
-                SizedBox(width: width * 0.02),
-                const Text(
-                  '월',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
-                SizedBox(width: width * 0.06),
-                //일
-                SizedBox(
-                  width: width * 0.15,
-                  height: height * 0.045,
-                  child: TextField(
-                    controller: _dayController,
-                    enableInteractiveSelection: false,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    maxLength: 2,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: '일',
-                      hintStyle: const TextStyle(color: Colors.white),
-                      contentPadding: EdgeInsets.zero,
-                      counterText: '',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                        borderSide:
-                            const BorderSide(color: Colors.white, width: 1.5),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                        borderSide: const BorderSide(color: Colors.white),
-                      ),
-                    ),
-                    onChanged: (value) => context
-                        .read<SignupProvider>()
-                        .onChangeDay(value: value),
-                  ),
-                ),
-                SizedBox(width: width * 0.02),
-                const Text(
-                  '일',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
-                SizedBox(width: width * 0.06),
-              ],
+              ),
             ),
             SizedBox(height: height * 0.05),
             //성별

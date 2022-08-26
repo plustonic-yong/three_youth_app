@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
@@ -25,9 +27,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
     String _name = context.watch<SignupProvider>().nameController.text;
     String _tall = context.watch<SignupProvider>().tallController.text;
     String _weight = context.watch<SignupProvider>().weightController.text;
-    String _year = context.watch<SignupProvider>().yearController.text;
-    String _month = context.watch<SignupProvider>().monthController.text;
-    String _day = context.watch<SignupProvider>().dayController.text;
+    DateTime _birth = context.watch<SignupProvider>().birth;
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -127,7 +127,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                     ? _weight != ''
                                         ? ButtonColor.primary
                                         : ButtonColor.inactive
-                                    : _year != '' && _month != '' && _day != ''
+                                    : _birth != ''
                                         ? ButtonColor.primary
                                         : ButtonColor.inactive,
                             onTap: () {
@@ -138,23 +138,19 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 return;
                               }
                               if (_currentPage == 3) {
-                                if (_year != '' && _month != '' && _day != '') {
+                                if (_birth != '') {
                                   var name =
                                       context.read<SignupProvider>().name;
                                   var tall =
                                       context.read<SignupProvider>().tall;
                                   var weight =
                                       context.read<SignupProvider>().weight;
-                                  var year =
-                                      context.read<SignupProvider>().year;
-                                  var month =
-                                      context.read<SignupProvider>().month;
-                                  var day = context.read<SignupProvider>().day;
+                                  var birth =
+                                      context.read<SignupProvider>().birth;
+
                                   var gender =
                                       context.read<SignupProvider>().gender;
-                                  print(
-                                      '$name,$tall,$weight,$year,$month,$day,$gender}');
-                                  // Navigator.of(context).pushNamed('/main');
+                                  log('$name,$tall,$weight,$birth,$gender}');
                                 } else {
                                   return;
                                 }

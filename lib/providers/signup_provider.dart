@@ -12,12 +12,8 @@ class SignupProvider extends ChangeNotifier {
   String get tall => _tall;
   String _weight = '';
   String get weight => _weight;
-  String _year = '';
-  String get year => _year;
-  String _month = '';
-  String get month => _month;
-  String _day = '';
-  String get day => _day;
+  DateTime _birth = DateTime.now();
+  DateTime get birth => _birth;
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController get nameController => _nameController;
@@ -59,18 +55,25 @@ class SignupProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onChangeYear({required String value}) {
-    _year = value;
-    notifyListeners();
-  }
+  // void onChangeYear({required String value}) {
+  //   _year = value;
+  //   notifyListeners();
+  // }
 
-  void onChangeMonth({required String value}) {
-    _month = value;
-    notifyListeners();
-  }
+  // void onChangeMonth({required String value}) {
+  //   _month = value;
+  //   notifyListeners();
+  // }
 
-  void onChangeDay({required String value}) {
-    _day = value;
+  // void onChangeDay({required String value}) {
+  //   _day = value;
+  //   notifyListeners();
+  // }
+
+  void onChangeBirth({required DateTime value}) {
+    // var _formatBirth = DateFormat('yyyy-MM-dd').format(value);
+    // _birth = _formatBirth;
+    _birth = value;
     notifyListeners();
   }
 
