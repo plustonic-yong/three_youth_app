@@ -43,7 +43,7 @@ class ProfileSettingWeightInputForm extends StatelessWidget {
           ),
         ),
         const Text(
-          'cm',
+          'kg',
           style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
       ],

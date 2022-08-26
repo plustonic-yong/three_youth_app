@@ -112,7 +112,7 @@ Widget bpRecordCard({
                         ),
                         const SizedBox(width: 5.0),
                         const Text(
-                          'bpm',
+                          'mmHg',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20.0,

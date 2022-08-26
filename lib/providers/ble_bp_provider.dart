@@ -101,6 +101,10 @@ class BleBpProvider extends ChangeNotifier {
   List<Bp>? _bpHistories = [];
   List<Bp>? get bpHistories => _bpHistories;
 
+  //마지막 혈압계 데이터
+  Bp? _lastBpHistory;
+  Bp? get lastBpHistory => _lastBpHistory;
+
   void onInitCurrentPage() {
     _currentPage = 0;
     notifyListeners();
@@ -109,6 +113,27 @@ class BleBpProvider extends ChangeNotifier {
   void onChangeCurrentPage({required int page}) {
     _currentPage = page;
     notifyListeners();
+  }
+
+  Future<void> getLastBloodPressure() async {
+    var pref = await SharedPreferences.getInstance();
+    var response = await ApiBp.getBloodPressureService();
+
+    int statusCode = response!.statusCode;
+    if (statusCode == 401) {
+      var refreshToken = pref.getString('refreshToken');
+      await ApiAuth.getTokenService(refreshToken: refreshToken!);
+      response = await ApiBp.getBloodPressureService();
+    }
+    if (statusCode == 200) {
+      final data = json.decode(utf8.decode(response!.bodyBytes));
+      List<Bp> bpList =
+          (data as List).map((json) => Bp.fromJson(json)).toList();
+
+      bpList.sort((a, b) => a.measureDatetime.compareTo(b.measureDatetime));
+      _lastBpHistory = bpList.last;
+      notifyListeners();
+    }
   }
 
   Future<void> getBloodPressure(DateTime measureDatetime) async {
@@ -133,7 +158,8 @@ class BleBpProvider extends ChangeNotifier {
           filtedBpList.add(element);
         }
       });
-
+      filtedBpList
+          .sort((a, b) => b.measureDatetime.compareTo(a.measureDatetime));
       _bpHistories = filtedBpList;
       notifyListeners();
     }

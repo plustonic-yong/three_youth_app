@@ -21,6 +21,7 @@ class ApiBp {
         interceptors: [
           AuthInterceptor(),
         ],
+        retryPolicy: ExpiredTokenRetryPolicy(),
       );
       var response = await client.get(
         Uri.parse('${Constants.API_HOST}/bloodpressure'),

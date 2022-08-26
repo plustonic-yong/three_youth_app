@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class AuthProvider extends ChangeNotifier {
     );
 
     var response =
-        await ApiAuth.loginGoogleService(token: '${credential.idToken}');
+        await ApiAuth.loginGoogleService(token: '${googleAuth?.idToken}');
     int statusCode = response!.statusCode;
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));

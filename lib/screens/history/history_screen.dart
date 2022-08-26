@@ -34,6 +34,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         context.watch<HistoryProvider>().historyCalendarType;
 
     List<Bp>? _bpHistories = context.watch<BleBpProvider>().bpHistories;
+
     return SafeArea(
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -114,23 +115,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       child: Column(
                         children: [
                           Expanded(
-                            child: _bpHistories!.isNotEmpty
-                                ? ListView.builder(
-                                    itemCount: _bpHistories.length,
-                                    itemBuilder: (context, index) {
-                                      return bpRecordCard(
-                                        context: context,
-                                        measureDatetime:
-                                            _bpHistories[index].measureDatetime,
-                                        sys: _bpHistories[index].sys,
-                                        dia: _bpHistories[index].dia,
-                                        pul: _bpHistories[index].pul,
-                                      );
-                                    },
-                                  )
+                            child: _historyType == HistoryType.bp
+                                ? _bpHistories!.isNotEmpty
+                                    ? ListView.builder(
+                                        itemCount: _bpHistories.length,
+                                        itemBuilder: (context, index) {
+                                          return bpRecordCard(
+                                            context: context,
+                                            measureDatetime: _bpHistories[index]
+                                                .measureDatetime,
+                                            sys: _bpHistories[index].sys,
+                                            dia: _bpHistories[index].dia,
+                                            pul: _bpHistories[index].pul,
+                                          );
+                                        },
+                                      )
+                                    : const Center(
+                                        child: Text(
+                                          '혈압 측정 기록이 없습니다.',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 23.0,
+                                          ),
+                                        ),
+                                      )
                                 : const Center(
                                     child: Text(
-                                      '혈압 측정 기록이 없습니다.',
+                                      '심전도 측정 기록이 없습니다.',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 23.0,

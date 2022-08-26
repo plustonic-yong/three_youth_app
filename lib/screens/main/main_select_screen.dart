@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/models/bp.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/utils/utils.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,6 +32,9 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await context.read<BleBpProvider>().getLastBloodPressure();
+    });
     Future.delayed(Duration.zero, () async {
       var prefs = await SharedPreferences.getInstance();
       setState(() {
@@ -56,6 +61,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   @override
   Widget build(BuildContext context) {
     _isPaired = context.watch<BleBpProvider>().isPaired;
+    Bp? _lastBpHistory = context.watch<BleBpProvider>().lastBpHistory;
     return isLoading
         ? spinkit
         : SafeArea(
@@ -240,106 +246,124 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                       //   ),
                       // ],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20.0,
-                        horizontal: 30.0,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset(
-                                'assets/images/sphygmomanometer_1.png',
-                                fit: BoxFit.cover,
-                                height: 70.0,
-                              ),
-                              const SizedBox(width: 20.0),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    '7.15(화) 오후 7:21',
-                                    style: TextStyle(
-                                      color: Colors.white,
+                    child: _lastBpHistory != null
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 20.0,
+                              horizontal: 30.0,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/sphygmomanometer_1.png',
+                                      fit: BoxFit.cover,
+                                      height: 70.0,
                                     ),
-                                  ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: const [
-                                      Text(
-                                        '167/88',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 28.0,
-                                          fontWeight: FontWeight.bold,
+                                    const SizedBox(width: 20.0),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${Utils.formatDatetime(_lastBpHistory.measureDatetime).split(' ')[0]} ${Utils.formatDatetime(_lastBpHistory.measureDatetime).split(' ')[1]}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        'mmHg',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 25.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              CommonButton(
-                                width: 135.0,
-                                height: 40.0,
-                                title: '측정하기',
-                                buttonColor: _isPaired
-                                    ? ButtonColor.white
-                                    : ButtonColor.inactive,
-                                onTap: _isPaired
-                                    ? () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          '/scan',
-                                        );
-                                      }
-                                    : null,
-                              ),
-                              _isPaired
-                                  ? CommonButton(
-                                      width: 135.0,
-                                      height: 40.0,
-                                      title: '연동해제',
-                                      buttonColor: ButtonColor.orange,
-                                      onTap: () async {
-                                        await context
-                                            .read<BleBpProvider>()
-                                            .disConnectPairing();
-                                      },
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              '${_lastBpHistory.sys}/${_lastBpHistory.dia}',
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 28.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const Text(
+                                              'mmHg',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
                                     )
-                                  : CommonButton(
+                                  ],
+                                ),
+                                const SizedBox(height: 25.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    CommonButton(
                                       width: 135.0,
                                       height: 40.0,
-                                      title: '연동하기',
-                                      buttonColor: ButtonColor.primary,
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          '/connect',
-                                        );
-                                      },
+                                      title: '측정하기',
+                                      buttonColor: _isPaired
+                                          ? ButtonColor.white
+                                          : ButtonColor.inactive,
+                                      onTap: _isPaired
+                                          ? () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/scan',
+                                              );
+                                            }
+                                          : null,
                                     ),
-                            ],
+                                    _isPaired
+                                        ? CommonButton(
+                                            width: 135.0,
+                                            height: 40.0,
+                                            title: '연동해제',
+                                            buttonColor: ButtonColor.orange,
+                                            onTap: () async {
+                                              await context
+                                                  .read<BleBpProvider>()
+                                                  .disConnectPairing();
+                                            },
+                                          )
+                                        : CommonButton(
+                                            width: 135.0,
+                                            height: 40.0,
+                                            title: '연동하기',
+                                            buttonColor: ButtonColor.primary,
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/connect',
+                                              );
+                                            },
+                                          ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(
+                            height: 180.0,
+                            child: Center(
+                              child: Text(
+                                '혈압 데이터가 없습니다.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
                   ),
                   const SizedBox(height: 30.0),
                 ],
