@@ -32,6 +32,7 @@ import 'package:three_youth_app/screens/login/login_screen.dart';
 import 'package:three_youth_app/screens/main/main_screen.dart';
 import 'package:three_youth_app/screens/profile_setting/prev/profile_setting_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_screen.dart';
+import 'package:three_youth_app/screens/signup_agreement/signup_agreement_screen.dart';
 import 'package:three_youth_app/screens/sphygmomanometer_setting/sphygmomanometer_setting_screen.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -94,6 +95,7 @@ class MyApp extends StatelessWidget {
           '/sphygmomanometer': (context) =>
               const SphygmomanometerSettingScreen(),
           '/signup': (context) => const SignupScreen(),
+          '/signup/agreement': (context) => const SignupAgreementScreen(),
           '/findpwd': (context) => const FindPwd(),
         },
         theme: ThemeData(fontFamily: 'NotoSansCJKkr'),

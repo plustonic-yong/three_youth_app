@@ -176,7 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                               GestureDetector(
                                                 onTap: () =>
                                                     Navigator.of(context)
-                                                        .pushNamed('/signup'),
+                                                        .pushNamed(
+                                                  '/signup/agreement',
+                                                ),
                                                 child: const Text(
                                                   '확인',
                                                   style:
@@ -281,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         const SizedBox(width: 10.0),
                                         GestureDetector(
                                           onTap: () => Navigator.of(context)
-                                              .pushNamed('/signup'),
+                                              .pushNamed('/signup/agreement'),
                                           child: const Text(
                                             '확인',
                                             style: TextStyle(fontSize: 23.0),

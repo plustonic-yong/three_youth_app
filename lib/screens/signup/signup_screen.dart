@@ -51,7 +51,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                 Expanded(
                   child: PageView(
                     controller: _pageController,
-                    // physics: const NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     onPageChanged: (page) => context
                         .read<SignupProvider>()
                         .onChangeCurrentPage(page: page),
@@ -139,7 +139,22 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               }
                               if (_currentPage == 3) {
                                 if (_year != '' && _month != '' && _day != '') {
-                                  Navigator.of(context).pushNamed('/main');
+                                  var name =
+                                      context.read<SignupProvider>().name;
+                                  var tall =
+                                      context.read<SignupProvider>().tall;
+                                  var weight =
+                                      context.read<SignupProvider>().weight;
+                                  var year =
+                                      context.read<SignupProvider>().year;
+                                  var month =
+                                      context.read<SignupProvider>().month;
+                                  var day = context.read<SignupProvider>().day;
+                                  var gender =
+                                      context.read<SignupProvider>().gender;
+                                  print(
+                                      '$name,$tall,$weight,$year,$month,$day,$gender}');
+                                  // Navigator.of(context).pushNamed('/main');
                                 } else {
                                   return;
                                 }
