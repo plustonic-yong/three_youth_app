@@ -21,7 +21,7 @@ class PersonalInfoPolicyScreen extends StatelessWidget {
           ),
         ),
         title: const Text(
-          '이용약관',
+          '개인정보처리방침',
           style: TextStyle(color: Colors.black),
         ),
       ),

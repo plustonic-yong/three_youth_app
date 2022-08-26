@@ -114,7 +114,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       child: Column(
                         children: [
                           Expanded(
-                            child: _bpHistories != null
+                            child: _bpHistories!.isNotEmpty
                                 ? ListView.builder(
                                     itemCount: _bpHistories.length,
                                     itemBuilder: (context, index) {
@@ -128,7 +128,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       );
                                     },
                                   )
-                                : Container(),
+                                : const Center(
+                                    child: Text(
+                                      '혈압 측정 기록이 없습니다.',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 23.0,
+                                      ),
+                                    ),
+                                  ),
                           ),
                           const SizedBox(height: 10.0),
                           CommonButton(
