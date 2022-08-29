@@ -46,9 +46,6 @@ class AuthProvider extends ChangeNotifier {
 
   Future<LoginStatus> loginGoogle() async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    // sharedPreferences.remove('accessToken');
-    // sharedPreferences.remove('lastLoginMethod');
-    // return LoginStatus.failed;
 
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -141,6 +138,10 @@ class AuthProvider extends ChangeNotifier {
         int statusCode = response!.statusCode;
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
+          int status = data['status'];
+          if (status == 2) {
+            return LoginStatus.noAccount;
+          }
           String accessToken = data['accessToken'] ?? '';
           String refreshToken = data['refreshToken'] ?? '';
           sharedPreferences.setString('accessToken', accessToken);
@@ -160,13 +161,17 @@ class AuthProvider extends ChangeNotifier {
       debugPrint('발급된 토큰 없음');
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-        await ApiAuth.loginKakaoService(token: token.accessToken);
         debugPrint('로그인 성공 ${token.accessToken}');
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
         int statusCode = response!.statusCode;
+        final data = json.decode(utf8.decode(response.bodyBytes));
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
+          int status = data['status'];
+          if (status == 2) {
+            return LoginStatus.noAccount;
+          }
           sharedPreferences.setString('accessToken', data['accessToken']);
           sharedPreferences.setString('refreshToken', data['refreshToken']);
           sharedPreferences.setString('lastLoginMethod', 'kakao');
@@ -225,5 +230,27 @@ class AuthProvider extends ChangeNotifier {
       _userInfo = userInfo;
       notifyListeners();
     }
+  }
+
+  Future<bool> deleteUser() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    var response = await ApiAuth.deleteUserService();
+    if (response!.statusCode == 200) {
+      var lastLoginMethod = sharedPreferences.getString('lastLoginMethod');
+      if (lastLoginMethod == 'google') {
+        FirebaseAuth.instance.signOut();
+      } else if (lastLoginMethod == 'kakao') {
+        try {
+          await UserApi.instance.unlink();
+          print('회원탈퇴 성공, SDK에서 토큰 삭제');
+        } catch (error) {
+          print('회원탈퇴 실패 $error');
+        }
+      }
+      sharedPreferences.remove('accessToken');
+      sharedPreferences.remove('refreshToken');
+      return true;
+    }
+    return false;
   }
 }

@@ -193,12 +193,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 ),
                                               ),
                                             ],
-                                            content: Container(
-                                              child: const Text(
-                                                '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
-                                                style:
-                                                    TextStyle(fontSize: 18.0),
-                                              ),
+                                            content: const Text(
+                                              '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
+                                              style: TextStyle(fontSize: 18.0),
                                             ),
                                           );
                                         });
@@ -284,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                               Navigator.of(context).pop(),
                                           child: const Text(
                                             '취소',
-                                            style: TextStyle(fontSize: 23.0),
+                                            style: TextStyle(fontSize: 18.0),
                                           ),
                                         ),
                                         const SizedBox(width: 10.0),
@@ -300,15 +297,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                           },
                                           child: const Text(
                                             '확인',
-                                            style: TextStyle(fontSize: 23.0),
+                                            style: TextStyle(fontSize: 18.0),
                                           ),
                                         ),
                                       ],
-                                      content: Container(
-                                        child: const Text(
-                                          '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
-                                          style: TextStyle(fontSize: 23.0),
-                                        ),
+                                      content: const Text(
+                                        '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
+                                        style: TextStyle(fontSize: 18.0),
                                       ),
                                     );
                                   });

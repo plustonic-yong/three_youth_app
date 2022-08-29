@@ -152,7 +152,6 @@ class ApiAuth {
       var pref = await SharedPreferences.getInstance();
       var refreshToken = pref.getString('refreshToken');
       var accessToken = pref.getString('accessToken');
-      log('ref: $refreshToken, acc: $accessToken');
       Client client = InterceptedClient.build(interceptors: [
         AuthInterceptor(),
       ]);
@@ -166,6 +165,30 @@ class ApiAuth {
       return response;
     } catch (e) {
       log('$e');
+    }
+  }
+
+  static Future<Response?> deleteUserService() async {
+    try {
+      var pref = await SharedPreferences.getInstance();
+      var refreshToken = pref.getString('refreshToken');
+      var accessToken = pref.getString('accessToken');
+      if (accessToken == null) {
+        await ApiAuth.getTokenService(refreshToken: refreshToken!);
+      }
+      Client client = InterceptedClient.build(interceptors: [
+        AuthInterceptor(),
+      ]);
+      var response = await client.delete(
+        Uri.parse('${Constants.API_HOST}/me'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
+      );
+      return response;
+    } catch (e) {
+      print(e);
     }
   }
 }
