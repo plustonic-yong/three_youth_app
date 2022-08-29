@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -83,37 +84,48 @@ class AuthProvider extends ChangeNotifier {
 
   //kakao signup
   Future<SignupStatus> signupKakao({
-    required String token,
     required String name,
-    required String birth,
-    required String gender,
-    required int height,
-    required int weight,
+    required DateTime birth,
+    required GenderState gender,
+    required String height,
+    required String weight,
   }) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    String? kakaoAccessToken = sharedPreferences.getString('kakaoAccessToken');
+    String genderStr = gender == GenderState.man ? "W" : "W";
     var response = await ApiAuth.signupKakaoService(
-      token: token,
+      token: kakaoAccessToken!,
       name: name,
-      birth: birth,
-      gender: gender,
-      height: height,
-      weight: weight,
+      birth: birth.toString(),
+      gender: genderStr,
+      height: int.parse(height),
+      weight: int.parse(weight),
     );
     int statusCode = response!.statusCode;
-    if (statusCode == 201) {
+
+    if (response.statusCode == 200 || statusCode == 201) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      int status = data['status'];
+      if (status == -1) {
+        return SignupStatus.error;
+      }
+      String accessToken = data['accessToken'] ?? '';
+      String refreshToken = data['refreshToken'] ?? '';
+      sharedPreferences.setString('accessToken', accessToken);
+      sharedPreferences.setString('refreshToken', refreshToken);
       return SignupStatus.success;
     }
-    final data = json.decode(utf8.decode(response.bodyBytes));
-
-    switch (data['msg']) {
-      case 'EMAIL_EXISTS_KAKAO':
-        return SignupStatus.duplicatedEmailKakao;
-      case 'EMAIL_EXISTS_NAVER':
-        return SignupStatus.duplicatedEmailNaver;
-      case 'EMAIL_EXISTS_GOOGLE':
-        return SignupStatus.duplicatedEmailGoogle;
-      default:
-        return SignupStatus.error;
-    }
+    return SignupStatus.error;
+    // switch (data['msg']) {
+    //   case 'EMAIL_EXISTS_KAKAO':
+    //     return SignupStatus.duplicatedEmailKakao;
+    //   case 'EMAIL_EXISTS_NAVER':
+    //     return SignupStatus.duplicatedEmailNaver;
+    //   case 'EMAIL_EXISTS_GOOGLE':
+    //     return SignupStatus.duplicatedEmailGoogle;
+    //   default:
+    //     return SignupStatus.error;
+    // }
   }
 
   //kakao login
@@ -133,6 +145,7 @@ class AuthProvider extends ChangeNotifier {
       }
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        sharedPreferences.setString('kakaoAccessToken', token.accessToken);
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
         int statusCode = response!.statusCode;
@@ -142,8 +155,8 @@ class AuthProvider extends ChangeNotifier {
           if (status == 2) {
             return LoginStatus.noAccount;
           }
-          String accessToken = data['accessToken'] ?? '';
-          String refreshToken = data['refreshToken'] ?? '';
+          String accessToken = data['accessToken'];
+          String refreshToken = data['refreshToken'];
           sharedPreferences.setString('accessToken', accessToken);
           sharedPreferences.setString('refreshToken', refreshToken);
           sharedPreferences.setString('lastLoginMethod', 'kakao');

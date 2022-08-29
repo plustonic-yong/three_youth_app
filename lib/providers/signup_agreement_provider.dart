@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class SignupAgreementProvider extends ChangeNotifier {
@@ -10,6 +12,13 @@ class SignupAgreementProvider extends ChangeNotifier {
 
   void onChangeInfoAgree() {
     _isInfoAgreeChecked = !_isInfoAgreeChecked;
+    notifyListeners();
+  }
+
+  void onInitSignupAgreementInputs() {
+    _isInfoAgreeChecked = false;
+    _isTermsAgreeChecked = false;
+    _currentPage = 0;
     notifyListeners();
   }
 

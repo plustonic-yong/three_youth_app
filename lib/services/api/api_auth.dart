@@ -67,11 +67,10 @@ class ApiAuth {
     required int weight,
   }) async {
     try {
-      Client client = InterceptedClient.build(interceptors: [
-        AuthInterceptor(),
-      ]);
+      Client client =
+          InterceptedClient.build(interceptors: [AuthInterceptor()]);
       var response = await client.post(
-        Uri.parse('${Constants.API_HOST}/signup/google'),
+        Uri.parse('${Constants.API_HOST}/signup/kakao'),
         body: json.encode({
           'token': token,
           "name": name,
@@ -80,6 +79,7 @@ class ApiAuth {
           "height": height,
           "weight": weight,
         }),
+        headers: _getHeader(),
       );
       return response;
     } catch (e) {

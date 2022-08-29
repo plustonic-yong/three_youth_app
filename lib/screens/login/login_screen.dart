@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
+import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -27,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await context.read<AuthProvider>().getLastLoginMethod();
+      context.read<SignupAgreementProvider>().onInitSignupAgreementInputs();
+      context.read<SignupProvider>().onInitSignupInputs();
     });
   }
 

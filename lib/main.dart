@@ -45,6 +45,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  var accessToken = prefsmain.getString('accessToken');
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
@@ -69,7 +70,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: '위드케어',
         //initialRoute: _auth.currentUser != null ? '/overview' : '/login',
-        initialRoute: prefsmain.containsKey('accessToken') ? '/main' : '/login',
+        initialRoute: !prefsmain.containsKey('accessToken') ||
+                (prefsmain.getString('accessToken') == '')
+            ? '/login'
+            : '/main',
         routes: {
           '/login': (context) => const LoginScreen(),
           '/main': (context) => const MainScreen(),

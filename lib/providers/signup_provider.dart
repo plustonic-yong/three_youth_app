@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/utils/enums.dart';
 
@@ -39,6 +41,17 @@ class SignupProvider extends ChangeNotifier {
 
   void onChangeCurrentPage({required int page}) {
     _currentPage = page;
+    notifyListeners();
+  }
+
+  void onInitSignupInputs() {
+    _currentPage = 0;
+    _nameController.clear();
+    _heightController.clear();
+    _weightController.clear();
+    _yearController.clear();
+    _monthController.clear();
+    _dayController.clear();
     notifyListeners();
   }
 
