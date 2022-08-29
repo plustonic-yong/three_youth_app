@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
@@ -142,6 +144,28 @@ class ApiAuth {
       pref.setString('refreshToken', newRefreshToken);
     } catch (e) {
       print(e);
+    }
+  }
+
+  static Future<Response?> getUserInfoService() async {
+    try {
+      var pref = await SharedPreferences.getInstance();
+      var refreshToken = pref.getString('refreshToken');
+      var accessToken = pref.getString('accessToken');
+      log('ref: $refreshToken, acc: $accessToken');
+      Client client = InterceptedClient.build(interceptors: [
+        AuthInterceptor(),
+      ]);
+      var response = await client.get(
+        Uri.parse('${Constants.API_HOST}/me'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $accessToken",
+          "Content-Type": "application/json",
+        },
+      );
+      return response;
+    } catch (e) {
+      log('$e');
     }
   }
 }

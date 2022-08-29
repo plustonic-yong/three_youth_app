@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/models/model_user.dart';
 import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/utils/enums.dart';
 
@@ -13,6 +14,8 @@ class AuthProvider extends ChangeNotifier {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String? _lastLoginMethod = '';
   String? get lastLoginMethod => _lastLoginMethod;
+  ModelUser? _userInfo;
+  ModelUser? get userInfo => _userInfo;
 
   Future<SignupStatus> signupGoogle({
     required String name,
@@ -167,6 +170,7 @@ class AuthProvider extends ChangeNotifier {
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
           sharedPreferences.setString('accessToken', data['accessToken']);
+          sharedPreferences.setString('refreshToken', data['refreshToken']);
           sharedPreferences.setString('lastLoginMethod', 'kakao');
           return LoginStatus.success;
         } else if (statusCode == 404) {
@@ -203,6 +207,14 @@ class AuthProvider extends ChangeNotifier {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? method = sharedPreferences.getString('lastLoginMethod');
     _lastLoginMethod = method;
+    notifyListeners();
+  }
+
+  Future<void> getUserInfo() async {
+    var response = await ApiAuth.getUserInfoService();
+    final data = json.decode(utf8.decode(response!.bodyBytes));
+    ModelUser userInfo = ModelUser.fromJson(data);
+    _userInfo = userInfo;
     notifyListeners();
   }
 }
