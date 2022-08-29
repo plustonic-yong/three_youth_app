@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:three_youth_app/models/user_model.dart';
+import 'package:three_youth_app/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProfileSettingIdInputForm extends StatelessWidget {
   const ProfileSettingIdInputForm({Key? key}) : super(key: key);
@@ -6,6 +9,7 @@ class ProfileSettingIdInputForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
     return Row(
       children: [
         const Text(
@@ -20,7 +24,7 @@ class ProfileSettingIdInputForm extends StatelessWidget {
           width: 200.0,
           height: 40.0,
           child: TextFormField(
-            initialValue: '1CqoQ85712A',
+            initialValue: '${_userInfo?.code}',
             readOnly: true,
             enableInteractiveSelection: false,
             keyboardType: TextInputType.number,

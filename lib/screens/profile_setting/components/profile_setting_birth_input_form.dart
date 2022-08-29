@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:three_youth_app/models/user_model.dart';
+import 'package:provider/provider.dart';
+import 'package:three_youth_app/providers/auth_provider.dart';
 
 class ProfileSettingBirthInputForm extends StatelessWidget {
   const ProfileSettingBirthInputForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -15,7 +19,7 @@ class ProfileSettingBirthInputForm extends StatelessWidget {
               width: 80.0,
               height: 40.0,
               child: TextFormField(
-                initialValue: '1999',
+                initialValue: _userInfo?.birth.split('-')[0] ?? '',
                 readOnly: true,
                 enableInteractiveSelection: false,
                 keyboardType: TextInputType.number,
@@ -58,7 +62,7 @@ class ProfileSettingBirthInputForm extends StatelessWidget {
               width: 60.0,
               height: 40.0,
               child: TextFormField(
-                initialValue: '08',
+                initialValue: _userInfo?.birth.split('-')[1] ?? '',
                 enableInteractiveSelection: false,
                 readOnly: true,
                 keyboardType: TextInputType.number,
@@ -101,7 +105,7 @@ class ProfileSettingBirthInputForm extends StatelessWidget {
               width: 60.0,
               height: 40.0,
               child: TextFormField(
-                initialValue: '08',
+                initialValue: _userInfo?.birth.split('-')[2] ?? '',
                 enableInteractiveSelection: false,
                 readOnly: true,
                 keyboardType: TextInputType.number,

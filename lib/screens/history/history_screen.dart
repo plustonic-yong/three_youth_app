@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:three_youth_app/models/bp.dart';
+import 'package:three_youth_app/models/bp_model.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
@@ -33,7 +33,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     HistoryCalendarType _historyCalendarType =
         context.watch<HistoryProvider>().historyCalendarType;
 
-    List<Bp>? _bpHistories = context.watch<BleBpProvider>().bpHistories;
+    List<BpModel>? _bpHistories = context.watch<BleBpProvider>().bpHistories;
 
     return SafeArea(
       child: SizedBox(

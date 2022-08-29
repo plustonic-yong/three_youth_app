@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:three_youth_app/models/bp.dart';
-import 'package:three_youth_app/models/model_user.dart';
+import 'package:three_youth_app/models/bp_model.dart';
+import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
+import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -64,8 +65,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   @override
   Widget build(BuildContext context) {
     _isPaired = context.watch<BleBpProvider>().isPaired;
-    Bp? _lastBpHistory = context.watch<BleBpProvider>().lastBpHistory;
-    ModelUser? _userInfo = context.read<AuthProvider>().userInfo;
+    BpModel? _lastBpHistory = context.watch<BleBpProvider>().lastBpHistory;
+    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
     return isLoading
         ? spinkit
         : SafeArea(
@@ -76,42 +77,44 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                 children: [
                   const SizedBox(height: 20.0),
                   //유저 프로필
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 32.0,
-                        child: _userInfo?.imgUrl != ''
-                            ? Image.asset(
-                                'assets/images/profile_img_1.png',
-                              )
-                            : Image.asset(
-                                'assets/icons/ic_user.png',
-                              ),
-                      ),
-                      const SizedBox(width: 10.0),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _userInfo?.name ?? '',
-                            style: const TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                  _userInfo != null
+                      ? Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 32.0,
+                              child: _userInfo.imgUrl != ''
+                                  ? Image.asset(
+                                      'assets/images/profile_img_1.png',
+                                    )
+                                  : Image.asset(
+                                      'assets/icons/ic_user.png',
+                                    ),
                             ),
-                          ),
-                          Text(
-                            '${Utils.getAge(_userInfo?.birth)}세 ${_userInfo?.gender == "M" ? '남성' : '여성'}',
-                            style: const TextStyle(
-                              color: Colors.white,
+                            const SizedBox(width: 10.0),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _userInfo.name,
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  '${_userInfo != null ? Utils.getAge(_userInfo.birth) : 0}세 ${_userInfo.gender == "M" ? '남성' : '여성'}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          ],
+                        )
+                      : Container(),
                   const SizedBox(height: 20.0),
                   const Text(
                     '최근 심전도 측정기록',

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:three_youth_app/models/bp.dart';
+import 'package:three_youth_app/models/bp_model.dart';
 import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/api/api_bp.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -97,12 +97,12 @@ class BleBpProvider extends ChangeNotifier {
   List<double> get lDataPUL => _lDataPUL;
 
   //혈압계 데이터
-  List<Bp>? _bpHistories = [];
-  List<Bp>? get bpHistories => _bpHistories;
+  List<BpModel>? _bpHistories = [];
+  List<BpModel>? get bpHistories => _bpHistories;
 
   //마지막 혈압계 데이터
-  Bp? _lastBpHistory;
-  Bp? get lastBpHistory => _lastBpHistory;
+  BpModel? _lastBpHistory;
+  BpModel? get lastBpHistory => _lastBpHistory;
 
   void onInitCurrentPage() {
     _currentPage = 0;
@@ -126,8 +126,8 @@ class BleBpProvider extends ChangeNotifier {
     }
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response!.bodyBytes));
-      List<Bp> bpList =
-          (data as List).map((json) => Bp.fromJson(json)).toList();
+      List<BpModel> bpList =
+          (data as List).map((json) => BpModel.fromJson(json)).toList();
 
       bpList.sort((a, b) => a.measureDatetime.compareTo(b.measureDatetime));
       _lastBpHistory = bpList.last;
@@ -142,15 +142,14 @@ class BleBpProvider extends ChangeNotifier {
     int statusCode = response!.statusCode;
     if (statusCode == 401) {
       var refreshToken = pref.getString('refreshToken');
-      var accessToken = pref.getString('accessToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiBp.getBloodPressureService();
     }
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response!.bodyBytes));
-      List<Bp> bpList =
-          (data as List).map((json) => Bp.fromJson(json)).toList();
-      List<Bp> filtedBpList = [];
+      List<BpModel> bpList =
+          (data as List).map((json) => BpModel.fromJson(json)).toList();
+      List<BpModel> filtedBpList = [];
       bpList.forEach((element) {
         if (Utils.formatDatetime(element.measureDatetime).split(' ')[0] ==
             Utils.formatDatetime(measureDatetime).split(' ')[0]) {

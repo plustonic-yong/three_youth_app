@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_birth_input_form.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_id_input_form.dart';
@@ -7,6 +8,7 @@ import 'package:three_youth_app/screens/profile_setting/components/profile_setti
 import 'package:three_youth_app/screens/profile_setting/personal_info_policy_screen.dart';
 import 'package:three_youth_app/screens/profile_setting/use_of_terms_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/utils/utils.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' as foundation;
@@ -22,6 +24,7 @@ class ProfileSettingScreen extends StatelessWidget {
         foundation.defaultTargetPlatform == foundation.TargetPlatform.android
             ? kBottomNavigationBarHeight + 27.0
             : 140.0;
+    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
     return SafeArea(
       child: SizedBox(
         height: MediaQuery.of(context).size.height - botomNavigationBarHeight,
@@ -35,26 +38,31 @@ class ProfileSettingScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 32.0,
-                    child: Image.asset(
-                      'assets/images/profile_img_1.png',
-                    ),
+                    backgroundColor: Colors.white,
+                    child: _userInfo?.imgUrl != ''
+                        ? Image.asset(
+                            'assets/images/profile_img_1.png',
+                          )
+                        : Image.asset(
+                            'assets/icons/ic_user.png',
+                          ),
                   ),
                   const SizedBox(width: 10.0),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        '홍길동님',
-                        style: TextStyle(
+                        _userInfo?.name ?? '',
+                        style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        '60세 여성',
-                        style: TextStyle(
+                        '${Utils.getAge(_userInfo?.birth)}세 ${_userInfo?.gender == "M" ? '남성' : '여성'}',
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),

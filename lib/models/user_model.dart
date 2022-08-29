@@ -1,4 +1,4 @@
-class ModelUser {
+class UserModel {
   final String name;
   final String birth;
   final String gender;
@@ -7,7 +7,7 @@ class ModelUser {
   final String imgUrl;
   final String code;
 
-  ModelUser({
+  UserModel({
     required this.name,
     required this.birth,
     required this.gender,
@@ -17,13 +17,13 @@ class ModelUser {
     required this.code,
   });
 
-  factory ModelUser.fromJson(Map<String, dynamic> json) => ModelUser(
-        name: json['name'],
-        birth: json['birth'],
-        gender: json['gender'],
-        height: json['height'],
-        weight: json['weight'],
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        name: json['name'] ?? '',
+        birth: json['birth'] ?? '',
+        gender: json['gender'] ?? '',
+        height: json['height'] ?? 0,
+        weight: json['weight'] ?? 0,
         imgUrl: json['imgUrl'] ?? '',
-        code: json['code'],
+        code: json['code'] ?? '',
       );
 }

@@ -1,10 +1,10 @@
-class Bp {
+class BpModel {
   final DateTime measureDatetime;
   final int sys;
   final int dia;
   final int pul;
   final String regDatetime;
-  Bp({
+  BpModel({
     required this.measureDatetime,
     required this.sys,
     required this.dia,
@@ -12,7 +12,7 @@ class Bp {
     required this.regDatetime,
   });
 
-  factory Bp.fromJson(Map<String, dynamic> json) => Bp(
+  factory BpModel.fromJson(Map<String, dynamic> json) => BpModel(
         measureDatetime: DateTime.parse(json['measureDatetime']),
         sys: json['sys'],
         dia: json['dia'],

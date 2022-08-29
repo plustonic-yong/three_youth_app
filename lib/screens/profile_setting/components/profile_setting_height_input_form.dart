@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:three_youth_app/models/user_model.dart';
+import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +11,7 @@ class ProfileSettingHeightInputForm extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -17,7 +20,7 @@ class ProfileSettingHeightInputForm extends StatelessWidget {
           width: width - 100.0,
           height: 40.0,
           child: TextFormField(
-            initialValue: '199',
+            initialValue: '${_userInfo?.height}',
             enableInteractiveSelection: false,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
