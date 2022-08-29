@@ -28,7 +28,7 @@ class BleBpScanMeasurementScanning extends StatelessWidget {
             const SizedBox(height: 20.0),
             const Center(
               child: Text(
-                '측정 중입니다...',
+                '측정결과를 기다리는 중입니다.',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18.0,

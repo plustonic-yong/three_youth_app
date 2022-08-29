@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/auth_interceptor.dart';
 import 'package:three_youth_app/services/expired_token_retry_policy.dart';
 import 'package:three_youth_app/utils/constants.dart' as Constants;
@@ -16,7 +17,11 @@ class ApiBp {
   static Future<Response?> getBloodPressureService() async {
     try {
       var pref = await SharedPreferences.getInstance();
+      var refreshToken = pref.getString('refreshToken');
       var accessToken = pref.getString('accessToken');
+      if (accessToken == null) {
+        await ApiAuth.getTokenService(refreshToken: refreshToken!);
+      }
       Client client = InterceptedClient.build(
         interceptors: [
           AuthInterceptor(),
@@ -42,7 +47,11 @@ class ApiBp {
     required int pul,
   }) async {
     var pref = await SharedPreferences.getInstance();
+    var refreshToken = pref.getString('refreshToken');
     var accessToken = pref.getString('accessToken');
+    if (accessToken == null) {
+      await ApiAuth.getTokenService(refreshToken: refreshToken!);
+    }
     try {
       Client client = InterceptedClient.build(
         interceptors: [

@@ -152,6 +152,9 @@ class ApiAuth {
       var pref = await SharedPreferences.getInstance();
       var refreshToken = pref.getString('refreshToken');
       var accessToken = pref.getString('accessToken');
+      if (accessToken == null) {
+        await ApiAuth.getTokenService(refreshToken: refreshToken!);
+      }
       Client client = InterceptedClient.build(interceptors: [
         AuthInterceptor(),
       ]);

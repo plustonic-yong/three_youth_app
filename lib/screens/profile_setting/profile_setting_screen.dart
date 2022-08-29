@@ -34,51 +34,53 @@ class ProfileSettingScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               //프로필 사진, 이름, 나이, 성별
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 32.0,
-                    backgroundColor: Colors.white,
-                    child: _userInfo?.imgUrl != ''
-                        ? Image.asset(
-                            'assets/images/profile_img_1.png',
-                          )
-                        : Image.asset(
-                            'assets/icons/ic_user.png',
-                          ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _userInfo?.name ?? '',
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+              _userInfo != null
+                  ? Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 32.0,
+                          child: _userInfo.imgUrl != ''
+                              ? Image.asset(
+                                  'assets/images/profile_img_1.png',
+                                )
+                              : Image.asset(
+                                  'assets/icons/ic_user.png',
+                                ),
                         ),
-                      ),
-                      Text(
-                        '${Utils.getAge(_userInfo?.birth)}세 ${_userInfo?.gender == "M" ? '남성' : '여성'}',
-                        style: const TextStyle(
-                          color: Colors.white,
+                        const SizedBox(width: 10.0),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _userInfo.name,
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              '${_userInfo.birth != '' ? Utils.getAge(_userInfo.birth) : '0'}세 ${_userInfo.gender == "M" ? '남성' : '여성'}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                      ],
+                    )
+                  : Container(),
               const SizedBox(height: 20.0),
               //생년월일
               // _birthInputForm(context: context, width: width, height: height),
               const ProfileSettingBirthInputForm(),
               const SizedBox(height: 20.0),
-              //키
+              // //키
               const ProfileSettingHeightInputForm(),
               const SizedBox(height: 20.0),
-              //몸무게
+              // //몸무게
               const ProfileSettingWeightInputForm(),
               const SizedBox(height: 20.0),
               CommonButton(

@@ -493,7 +493,7 @@ class BleECGConnectScreenPrevState extends State<BleECGConnectScreenPrev> {
     } else if (_bleState == 2) {
       rr = "기기 인식 완료";
     } else if (_bleState == 3) {
-      rr = "데이터 측정 중...";
+      rr = "데이터 측정결과를 기다리는 중입니다.";
     }
 
     return rr;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/user_provider.dart';
 
@@ -11,7 +10,7 @@ class ProfileSettingWeightInputForm extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
+    int? _weight = context.watch<AuthProvider>().userInfo!.weight;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -20,7 +19,7 @@ class ProfileSettingWeightInputForm extends StatelessWidget {
           width: width - 100.0,
           height: 40.0,
           child: TextFormField(
-            initialValue: '${_userInfo?.weight}',
+            initialValue: '$_weight',
             enableInteractiveSelection: false,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,

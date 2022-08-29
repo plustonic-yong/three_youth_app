@@ -7,7 +7,6 @@ import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -66,7 +65,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   Widget build(BuildContext context) {
     _isPaired = context.watch<BleBpProvider>().isPaired;
     BpModel? _lastBpHistory = context.watch<BleBpProvider>().lastBpHistory;
-    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
+    UserModel? _userInfo = context.watch<AuthProvider>().userInfo;
     return isLoading
         ? spinkit
         : SafeArea(
@@ -105,7 +104,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                   ),
                                 ),
                                 Text(
-                                  '${_userInfo != null ? Utils.getAge(_userInfo.birth) : 0}세 ${_userInfo.gender == "M" ? '남성' : '여성'}',
+                                  '${_userInfo.birth != '' ? Utils.getAge(_userInfo.birth) : '0'}세 ${_userInfo.gender == "M" ? '남성' : '여성'}',
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
