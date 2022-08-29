@@ -20,17 +20,18 @@ class BleBpScanMeasurementResult extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {
-            context.read<BleBpProvider>().dataClear();
-            Navigator.of(context).pop();
-          },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-        ),
-        title: const Text('측정결과'),
+        //   leading: GestureDetector(
+        //     onTap: () {
+        //       context.read<BleBpProvider>().dataClear();
+        //       Navigator.of(context).pop();
+        //     },
+        //     child: const Icon(
+        //       Icons.arrow_back_ios,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        //   title: const Text('측정결과'),
+        leading: Container(),
       ),
       backgroundColor: Colors.transparent,
       body: Padding(
@@ -210,10 +211,14 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                   CommonButton(
                     height: 40.0,
                     width: 160.0,
-                    title: '예방 콘텐츠',
+                    title: '홈으로',
                     buttonColor: ButtonColor.inactive,
                     fontSize: 16.0,
-                    onTap: () {},
+                    onTap: () {
+                      context.read<BleBpProvider>().dataClear();
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/main', (route) => false);
+                    },
                   ),
                 ],
               ),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -258,24 +260,24 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                       //   ),
                       // ],
                     ),
-                    child: _lastBpHistory != null
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 20.0,
-                              horizontal: 30.0,
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/sphygmomanometer_1.png',
-                                      fit: BoxFit.cover,
-                                      height: 70.0,
-                                    ),
-                                    const SizedBox(width: 20.0),
-                                    Column(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20.0,
+                        horizontal: 30.0,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/sphygmomanometer_1.png',
+                                fit: BoxFit.cover,
+                                height: 70.0,
+                              ),
+                              const SizedBox(width: 20.0),
+                              _lastBpHistory != null
+                                  ? Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
@@ -311,71 +313,68 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                         )
                                       ],
                                     )
-                                  ],
-                                ),
-                                const SizedBox(height: 25.0),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    CommonButton(
+                                  : const SizedBox(
+                                      child: Text(
+                                        '혈압 데이터가 없습니다.',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                            ],
+                          ),
+                          const SizedBox(height: 25.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              CommonButton(
+                                width: 135.0,
+                                height: 40.0,
+                                title: '측정하기',
+                                buttonColor: _isPaired
+                                    ? ButtonColor.white
+                                    : ButtonColor.inactive,
+                                onTap: _isPaired
+                                    ? () {
+                                        log('scan');
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/scan',
+                                        );
+                                      }
+                                    : null,
+                              ),
+                              _isPaired
+                                  ? CommonButton(
                                       width: 135.0,
                                       height: 40.0,
-                                      title: '측정하기',
-                                      buttonColor: _isPaired
-                                          ? ButtonColor.white
-                                          : ButtonColor.inactive,
-                                      onTap: _isPaired
-                                          ? () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                '/scan',
-                                              );
-                                            }
-                                          : null,
+                                      title: '연동해제',
+                                      buttonColor: ButtonColor.orange,
+                                      onTap: () async {
+                                        await context
+                                            .read<BleBpProvider>()
+                                            .disConnectPairing();
+                                      },
+                                    )
+                                  : CommonButton(
+                                      width: 135.0,
+                                      height: 40.0,
+                                      title: '연동하기',
+                                      buttonColor: ButtonColor.primary,
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/connect',
+                                        );
+                                      },
                                     ),
-                                    _isPaired
-                                        ? CommonButton(
-                                            width: 135.0,
-                                            height: 40.0,
-                                            title: '연동해제',
-                                            buttonColor: ButtonColor.orange,
-                                            onTap: () async {
-                                              await context
-                                                  .read<BleBpProvider>()
-                                                  .disConnectPairing();
-                                            },
-                                          )
-                                        : CommonButton(
-                                            width: 135.0,
-                                            height: 40.0,
-                                            title: '연동하기',
-                                            buttonColor: ButtonColor.primary,
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                '/connect',
-                                              );
-                                            },
-                                          ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        : const SizedBox(
-                            height: 180.0,
-                            child: Center(
-                              child: Text(
-                                '혈압 데이터가 없습니다.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
+                            ],
                           ),
+                        ],
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 30.0),
                 ],
