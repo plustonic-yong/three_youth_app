@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
@@ -7,6 +5,7 @@ import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/signup/signup_birth_gender_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_name_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_height_screen.dart';
+import 'package:three_youth_app/screens/signup/signup_profile_img_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_weight_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
@@ -67,11 +66,12 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                         SignupHeightScreen(),
                         SignupWeightScreen(),
                         SignupBirthGenderScreen(),
+                        SignupProfileImgScreen(),
                       ],
                     ),
                   ),
                   DotsIndicator(
-                    dotsCount: 4,
+                    dotsCount: 5,
                     position: _currentPage.roundToDouble(),
                     decorator: DotsDecorator(
                       size: const Size.square(9.0),
@@ -125,7 +125,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                             CommonButton(
                               width: 150.0,
                               height: 50.0,
-                              title: _currentPage == 3 ? '회원가입' : '다음',
+                              title: _currentPage == 4 ? '회원가입' : '다음',
                               buttonColor: _currentPage == 1
                                   ? _height != ''
                                       ? ButtonColor.primary
@@ -134,7 +134,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                       ? _weight != ''
                                           ? ButtonColor.primary
                                           : ButtonColor.inactive
-                                      : _birth != ''
+                                      : _currentPage == 3
                                           ? ButtonColor.primary
                                           : ButtonColor.inactive,
                               onTap: () async {
@@ -144,7 +144,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 if (_currentPage == 2 && _weight == '') {
                                   return;
                                 }
-                                if (_currentPage == 3) {
+                                if (_currentPage == 4) {
                                   var signupState = context
                                       .read<SignupProvider>()
                                       .signupState;

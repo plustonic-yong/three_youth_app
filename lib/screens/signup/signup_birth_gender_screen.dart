@@ -49,7 +49,6 @@ class SignupBirthGenderScreen extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                log('pick');
                 showModalBottomSheet(
                     context: context,
                     enableDrag: false,
