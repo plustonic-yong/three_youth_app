@@ -230,7 +230,9 @@ class BleBpProvider extends ChangeNotifier {
     _connected = false;
     _isPairing = false;
     _isPaired = false;
-    //   _timer!.cancel();
+    if (_timer != null) {
+      _timer!.cancel();
+    }
     notifyListeners();
   }
 
@@ -258,6 +260,7 @@ class BleBpProvider extends ChangeNotifier {
         if (_iNeedDisconnect == 0) {
           log("################ FORCE CLOSE BLE ###########");
           _isScanning = false;
+          notifyListeners();
           if (_scanStream != null) {
             try {
               _scanStream.cancel();
@@ -268,10 +271,9 @@ class BleBpProvider extends ChangeNotifier {
           _foundDeviceWaitingToConnect = false;
           _connected = false;
           _isPairing = false;
-          // _isPaired = true;
           notifyListeners();
           try {
-            Future.delayed(const Duration(milliseconds: 9000), () async {
+            Future.delayed(const Duration(milliseconds: 7000), () async {
               _isPaired = true;
               await prefs.setBool('isSphyFairing', true);
               notifyListeners();
@@ -413,6 +415,7 @@ class BleBpProvider extends ChangeNotifier {
             _iNeedDisconnect = 0;
             _connected = false;
             _foundDeviceWaitingToConnect = false;
+            _timer!.cancel();
             notifyListeners();
             try {
               if (_ssRx != null) {

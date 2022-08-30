@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:three_youth_app/models/user_model.dart';
+import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
@@ -15,6 +17,7 @@ class BleBpScanMeasurementResult extends StatelessWidget {
     List<double> _lDataSYS = context.read<BleBpProvider>().lDataSYS;
     List<double> _lDataDIA = context.read<BleBpProvider>().lDataDIA;
     List<double> _lDataPUL = context.read<BleBpProvider>().lDataPUL;
+    UserModel? _userInfo = context.watch<AuthProvider>().userInfo;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -43,12 +46,23 @@ class BleBpScanMeasurementResult extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20.0),
-                CircleAvatar(
-                  radius: 32.0,
-                  child: Image.asset(
-                    'assets/images/profile_img_1.png',
-                  ),
-                ),
+                _userInfo!.imgUrl != ''
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(90.0),
+                        child: Image.network(
+                          _userInfo.imgUrl,
+                          fit: BoxFit.cover,
+                          width: 64.0,
+                          height: 64.0,
+                        ),
+                      )
+                    : CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 32.0,
+                        child: Image.asset(
+                          'assets/icons/ic_user.png',
+                        ),
+                      ),
                 const SizedBox(height: 10.0),
                 const Text(
                   '홍길동님',
@@ -85,11 +99,11 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        //최저혈압
+                        //최고혈압
                         const CommonButton(
                           height: 25.0,
                           width: 80.0,
-                          title: '최저혈압',
+                          title: '최고혈압',
                           buttonColor: ButtonColor.inactive,
                           fontSize: 13.0,
                         ),
@@ -111,13 +125,13 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                         ),
                       ],
                     ),
-                    //최고혈압
+                    //최저혈압
                     Column(
                       children: [
                         const CommonButton(
                           height: 25.0,
                           width: 80.0,
-                          title: '최고혈압',
+                          title: '최저혈압',
                           buttonColor: ButtonColor.inactive,
                           fontSize: 13.0,
                         ),

@@ -38,7 +38,15 @@ class BleBpScanMeasurementScanning extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 30.0),
+              Container(
+                margin: const EdgeInsets.all(20),
+                child: const CircularProgressIndicator(
+                  backgroundColor: Colors.grey,
+                  color: Colors.purple,
+                  strokeWidth: 5,
+                ),
+              ),
+              // const SizedBox(height: 30.0),
               Container(
                 padding: const EdgeInsets.all(25.0),
                 width: _screenWidth,
@@ -120,9 +128,10 @@ class BleBpScanMeasurementScanning extends StatelessWidget {
               CommonButton(
                 height: 50.0,
                 width: _screenWidth,
-                title: '이전 화면으로',
+                title: '홈으로',
                 buttonColor: ButtonColor.inactive,
-                onTap: () => Navigator.of(context).pop(),
+                onTap: () => Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/main', (route) => false),
               ),
               const SizedBox(height: 20.0),
             ],
