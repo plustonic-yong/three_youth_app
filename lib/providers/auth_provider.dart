@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -37,6 +38,11 @@ class AuthProvider extends ChangeNotifier {
     );
     if (response!.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
+      int status = data['status'];
+      log('status: $status');
+      if (status == -1) {
+        return SignupStatus.error;
+      }
       String accessToken = data['accessToken'] ?? '';
       String refreshToken = data['refreshToken'] ?? '';
       sharedPreferences.setString('accessToken', accessToken);
@@ -61,7 +67,7 @@ class AuthProvider extends ChangeNotifier {
     int statusCode = response!.statusCode;
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-
+      log('ddaa: $data');
       String accessToken = data['accessToken'] ?? '';
       String refreshToken = data['refreshToken'] ?? '';
       if (accessToken == '') {
@@ -151,6 +157,7 @@ class AuthProvider extends ChangeNotifier {
         sharedPreferences.setString('kakaoAccessToken', token.accessToken);
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
+
         int statusCode = response!.statusCode;
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
@@ -180,7 +187,8 @@ class AuthProvider extends ChangeNotifier {
         debugPrint('로그인 성공 ${token.accessToken}');
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
-        int statusCode = response!.statusCode;
+        log('res: ${response!.body}');
+        int statusCode = response.statusCode;
         final data = json.decode(utf8.decode(response.bodyBytes));
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
@@ -207,9 +215,11 @@ class AuthProvider extends ChangeNotifier {
   Future<void> logout() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     // await Api.logoutService();
+    GoogleSignIn _googleSignIn = GoogleSignIn();
     var lastLoginMethod = sharedPreferences.getString('lastLoginMethod');
     if (lastLoginMethod == 'google') {
       FirebaseAuth.instance.signOut();
+      _googleSignIn.disconnect();
     } else if (lastLoginMethod == 'kakao') {
       try {
         await UserApi.instance.unlink();
@@ -251,9 +261,11 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> deleteUser() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     var response = await ApiAuth.deleteUserService();
+    GoogleSignIn _googleSignIn = GoogleSignIn();
     if (response!.statusCode == 200) {
       var lastLoginMethod = sharedPreferences.getString('lastLoginMethod');
       if (lastLoginMethod == 'google') {
+        _googleSignIn.disconnect();
         FirebaseAuth.instance.signOut();
       } else if (lastLoginMethod == 'kakao') {
         try {

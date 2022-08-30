@@ -67,8 +67,10 @@ class ApiAuth {
       request.fields['height'] = height.toString();
       request.fields['weight'] = weight.toString();
       request.files.add(await http.MultipartFile.fromPath('img', img));
+      request.headers.addAll(_getHeader());
 
       var response = await http.Response.fromStream(await request.send());
+      return response;
     } catch (e) {
       print(e);
     }
@@ -110,6 +112,7 @@ class ApiAuth {
       request.fields['height'] = height.toString();
       request.fields['weight'] = weight.toString();
       request.files.add(await http.MultipartFile.fromPath('img', img));
+      request.headers.addAll(_getHeader());
 
       var response = await http.Response.fromStream(await request.send());
       return response;

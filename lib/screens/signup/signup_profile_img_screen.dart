@@ -66,15 +66,15 @@ class SignupProfileImgScreen extends StatelessWidget {
         const SizedBox(
           height: 20.0,
         ),
-        GestureDetector(
-          onTap: () => context.read<SignupProvider>().onDeleteProfileImg(),
-          child: const Text(
-            '삭제',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        )
+        // GestureDetector(
+        //   onTap: () => context.read<SignupProvider>().onDeleteProfileImg(),
+        //   child: const Text(
+        //     '삭제',
+        //     style: TextStyle(
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        // )
       ],
     );
   }

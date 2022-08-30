@@ -203,7 +203,6 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                           weight: _weight,
                                           img: _selectedImg.path,
                                         );
-
                                     if (result == SignupStatus.success) {
                                       showDialog(
                                         context: context,
