@@ -216,10 +216,8 @@ class BleBpProvider extends ChangeNotifier {
   }
 
   Future<void> disConnectPairing() async {
-    log('disConnectPairing1');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("isSphyFairing", false);
-    log('disConnectPairing2');
     _isScanning = false;
     if (_scanStream != null) {
       try {
@@ -228,15 +226,11 @@ class BleBpProvider extends ChangeNotifier {
         log('$err');
       }
     }
-    log('disConnectPairing3');
     _foundDeviceWaitingToConnect = false;
     _connected = false;
     _isPairing = false;
     _isPaired = false;
-    // if (_timer!.isActive) {
     //   _timer!.cancel();
-    // }
-    log('disConnectPairing4');
     notifyListeners();
   }
 

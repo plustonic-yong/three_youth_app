@@ -34,196 +34,201 @@ class BleBpScanMeasurementResult extends StatelessWidget {
         leading: Container(),
       ),
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20.0),
-              CircleAvatar(
-                radius: 32.0,
-                child: Image.asset(
-                  'assets/images/profile_img_1.png',
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              const Text(
-                '홍길동님',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 40.0),
-              Image.asset(
-                'assets/icons/ic_heart.png',
-                width: 24.0,
-              ),
-              Text(
-                _dataIsOK ? _lDataSYS.last.round().toString() : '-',
-                style: const TextStyle(
-                  fontSize: 38.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const Text(
-                'bpm',
-                style: TextStyle(
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 50.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      //최저혈압
-                      const CommonButton(
-                        height: 25.0,
-                        width: 80.0,
-                        title: '최저혈압',
-                        buttonColor: ButtonColor.inactive,
-                        fontSize: 13.0,
-                      ),
-                      Text(
-                        _dataIsOK ? _lDataDIA.last.round().toString() : '-',
-                        style: const TextStyle(
-                          fontSize: 38.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const Text(
-                        'mmHg',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+      body: WillPopScope(
+        onWillPop: () async => false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20.0),
+                CircleAvatar(
+                  radius: 32.0,
+                  child: Image.asset(
+                    'assets/images/profile_img_1.png',
                   ),
-                  //최고혈압
-                  Column(
-                    children: [
-                      const CommonButton(
-                        height: 25.0,
-                        width: 80.0,
-                        title: '최고혈압',
-                        buttonColor: ButtonColor.inactive,
-                        fontSize: 13.0,
-                      ),
-                      Text(
-                        _dataIsOK ? _lDataPUL.last.round().toString() : '-',
-                        style: const TextStyle(
-                          fontSize: 38.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const Text(
-                        'mmHg',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                ),
+                const SizedBox(height: 10.0),
+                const Text(
+                  '홍길동님',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                ],
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CommonButton(
-                    height: 40.0,
-                    width: 160.0,
-                    title: '저장',
-                    buttonColor: ButtonColor.inactive,
-                    fontSize: 16.0,
-                    onTap: _dataIsOK
-                        ? () async {
-                            var result = await context
-                                .read<BleBpProvider>()
-                                .postBloodPressure(
-                                  sys: _lDataSYS.last.round(),
-                                  dia: _lDataDIA.last.round(),
-                                  pul: _lDataPUL.last.round(),
-                                );
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    contentPadding: const EdgeInsets.all(30.0),
-                                    actionsPadding: const EdgeInsets.all(10.0),
-                                    actions: [
-                                      GestureDetector(
-                                        onTap: () =>
-                                            Navigator.of(context).pop(),
-                                        child: const Text(
-                                          '확인',
-                                          style: TextStyle(fontSize: 18.0),
-                                        ),
-                                      ),
-                                    ],
-                                    content: Text(
-                                      // ignore: unrelated_type_equality_checks
-                                      result == BpSaveDataStatus.success
-                                          ? '데이터 저장에 성공했습니다.'
-                                          : '데이터 저장에 실패했습니다.',
-                                      style: const TextStyle(fontSize: 18.0),
-                                    ),
+                ),
+                const SizedBox(height: 40.0),
+                Image.asset(
+                  'assets/icons/ic_heart.png',
+                  width: 24.0,
+                ),
+                Text(
+                  _dataIsOK ? _lDataSYS.last.round().toString() : '-',
+                  style: const TextStyle(
+                    fontSize: 38.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const Text(
+                  'bpm',
+                  style: TextStyle(
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 50.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        //최저혈압
+                        const CommonButton(
+                          height: 25.0,
+                          width: 80.0,
+                          title: '최저혈압',
+                          buttonColor: ButtonColor.inactive,
+                          fontSize: 13.0,
+                        ),
+                        Text(
+                          _dataIsOK ? _lDataDIA.last.round().toString() : '-',
+                          style: const TextStyle(
+                            fontSize: 38.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const Text(
+                          'mmHg',
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    //최고혈압
+                    Column(
+                      children: [
+                        const CommonButton(
+                          height: 25.0,
+                          width: 80.0,
+                          title: '최고혈압',
+                          buttonColor: ButtonColor.inactive,
+                          fontSize: 13.0,
+                        ),
+                        Text(
+                          _dataIsOK ? _lDataPUL.last.round().toString() : '-',
+                          style: const TextStyle(
+                            fontSize: 38.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const Text(
+                          'mmHg',
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CommonButton(
+                      height: 40.0,
+                      width: 160.0,
+                      title: '저장',
+                      buttonColor: ButtonColor.inactive,
+                      fontSize: 16.0,
+                      onTap: _dataIsOK
+                          ? () async {
+                              var result = await context
+                                  .read<BleBpProvider>()
+                                  .postBloodPressure(
+                                    sys: _lDataSYS.last.round(),
+                                    dia: _lDataDIA.last.round(),
+                                    pul: _lDataPUL.last.round(),
                                   );
-                                });
-                          }
-                        : null,
-                  ),
-                  CommonButton(
-                    height: 40.0,
-                    width: 160.0,
-                    title: 'PDF 공유',
-                    buttonColor: ButtonColor.inactive,
-                    fontSize: 16.0,
-                    onTap: () {},
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CommonButton(
-                    height: 40.0,
-                    width: 160.0,
-                    title: '기록',
-                    buttonColor: ButtonColor.inactive,
-                    fontSize: 16.0,
-                    onTap: () {},
-                  ),
-                  CommonButton(
-                    height: 40.0,
-                    width: 160.0,
-                    title: '홈으로',
-                    buttonColor: ButtonColor.inactive,
-                    fontSize: 16.0,
-                    onTap: () {
-                      context.read<BleBpProvider>().dataClear();
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil('/main', (route) => false);
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30.0),
-            ],
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      contentPadding:
+                                          const EdgeInsets.all(30.0),
+                                      actionsPadding:
+                                          const EdgeInsets.all(10.0),
+                                      actions: [
+                                        GestureDetector(
+                                          onTap: () =>
+                                              Navigator.of(context).pop(),
+                                          child: const Text(
+                                            '확인',
+                                            style: TextStyle(fontSize: 18.0),
+                                          ),
+                                        ),
+                                      ],
+                                      content: Text(
+                                        // ignore: unrelated_type_equality_checks
+                                        result == BpSaveDataStatus.success
+                                            ? '데이터 저장에 성공했습니다.'
+                                            : '데이터 저장에 실패했습니다.',
+                                        style: const TextStyle(fontSize: 18.0),
+                                      ),
+                                    );
+                                  });
+                            }
+                          : null,
+                    ),
+                    CommonButton(
+                      height: 40.0,
+                      width: 160.0,
+                      title: 'PDF 공유',
+                      buttonColor: ButtonColor.inactive,
+                      fontSize: 16.0,
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CommonButton(
+                      height: 40.0,
+                      width: 160.0,
+                      title: '기록',
+                      buttonColor: ButtonColor.inactive,
+                      fontSize: 16.0,
+                      onTap: () {},
+                    ),
+                    CommonButton(
+                      height: 40.0,
+                      width: 160.0,
+                      title: '홈으로',
+                      buttonColor: ButtonColor.inactive,
+                      fontSize: 16.0,
+                      onTap: () {
+                        context.read<BleBpProvider>().dataClear();
+                        Navigator.of(context)
+                            .pushNamedAndRemoveUntil('/main', (route) => false);
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30.0),
+              ],
+            ),
           ),
         ),
       ),
