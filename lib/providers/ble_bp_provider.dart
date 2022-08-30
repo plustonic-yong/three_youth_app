@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -117,7 +118,6 @@ class BleBpProvider extends ChangeNotifier {
   Future<void> getLastBloodPressure() async {
     var pref = await SharedPreferences.getInstance();
     var response = await ApiBp.getBloodPressureService();
-
     int statusCode = response!.statusCode;
     if (statusCode == 401) {
       var refreshToken = pref.getString('refreshToken');
@@ -128,9 +128,12 @@ class BleBpProvider extends ChangeNotifier {
       final data = json.decode(utf8.decode(response!.bodyBytes));
       List<BpModel> bpList =
           (data as List).map((json) => BpModel.fromJson(json)).toList();
-
-      bpList.sort((a, b) => a.measureDatetime.compareTo(b.measureDatetime));
-      _lastBpHistory = bpList.last;
+      if (bpList.isNotEmpty) {
+        bpList.sort((a, b) => a.measureDatetime.compareTo(b.measureDatetime));
+        _lastBpHistory = bpList.last;
+      } else {
+        _lastBpHistory = null;
+      }
       notifyListeners();
     }
   }
