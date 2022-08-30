@@ -37,6 +37,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await context.read<BleBpProvider>().findIsPaired();
       await context.read<AuthProvider>().getUserInfo();
       await context.read<BleBpProvider>().getLastBloodPressure();
     });

@@ -110,6 +110,12 @@ class BleBpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> findIsPaired() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _isPaired = await prefs.setBool('isSphyFairing', true);
+    notifyListeners();
+  }
+
   void onChangeCurrentPage({required int page}) {
     _currentPage = page;
     notifyListeners();
@@ -210,22 +216,27 @@ class BleBpProvider extends ChangeNotifier {
   }
 
   Future<void> disConnectPairing() async {
+    log('disConnectPairing1');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("isSphyFairing", false);
+    log('disConnectPairing2');
     _isScanning = false;
     if (_scanStream != null) {
       try {
         _scanStream!.cancel();
       } catch (err) {
-        debugPrint('$err');
+        log('$err');
       }
     }
+    log('disConnectPairing3');
     _foundDeviceWaitingToConnect = false;
     _connected = false;
     _isPairing = false;
     _isPaired = false;
-    prefs.setBool("isSphyFairing", false);
-    _timer!.cancel();
+    // if (_timer!.isActive) {
+    //   _timer!.cancel();
+    // }
+    log('disConnectPairing4');
     notifyListeners();
   }
 
@@ -246,34 +257,38 @@ class BleBpProvider extends ChangeNotifier {
 
     _testID = id + '_bp';
 
-    debugPrint(
-        '-------------------tiemr ON tttttttttttttttttttttttttttttttttttttt');
+    log('-------------------tiemr ON tttttttttttttttttttttttttttttttttttttt');
     _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
       if (_iNeedDisconnect > 0) {
         _iNeedDisconnect--;
         if (_iNeedDisconnect == 0) {
-          debugPrint("################ FORCE CLOSE BLE ###########");
+          log("################ FORCE CLOSE BLE ###########");
           _isScanning = false;
           if (_scanStream != null) {
             try {
               _scanStream.cancel();
             } catch (err) {
-              debugPrint('$err');
+              log('$err');
             }
           }
           _foundDeviceWaitingToConnect = false;
           _connected = false;
           _isPairing = false;
+          // _isPaired = true;
+          notifyListeners();
           try {
+            Future.delayed(const Duration(milliseconds: 9000), () async {
+              _isPaired = true;
+              await prefs.setBool('isSphyFairing', true);
+              notifyListeners();
+            });
             _ble.deinitialize();
             _ble.initialize();
           } catch (err) {
-            debugPrint('$err');
+            log('$err');
           }
         }
       }
-
-      notifyListeners();
       if (_isScanning == false) {
         await startScan();
       }
@@ -303,13 +318,12 @@ class BleBpProvider extends ChangeNotifier {
       print('is _serviceUuid? $_serviceUuid');
       _scanStream =
           _ble.scanForDevices(withServices: [_serviceUuid]).listen((device) {
-        debugPrint("########## SCAN = " + device.name);
+        log("########## SCAN = " + device.name);
         print('is device?? $device');
         // Change this string to what you defined in Zephyr
         if (device.name.contains('A&D_UA-651BLE')) {
           _iFindCnt++;
-          debugPrint(
-              '##################### $_isPaired $isPairing $_foundDeviceWaitingToConnect $_connected');
+          log('##################### $_isPaired $isPairing $_foundDeviceWaitingToConnect $_connected');
           if ((_isPaired == false && isPairing == true) || _isPaired) {
             if (_foundDeviceWaitingToConnect == false) {
               _foundDeviceWaitingToConnect = true;
@@ -323,7 +337,7 @@ class BleBpProvider extends ChangeNotifier {
 
       _scanStream!.onDone(() {
         _isScanning = false;
-        debugPrint('##################### SCAN END ###############');
+        log('##################### SCAN END ###############');
       });
     }
     notifyListeners();
@@ -368,10 +382,10 @@ class BleBpProvider extends ChangeNotifier {
                   deviceId: event.deviceId);
 
               doSetTime();
-              debugPrint("############### END OF PR ################");
+              log("############### END OF PR ################");
             } else {
               _isPairing = false;
-              _isPaired = true;
+              // _isPaired = true;
               notifyListeners();
               try {
                 _rxCharacteristic = QualifiedCharacteristic(
@@ -385,15 +399,15 @@ class BleBpProvider extends ChangeNotifier {
                 _ssRx!.listen((data) {
                   try {
                     doPacket(data);
-                    debugPrint("############### DATA  ################");
+                    log("############### DATA  ################");
                   } catch (err) {
-                    debugPrint('$err');
+                    log('$err');
                   }
                 }, onError: (dynamic error) {
-                  debugPrint(error);
+                  log(error);
                 });
               } catch (err) {
-                debugPrint('$err');
+                log('$err');
               }
             }
             break;
@@ -401,7 +415,7 @@ class BleBpProvider extends ChangeNotifier {
         // Can add various state state updates on disconnect
         case DeviceConnectionState.disconnected:
           {
-            debugPrint("############### DISCONNECT ################");
+            log("############### DISCONNECT ################");
             _iNeedDisconnect = 0;
             _connected = false;
             _foundDeviceWaitingToConnect = false;
@@ -413,7 +427,7 @@ class BleBpProvider extends ChangeNotifier {
               // _ble.deinitialize();
               // _ble.initialize();
             } catch (err) {
-              debugPrint('$err');
+              log('$err');
             }
             break;
           }
@@ -451,21 +465,20 @@ class BleBpProvider extends ChangeNotifier {
 
       _iNeedDisconnect = 3;
       if (_isPaired == false) {
-        await prefs.setBool('isSphyFairing', true);
         // showPairFinishDialog(context);
         _isPairing = false;
-        _isPaired = true;
+        // _isPaired = true;
         notifyListeners();
       }
     } catch (err) {
-      debugPrint('$err');
+      log('$err');
     }
     try {
       _ble.deinitialize();
       _ble.initialize();
       notifyListeners();
     } catch (err) {
-      debugPrint('$err');
+      log('$err');
     }
   }
 
@@ -531,7 +544,7 @@ class BleBpProvider extends ChangeNotifier {
   //     _ble.deinitialize();
   //     _ble.initialize();
   //   } catch (err) {
-  //     debugPrint('$err');
+  //     log('$err');
   //   }
   //   notifyListeners();
   // }
@@ -551,13 +564,13 @@ class BleBpProvider extends ChangeNotifier {
   //   if (true) {
   //     _scanStream =
   //         _ble.scanForDevices(withServices: [serviceUuid]).listen((device) {
-  //       debugPrint("########## SCAN = " + device.name);
+  //       log("########## SCAN = " + device.name);
   //       // Change this string to what you defined in Zephyr
   //       if (device.name.contains('A&D_UA-651BLE')) {
   //         setState(() {
   //           iFindCnt++;
   //         });
-  //         debugPrint(
+  //         log(
   //             '##################### $_isPaired $isPairing $_foundDeviceWaitingToConnect $_connected');
   //         if ((_isPaired == false && isPairing == true) || _isPaired) {
   //           if (_foundDeviceWaitingToConnect == false) {
@@ -573,7 +586,7 @@ class BleBpProvider extends ChangeNotifier {
 
   //     _scanStream.onDone(() {
   //       _isScanning = false;
-  //       debugPrint('##################### SCAN END ###############');
+  //       log('##################### SCAN END ###############');
   //     });
   //   }
   // }
