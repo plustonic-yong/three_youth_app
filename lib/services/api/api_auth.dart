@@ -7,6 +7,7 @@ import 'package:http_interceptor/http_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/services/auth_interceptor.dart';
 import 'package:three_youth_app/utils/constants.dart' as Constants;
+import 'package:http/http.dart' as http;
 
 class ApiAuth {
   static Map<String, String> _getHeader() {
@@ -34,25 +35,40 @@ class ApiAuth {
     required String gender,
     required int height,
     required int weight,
+    required String img,
   }) async {
     try {
-      Client client = InterceptedClient.build(
-        interceptors: [AuthInterceptor()],
-      );
-      var response = await client.post(
+      // Client client = InterceptedClient.build(
+      //   interceptors: [AuthInterceptor()],
+      // );
+      // var response = await client.post(
+      //   Uri.parse('${Constants.API_HOST}/signup/google'),
+      //   body: json.encode({
+      //     'token': token,
+      //     "name": name,
+      //     "birth": birth,
+      //     "gender": gender,
+      //     "height": height,
+      //     "weight": weight,
+      //   }),
+      //   headers: _getHeader(),
+      // );
+      // final data = json.decode(utf8.decode(response.bodyBytes));
+      // return data;
+
+      var request = http.MultipartRequest(
+        'POST',
         Uri.parse('${Constants.API_HOST}/signup/google'),
-        body: json.encode({
-          'token': token,
-          "name": name,
-          "birth": birth,
-          "gender": gender,
-          "height": height,
-          "weight": weight,
-        }),
-        headers: _getHeader(),
       );
-      final data = json.decode(utf8.decode(response.bodyBytes));
-      return data;
+      request.fields['token'] = token;
+      request.fields['name'] = name;
+      request.fields['birth'] = birth;
+      request.fields['gender'] = gender;
+      request.fields['height'] = height.toString();
+      request.fields['weight'] = weight.toString();
+      request.files.add(await http.MultipartFile.fromPath('img', img));
+
+      var response = await http.Response.fromStream(await request.send());
     } catch (e) {
       print(e);
     }
@@ -65,22 +81,37 @@ class ApiAuth {
     required String gender,
     required int height,
     required int weight,
+    required String img,
   }) async {
     try {
-      Client client =
-          InterceptedClient.build(interceptors: [AuthInterceptor()]);
-      var response = await client.post(
+      // Client client =
+      //     InterceptedClient.build(interceptors: [AuthInterceptor()]);
+      // var response = await http.post(
+      //   Uri.parse('${Constants.API_HOST}/signup/kakao'),
+      //   body: json.encode({
+      //     'token': token,
+      //     "name": name,
+      //     "birth": birth,
+      //     "gender": gender,
+      //     "height": height,
+      //     "weight": weight,
+      //     "img": img,
+      //   }),
+      //   headers: _getHeader(),
+      // );
+      var request = http.MultipartRequest(
+        'POST',
         Uri.parse('${Constants.API_HOST}/signup/kakao'),
-        body: json.encode({
-          'token': token,
-          "name": name,
-          "birth": birth,
-          "gender": gender,
-          "height": height,
-          "weight": weight,
-        }),
-        headers: _getHeader(),
       );
+      request.fields['token'] = token;
+      request.fields['name'] = name;
+      request.fields['birth'] = birth;
+      request.fields['gender'] = gender;
+      request.fields['height'] = height.toString();
+      request.fields['weight'] = weight.toString();
+      request.files.add(await http.MultipartFile.fromPath('img', img));
+
+      var response = await http.Response.fromStream(await request.send());
       return response;
     } catch (e) {
       print(e);

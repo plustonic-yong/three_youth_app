@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,6 +21,7 @@ class AuthProvider extends ChangeNotifier {
     required GenderState gender,
     required String height,
     required String weight,
+    required String img,
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? idToken = sharedPreferences.getString('idToken');
@@ -33,6 +33,7 @@ class AuthProvider extends ChangeNotifier {
       gender: genderStr,
       height: int.parse(height),
       weight: int.parse(weight),
+      img: img,
     );
     if (response!.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
@@ -89,6 +90,7 @@ class AuthProvider extends ChangeNotifier {
     required GenderState gender,
     required String height,
     required String weight,
+    required String img,
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? kakaoAccessToken = sharedPreferences.getString('kakaoAccessToken');
@@ -100,6 +102,7 @@ class AuthProvider extends ChangeNotifier {
       gender: genderStr,
       height: int.parse(height),
       weight: int.parse(weight),
+      img: img,
     );
     int statusCode = response!.statusCode;
 

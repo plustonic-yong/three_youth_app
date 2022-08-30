@@ -37,17 +37,23 @@ class ProfileSettingScreen extends StatelessWidget {
               _userInfo != null
                   ? Row(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 32.0,
-                          child: _userInfo.imgUrl != ''
-                              ? Image.asset(
-                                  'assets/images/profile_img_1.png',
-                                )
-                              : Image.asset(
+                        _userInfo.imgUrl != ''
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(90.0),
+                                child: Image.network(
+                                  _userInfo.imgUrl,
+                                  fit: BoxFit.cover,
+                                  width: 64.0,
+                                  height: 64.0,
+                                ),
+                              )
+                            : CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 32.0,
+                                child: Image.asset(
                                   'assets/icons/ic_user.png',
                                 ),
-                        ),
+                              ),
                         const SizedBox(width: 10.0),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,

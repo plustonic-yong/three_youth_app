@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:three_youth_app/utils/enums.dart';
 
 class SignupProvider extends ChangeNotifier {
@@ -20,6 +19,8 @@ class SignupProvider extends ChangeNotifier {
   String get weight => _weight;
   DateTime _birth = DateTime.now();
   DateTime get birth => _birth;
+  XFile? _selectedImg;
+  XFile? get selectedImg => _selectedImg;
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController get nameController => _nameController;
@@ -52,6 +53,7 @@ class SignupProvider extends ChangeNotifier {
     _yearController.clear();
     _monthController.clear();
     _dayController.clear();
+    _selectedImg = null;
     notifyListeners();
   }
 
@@ -96,6 +98,16 @@ class SignupProvider extends ChangeNotifier {
 
   void onChangeGender({required GenderState genderState}) {
     _gender = genderState;
+    notifyListeners();
+  }
+
+  void onChangeProfileImg({required XFile value}) {
+    _selectedImg = value;
+    notifyListeners();
+  }
+
+  void onDeleteProfileImg() {
+    _selectedImg = null;
     notifyListeners();
   }
 

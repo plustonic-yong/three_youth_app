@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/screens/signup/signup_birth_gender_screen.dart';
@@ -28,6 +31,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
     String _weight = context.watch<SignupProvider>().weightController.text;
     GenderState _gender = context.read<SignupProvider>().gender;
     DateTime _birth = context.watch<SignupProvider>().birth;
+    XFile? _selectedImg = context.watch<SignupProvider>().selectedImg;
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -136,7 +140,11 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                           : ButtonColor.inactive
                                       : _currentPage == 3
                                           ? ButtonColor.primary
-                                          : ButtonColor.inactive,
+                                          : _currentPage == 4
+                                              ? _selectedImg != null
+                                                  ? ButtonColor.primary
+                                                  : ButtonColor.inactive
+                                              : ButtonColor.primary,
                               onTap: () async {
                                 if (_currentPage == 1 && _height == '') {
                                   return;
@@ -144,7 +152,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                 if (_currentPage == 2 && _weight == '') {
                                   return;
                                 }
-                                if (_currentPage == 4) {
+                                if (_currentPage == 4 && _selectedImg != null) {
                                   var signupState = context
                                       .read<SignupProvider>()
                                       .signupState;
@@ -157,6 +165,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                           gender: _gender,
                                           height: _height,
                                           weight: _weight,
+                                          img: _selectedImg.path,
                                         );
                                     if (result == SignupStatus.success) {
                                       showDialog(
@@ -192,6 +201,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                           gender: _gender,
                                           height: _height,
                                           weight: _weight,
+                                          img: _selectedImg.path,
                                         );
 
                                     if (result == SignupStatus.success) {
