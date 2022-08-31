@@ -30,9 +30,47 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.620834252127-gfep92avvtggm430a2bb4amno7svjrrt</string>
+				<string>[UrlScheme]</string>
 			</array>
 		</dict>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>naversearchapp</string>
+		<string>naversearchthirdlogin</string>
+	</array>
+	<key>naverServiceAppUrlScheme</key>
+	<string>[UrlScheme]</string>
+	<key>naverConsumerKey</key>
+	<string>[ConsumerKey]</string>
+	<key>naverConsumerSecret</key>
+	<string>[ConsumerSecret]</string>
+	<key>naverServiceAppName</key>
+	<string>[ServiceAppName]</string>
+	<!-- http allows configurations -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>naver.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>naver.net</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>

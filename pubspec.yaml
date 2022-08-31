@@ -56,6 +56,7 @@ dependencies:
   table_calendar: ^3.0.6
   scroll_date_picker: ^3.6.0
   image_picker: ^0.8.5+3
+  flutter_naver_login: ^1.6.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0
