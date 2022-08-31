@@ -99,11 +99,11 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        //최고혈압
+                        //최저혈압
                         const CommonButton(
                           height: 25.0,
                           width: 80.0,
-                          title: '최고혈압',
+                          title: '최저혈압',
                           buttonColor: ButtonColor.inactive,
                           fontSize: 13.0,
                         ),
@@ -125,13 +125,13 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                         ),
                       ],
                     ),
-                    //최저혈압
+                    //최고혈압
                     Column(
                       children: [
                         const CommonButton(
                           height: 25.0,
                           width: 80.0,
-                          title: '최저혈압',
+                          title: '최고혈압',
                           buttonColor: ButtonColor.inactive,
                           fontSize: 13.0,
                         ),

@@ -237,9 +237,18 @@ class _BleBpConnectPairingTestScreenState
         CommonButton(
           width: MediaQuery.of(context).size.width,
           height: 50.0,
+          title: '홈으로',
+          buttonColor: ButtonColor.inactive,
+          onTap: () => Navigator.of(context).pushNamed('/main'),
+        ),
+        const SizedBox(height: 10.0),
+        CommonButton(
+          width: MediaQuery.of(context).size.width,
+          height: 50.0,
           title: '측정화면으로 이동',
           buttonColor: ButtonColor.primary,
-          onTap: () => Navigator.of(context).pushNamed('/scan/mesurement'),
+          onTap: () => Navigator.of(context)
+              .pushNamedAndRemoveUntil('/scan/mesurement', (route) => false),
         ),
         const SizedBox(height: 30.0)
       ],
