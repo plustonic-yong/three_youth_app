@@ -9,6 +9,7 @@ import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
+import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_screen_prev.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -204,22 +205,22 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                           ],
                         ),
                         const SizedBox(height: 25.0),
-                        // CommonButton(
-                        //   width: 135.0,
-                        //   height: 40.0,
-                        //   title: '테스트',
-                        //   buttonColor: ButtonColor.inactive,
-                        //   onTap: () {
-                        //     Navigator.of(context).push(
-                        //       MaterialPageRoute(
-                        //         builder: (context) => BleECGConnectScreenPrev(),
-                        //       ),
-                        //     );
-                        //     Provider.of<CurrentUser>(context, listen: false)
-                        //         .isER2000S = true;
-                        //   },
-                        // ),
-                        // const SizedBox(height: 25.0),
+                        CommonButton(
+                          width: MediaQuery.of(context).size.width,
+                          height: 40.0,
+                          title: '이전 코드 연동/측정 테스트',
+                          buttonColor: ButtonColor.inactive,
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BleECGConnectScreenPrev(),
+                              ),
+                            );
+                            Provider.of<CurrentUser>(context, listen: false)
+                                .isER2000S = true;
+                          },
+                        ),
+                        const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

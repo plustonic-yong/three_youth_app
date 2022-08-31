@@ -235,7 +235,7 @@ class BleECGConnectScreenPrevState extends State<BleECGConnectScreenPrev> {
         ],
       ),
       onPressed: () async {
-        await doTestStart();
+        // await doTestStart();
 
         if (await Permission.contacts.request().isGranted) {
           // Either the permission was already granted before or the user just granted it.
@@ -439,9 +439,10 @@ class BleECGConnectScreenPrevState extends State<BleECGConnectScreenPrev> {
   // 111111111111111111111111111
   void doPacket(List<int> value) async {
     if (_bleState != 3) {
-      _bleState = 3;
+      setState(() {
+        _bleState = 3;
+      });
     }
-
     // if(isTest != 1)
     //   {
     //     return;
