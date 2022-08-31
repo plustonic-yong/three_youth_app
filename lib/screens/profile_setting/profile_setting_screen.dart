@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/user_provider.dart';
@@ -26,7 +25,7 @@ class ProfileSettingScreen extends StatelessWidget {
         foundation.defaultTargetPlatform == foundation.TargetPlatform.android
             ? kBottomNavigationBarHeight + 27.0
             : 140.0;
-    UserModel? _userInfo = context.read<UserProvider>().userInfo;
+    UserModel? _userInfo = context.watch<UserProvider>().userInfo;
     String _height = context.watch<UserProvider>().height;
     String _weight = context.watch<UserProvider>().weight;
     return SafeArea(
@@ -41,23 +40,98 @@ class ProfileSettingScreen extends StatelessWidget {
               _userInfo != null
                   ? Row(
                       children: [
-                        _userInfo.imgUrl != ''
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(90.0),
-                                child: Image.network(
-                                  _userInfo.imgUrl,
-                                  fit: BoxFit.cover,
-                                  width: 64.0,
-                                  height: 64.0,
+                        Stack(
+                          fit: StackFit.loose,
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                final ImagePicker _picker = ImagePicker();
+                                XFile? value = await _picker.pickImage(
+                                  source: ImageSource.gallery,
+                                  maxWidth: 750,
+                                  maxHeight: 750,
+                                );
+                                if (value != null) {
+                                  var result = await context
+                                      .read<UserProvider>()
+                                      .updateUser(
+                                        height: _height,
+                                        weight: _weight,
+                                        img: value.path,
+                                      );
+
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          contentPadding:
+                                              const EdgeInsets.all(30.0),
+                                          actionsPadding:
+                                              const EdgeInsets.all(10.0),
+                                          actions: [
+                                            GestureDetector(
+                                              onTap: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: const Text(
+                                                '확인',
+                                                style:
+                                                    TextStyle(fontSize: 18.0),
+                                              ),
+                                            ),
+                                          ],
+                                          content: Text(
+                                            result
+                                                ? '프로필 사진이 수정되었습니다.'
+                                                : '프로필 사진 수정에 실패했습니다.',
+                                            style:
+                                                const TextStyle(fontSize: 18.0),
+                                          ),
+                                        );
+                                      });
+                                  await context
+                                      .read<UserProvider>()
+                                      .getUserInfo();
+                                }
+                              },
+                              child: _userInfo.imgUrl != ''
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(90.0),
+                                      child: Image.network(
+                                        _userInfo.imgUrl,
+                                        fit: BoxFit.cover,
+                                        width: 64.0,
+                                        height: 64.0,
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 32.0,
+                                      child: Image.asset(
+                                        'assets/icons/ic_user.png',
+                                      ),
+                                    ),
+                            ),
+                            Positioned(
+                              right: 0.0,
+                              bottom: 0.0,
+                              child: Container(
+                                width: 30.0,
+                                height: 30.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(100.0),
                                 ),
-                              )
-                            : CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 32.0,
-                                child: Image.asset(
-                                  'assets/icons/ic_user.png',
+                                child: Center(
+                                  child: Image.asset(
+                                    'assets/images/camera.png',
+                                    width: 20.0,
+                                    height: 20.0,
+                                  ),
                                 ),
                               ),
+                            ),
+                          ],
+                        ),
                         const SizedBox(width: 10.0),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -98,12 +172,34 @@ class ProfileSettingScreen extends StatelessWidget {
                 width: _screenWidth,
                 title: '저장',
                 buttonColor: ButtonColor.inactive,
-                onTap: () {
-                  log('$_height, $_weight');
-                  // context.read<AuthProvider>().updateUser(
-                  //       height: _height,
-                  //       weight: _weight,
-                  //     );
+                onTap: () async {
+                  var result = await context.read<UserProvider>().updateUser(
+                        height: _height,
+                        weight: _weight,
+                      );
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          contentPadding: const EdgeInsets.all(30.0),
+                          actionsPadding: const EdgeInsets.all(10.0),
+                          actions: [
+                            GestureDetector(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: const Text(
+                                '확인',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                            ),
+                          ],
+                          content: Text(
+                            result ? '프로필이 수정되었습니다.' : '프로필 수정에 실패했습니다.',
+                            style: const TextStyle(fontSize: 18.0),
+                          ),
+                        );
+                      });
+
+                  await context.read<UserProvider>().getUserInfo();
                 },
               ),
               const SizedBox(height: 20.0),

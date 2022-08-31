@@ -220,7 +220,7 @@ class ApiAuth {
       var request =
           http.MultipartRequest("PUT", Uri.parse('${Constants.API_HOST}/me'));
       request.fields['height'] = height.toString();
-      request.fields['weight'] = height.toString();
+      request.fields['weight'] = weight.toString();
       if (img != null) {
         request.files.add(await http.MultipartFile.fromPath('img', img));
       }
