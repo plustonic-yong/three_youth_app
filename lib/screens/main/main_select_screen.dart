@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/models/bp_model.dart';
 import 'package:three_youth_app/models/user_model.dart';
-import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
+import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
@@ -36,13 +36,13 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await context.read<BleBpProvider>().findIsPaired();
-      await context.read<AuthProvider>().getUserInfo();
-      await context.read<BleBpProvider>().getLastBloodPressure();
-    });
     Future.delayed(Duration.zero, () async {
       var prefs = await SharedPreferences.getInstance();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        await context.read<BleBpProvider>().findIsPaired();
+        await context.read<UserProvider>().getUserInfo();
+        await context.read<BleBpProvider>().getLastBloodPressure();
+      });
       setState(() {
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
@@ -68,7 +68,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   Widget build(BuildContext context) {
     _isPaired = context.watch<BleBpProvider>().isPaired;
     BpModel? _lastBpHistory = context.watch<BleBpProvider>().lastBpHistory;
-    UserModel? _userInfo = context.watch<AuthProvider>().userInfo;
+    UserModel? _userInfo = context.watch<UserProvider>().userInfo;
     return isLoading
         ? spinkit
         : SafeArea(
@@ -204,6 +204,22 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                           ],
                         ),
                         const SizedBox(height: 25.0),
+                        // CommonButton(
+                        //   width: 135.0,
+                        //   height: 40.0,
+                        //   title: '테스트',
+                        //   buttonColor: ButtonColor.inactive,
+                        //   onTap: () {
+                        //     Navigator.of(context).push(
+                        //       MaterialPageRoute(
+                        //         builder: (context) => BleECGConnectScreenPrev(),
+                        //       ),
+                        //     );
+                        //     Provider.of<CurrentUser>(context, listen: false)
+                        //         .isER2000S = true;
+                        //   },
+                        // ),
+                        // const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

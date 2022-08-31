@@ -205,6 +205,36 @@ class ApiAuth {
     }
   }
 
+  static Future<Response?> updateUserService({
+    required int height,
+    required int weight,
+    String? img,
+  }) async {
+    try {
+      var pref = await SharedPreferences.getInstance();
+      var refreshToken = pref.getString('refreshToken');
+      var accessToken = pref.getString('accessToken');
+      if (accessToken == null) {
+        await ApiAuth.getTokenService(refreshToken: refreshToken!);
+      }
+      var request =
+          http.MultipartRequest("PUT", Uri.parse('${Constants.API_HOST}/me'));
+      request.fields['height'] = height.toString();
+      request.fields['weight'] = height.toString();
+      if (img != null) {
+        request.files.add(await http.MultipartFile.fromPath('img', img));
+      }
+      request.headers.addAll({
+        HttpHeaders.authorizationHeader: "Bearer $accessToken",
+        "Content-Type": "application/json",
+      });
+      var response = await http.Response.fromStream(await request.send());
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static Future<Response?> deleteUserService() async {
     try {
       var pref = await SharedPreferences.getInstance();

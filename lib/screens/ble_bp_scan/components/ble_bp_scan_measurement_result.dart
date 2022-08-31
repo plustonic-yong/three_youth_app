@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/models/user_model.dart';
-import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
+import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ class BleBpScanMeasurementResult extends StatelessWidget {
     List<double> _lDataSYS = context.read<BleBpProvider>().lDataSYS;
     List<double> _lDataDIA = context.read<BleBpProvider>().lDataDIA;
     List<double> _lDataPUL = context.read<BleBpProvider>().lDataPUL;
-    UserModel? _userInfo = context.watch<AuthProvider>().userInfo;
+    UserModel? _userInfo = context.watch<UserProvider>().userInfo;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

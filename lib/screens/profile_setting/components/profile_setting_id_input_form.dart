@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/models/user_model.dart';
-import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:three_youth_app/providers/user_provider.dart';
 
 class ProfileSettingIdInputForm extends StatelessWidget {
   const ProfileSettingIdInputForm({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class ProfileSettingIdInputForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
+    UserModel? _userInfo = context.read<UserProvider>().userInfo;
     return Row(
       children: [
         const Text(

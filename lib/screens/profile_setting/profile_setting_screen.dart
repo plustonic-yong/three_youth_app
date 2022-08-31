@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
+import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_birth_input_form.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_id_input_form.dart';
 import 'package:three_youth_app/screens/profile_setting/components/profile_setting_height_input_form.dart';
@@ -18,13 +21,14 @@ class ProfileSettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double _screenWidth = MediaQuery.of(context).size.width;
     double botomNavigationBarHeight =
         foundation.defaultTargetPlatform == foundation.TargetPlatform.android
             ? kBottomNavigationBarHeight + 27.0
             : 140.0;
-    UserModel? _userInfo = context.read<AuthProvider>().userInfo;
+    UserModel? _userInfo = context.read<UserProvider>().userInfo;
+    String _height = context.watch<UserProvider>().height;
+    String _weight = context.watch<UserProvider>().weight;
     return SafeArea(
       child: SizedBox(
         height: MediaQuery.of(context).size.height - botomNavigationBarHeight,
@@ -91,9 +95,16 @@ class ProfileSettingScreen extends StatelessWidget {
               const SizedBox(height: 20.0),
               CommonButton(
                 height: 40.0,
-                width: width,
+                width: _screenWidth,
                 title: '저장',
                 buttonColor: ButtonColor.inactive,
+                onTap: () {
+                  log('$_height, $_weight');
+                  // context.read<AuthProvider>().updateUser(
+                  //       height: _height,
+                  //       weight: _weight,
+                  //     );
+                },
               ),
               const SizedBox(height: 20.0),
               //ID
@@ -151,7 +162,7 @@ class ProfileSettingScreen extends StatelessWidget {
                     fontSize: 16.0,
                     onTap: () async {
                       bool result =
-                          await context.read<AuthProvider>().deleteUser();
+                          await context.read<UserProvider>().deleteUser();
                       showDialog(
                         context: context,
                         builder: (context) {

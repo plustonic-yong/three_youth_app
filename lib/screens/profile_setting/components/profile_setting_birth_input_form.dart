@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:three_youth_app/providers/auth_provider.dart';
+import 'package:three_youth_app/providers/user_provider.dart';
 
 class ProfileSettingBirthInputForm extends StatelessWidget {
   const ProfileSettingBirthInputForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String? _birth = context.watch<AuthProvider>().userInfo!.birth;
+    String? _birth = context.watch<UserProvider>().userInfo!.birth;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

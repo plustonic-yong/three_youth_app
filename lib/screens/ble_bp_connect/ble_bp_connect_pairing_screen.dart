@@ -115,13 +115,14 @@ class _BleBpConnectPairingTestScreenState
       backgroundColor: Colors.transparent,
       title: const Text('기기 연동'),
       centerTitle: true,
-      leading: GestureDetector(
-        onTap: () async {
-          await context.read<BleBpProvider>().disConnectPairing();
-          Navigator.of(context).pop();
-        },
-        child: const Icon(Icons.arrow_back_ios),
-      ),
+      leading: Container(),
+      // GestureDetector(
+      //   onTap: () async {
+      //     await context.read<BleBpProvider>().disConnectPairing();
+      //     Navigator.of(context).pop();
+      //   },
+      //   child: const Icon(Icons.arrow_back_ios),
+      // ),
     );
   }
 
@@ -156,40 +157,44 @@ class _BleBpConnectPairingTestScreenState
     _lDataSYS = context.read<BleBpProvider>().lDataSYS;
     _lDataDIA = context.read<BleBpProvider>().lDataDIA;
     _lDataPUL = context.read<BleBpProvider>().lDataPUL;
-    return Stack(
-      children: [
-        //배경이미지
-        Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/bg.png'),
-              fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Stack(
+        children: [
+          //배경이미지
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/bg.png'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        Scaffold(
-          appBar: AppBar(
+          Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              title: const Text('기기 연동'),
+              centerTitle: true,
+              leading: Container(),
+              // GestureDetector(
+              //   onTap: () async {
+              //     await context.read<BleBpProvider>().disConnectPairing();
+              //     Navigator.of(context).pop();
+              //   },
+              //   child: const Icon(Icons.arrow_back_ios),
+              // ),
+            ),
             backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: const Text('기기 연동'),
-            centerTitle: true,
-            leading: GestureDetector(
-              onTap: () async {
-                await context.read<BleBpProvider>().disConnectPairing();
-                Navigator.of(context).pop();
-              },
-              child: const Icon(Icons.arrow_back_ios),
-            ),
+            body: isLoading
+                ? spinkit
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: _isPaired ? uiScan(context) : uiPairing(context),
+                  ),
           ),
-          backgroundColor: Colors.transparent,
-          body: isLoading
-              ? spinkit
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: _isPaired ? uiScan(context) : uiPairing(context),
-                ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
