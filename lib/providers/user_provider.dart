@@ -46,9 +46,7 @@ class UserProvider extends ChangeNotifier {
     int statusCode = response!.statusCode;
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      log('user data: $data');
       UserModel userInfo = UserModel.fromJson(data);
-      log('user model: ${userInfo.gender}');
       _userInfo = userInfo;
       _height = _userInfo!.height.toString();
       _weight = _userInfo!.weight.toString();
@@ -75,7 +73,6 @@ class UserProvider extends ChangeNotifier {
     int stautsCode = response!.statusCode;
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      log('update? ${data}');
       int status = data['status'];
       if (status == -1) {
         return false;

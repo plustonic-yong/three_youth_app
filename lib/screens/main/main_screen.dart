@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/providers/ble_bp_provider.dart';
+import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/screens/history/history_screen.dart';
 import 'package:three_youth_app/screens/main/main_select_screen.dart';
 import 'package:three_youth_app/screens/profile_setting/profile_setting_screen.dart';
 import 'package:three_youth_app/utils/color.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -37,6 +40,12 @@ class _MainScreenState extends State<MainScreen> {
         await prefs.setString('ecgpincode', '');
       }
       var ecgpincode = prefs.getString('ecgpincode');
+
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        await context.read<BleBpProvider>().findIsPaired();
+        await context.read<UserProvider>().getUserInfo();
+        await context.read<BleBpProvider>().getLastBloodPressure();
+      });
 
       // var isSphyFairing = prefs.getBool('isSphyFairing') ?? false;
       // var isErFairing = prefs.getBool('isErFairing') ?? false;

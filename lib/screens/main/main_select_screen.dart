@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/models/bp_model.dart';
 import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
@@ -38,12 +37,6 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      var prefs = await SharedPreferences.getInstance();
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-        await context.read<BleBpProvider>().findIsPaired();
-        await context.read<UserProvider>().getUserInfo();
-        await context.read<BleBpProvider>().getLastBloodPressure();
-      });
       setState(() {
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
