@@ -158,6 +158,24 @@ class ApiAuth {
     }
   }
 
+  static Future<Response?> loginNaverService({required String token}) async {
+    try {
+      Client client = InterceptedClient.build(interceptors: [
+        AuthInterceptor(),
+      ]);
+      var response = await client.post(
+        Uri.parse('${Constants.API_HOST}/login/naver'),
+        headers: _getHeader(),
+        body: json.encode({
+          'token': token,
+        }),
+      );
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static Future<void> getTokenService({required String refreshToken}) async {
     try {
       var pref = await SharedPreferences.getInstance();

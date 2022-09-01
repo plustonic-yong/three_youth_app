@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,7 +64,10 @@ class AuthProvider extends ChangeNotifier {
     int statusCode = response!.statusCode;
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      log('ddaa: $data');
+      int status = data['status'];
+      if (status == 2) {
+        return LoginStatus.noAccount;
+      }
       String accessToken = data['accessToken'] ?? '';
       String refreshToken = data['refreshToken'] ?? '';
       if (accessToken == '') {
@@ -206,6 +210,58 @@ class AuthProvider extends ChangeNotifier {
         return LoginStatus.failed;
       }
     }
+  }
+
+  //naver signup
+  Future<void> signupNaver({
+    required String name,
+    required DateTime birth,
+    required GenderState gender,
+    required String height,
+    required String weight,
+    required String img,
+  }) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  //naver login
+  Future<LoginStatus> loginNaver() async {
+    log('1');
+    var sharedPreferences = await SharedPreferences.getInstance();
+    log('2');
+    final NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
+    log('3');
+    NaverAccessToken naverTokens = await FlutterNaverLogin.currentAccessToken;
+    log('$naverLoginResult, ${naverTokens.accessToken}, ${naverTokens.refreshToken}');
+    var response =
+        await ApiAuth.loginNaverService(token: naverTokens.accessToken);
+
+    int statusCode = response!.statusCode;
+    log('status code: $statusCode');
+    if (statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      int status = data['status'];
+      log('status: $status');
+      if (status == 2) {
+        log('no accoont');
+        return LoginStatus.noAccount;
+      }
+      String accessToken = data['accessToken'];
+      String refreshToken = data['refreshToken'];
+      sharedPreferences.setString('accessToken', accessToken);
+      sharedPreferences.setString('refreshToken', refreshToken);
+      sharedPreferences.setString('lastLoginMethod', 'naver');
+      return LoginStatus.success;
+    } else if (statusCode == 404) {
+      return LoginStatus.noAccount;
+    } else {
+      return LoginStatus.failed;
+    }
+  }
+
+  Future<void> naverLogout() async {
+    final NaverLoginResult naverLogoutResult = await FlutterNaverLogin.logOut();
+    log('$naverLogoutResult');
   }
 
   Future<void> logout() async {

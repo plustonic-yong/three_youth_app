@@ -1,5 +1,7 @@
 // ignore_for_file: use_full_hex_values_for_flutter_colors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:provider/provider.dart';
@@ -8,6 +10,7 @@ import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/widget/common/common_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -383,63 +386,123 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: height * 0.02),
                     //네이버 로그인
-                    // Column(
-                    //   children: [
-                    //     GestureDetector(
-                    //       onTap: () => Navigator.of(context).pushNamed('/main'),
-                    //       child: Container(
-                    //         width: width * 0.48,
-                    //         height: height * 0.05,
-                    //         padding:
-                    //             const EdgeInsets.symmetric(horizontal: 12.0),
-                    //         decoration: BoxDecoration(
-                    //           color: lastLoginMethod == 'naver'
-                    //               ? ColorAssets.unselectedBottombar
-                    //               : Colors.white,
-                    //           boxShadow: [
-                    //             BoxShadow(
-                    //               color: const Color(0xff00000026)
-                    //                   .withOpacity(0.15),
-                    //               spreadRadius: 5.0,
-                    //               blurRadius: 7.0,
-                    //               offset: const Offset(
-                    //                 6,
-                    //                 8,
-                    //               ), // changes position of shadow
-                    //             ),
-                    //           ],
-                    //           borderRadius:
-                    //               BorderRadius.circular(width * 0.048),
-                    //         ),
-                    //         child: Row(
-                    //           children: [
-                    //             Image.asset(
-                    //               'assets/icons/naver.png',
-                    //               width: width * 0.04,
-                    //             ),
-                    //             SizedBox(width: width * 0.048),
-                    //             const Text(
-                    //               '네이버 로그인',
-                    //               style: TextStyle(
-                    //                 color: Colors.black,
-                    //                 fontSize: 16.0,
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     lastLoginMethod == 'naver'
-                    //         ? const Text(
-                    //             '마지막으로 접속한 계정입니다.',
-                    //             style: TextStyle(
-                    //               color: Colors.white,
-                    //             ),
-                    //           )
-                    //         : Container(),
-                    //   ],
-                    // ),
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            var result =
+                                await context.read<AuthProvider>().loginNaver();
+                            log('na result: $result');
+                            if (result == LoginStatus.success) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/main',
+                                (route) => false,
+                              );
+                            } else if (result == LoginStatus.noAccount) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      contentPadding:
+                                          const EdgeInsets.all(30.0),
+                                      actionsPadding:
+                                          const EdgeInsets.all(10.0),
+                                      actions: [
+                                        GestureDetector(
+                                          onTap: () =>
+                                              Navigator.of(context).pop(),
+                                          child: const Text(
+                                            '취소',
+                                            style: TextStyle(fontSize: 18.0),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10.0),
+                                        GestureDetector(
+                                          onTap: () {
+                                            context
+                                                .read<SignupProvider>()
+                                                .onChangeSignupState(
+                                                  value: SignupState.naver,
+                                                );
+                                            Navigator.of(context)
+                                                .pushNamed('/signup/agreement');
+                                          },
+                                          child: const Text(
+                                            '확인',
+                                            style: TextStyle(fontSize: 18.0),
+                                          ),
+                                        ),
+                                      ],
+                                      content: const Text(
+                                        '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
+                                        style: TextStyle(fontSize: 18.0),
+                                      ),
+                                    );
+                                  });
+                            }
+                          },
+                          child: Container(
+                            width: width * 0.48,
+                            height: height * 0.05,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            decoration: BoxDecoration(
+                              color: lastLoginMethod == 'naver'
+                                  ? ColorAssets.unselectedBottombar
+                                  : Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xff00000026)
+                                      .withOpacity(0.15),
+                                  spreadRadius: 5.0,
+                                  blurRadius: 7.0,
+                                  offset: const Offset(
+                                    6,
+                                    8,
+                                  ), // changes position of shadow
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.circular(width * 0.048),
+                            ),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  'assets/icons/naver.png',
+                                  width: width * 0.04,
+                                ),
+                                SizedBox(width: width * 0.048),
+                                const Text(
+                                  '네이버 로그인',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        lastLoginMethod == 'naver'
+                            ? const Text(
+                                '마지막으로 접속한 계정입니다.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
                     SizedBox(height: height * 0.02),
+                    CommonButton(
+                      height: 40.0,
+                      width: 140.0,
+                      title: '네아로아웃',
+                      buttonColor: ButtonColor.orange,
+                      onTap: () {
+                        context.read<AuthProvider>().naverLogout();
+                      },
+                    ),
                     const Spacer(),
                     Text(
                       '제3의 청춘 주식회사',
