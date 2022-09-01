@@ -121,6 +121,36 @@ class ApiAuth {
     }
   }
 
+  static Future<Response?> signupNaverService({
+    required String token,
+    required String name,
+    required String birth,
+    required String gender,
+    required double height,
+    required double weight,
+    required String img,
+  }) async {
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${Constants.API_HOST}/signup/naver'),
+      );
+      request.fields['token'] = token;
+      request.fields['name'] = name;
+      request.fields['birth'] = birth;
+      request.fields['gender'] = gender;
+      request.fields['height'] = height.toString();
+      request.fields['weight'] = weight.toString();
+      request.files.add(await http.MultipartFile.fromPath('img', img));
+      request.headers.addAll(_getHeader());
+
+      var response = await http.Response.fromStream(await request.send());
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static Future<Response?> loginGoogleService({required String token}) async {
     try {
       Client client = InterceptedClient.build(interceptors: [

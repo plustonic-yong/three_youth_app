@@ -45,7 +45,9 @@ class UserProvider extends ChangeNotifier {
     int statusCode = response!.statusCode;
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
+      log('user data: $data');
       UserModel userInfo = UserModel.fromJson(data);
+      log('user model: $userInfo');
       _userInfo = userInfo;
       _height = _userInfo!.height.toString();
       _weight = _userInfo!.weight.toString();
@@ -55,6 +57,7 @@ class UserProvider extends ChangeNotifier {
       String? refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       final data = json.decode(utf8.decode(response.bodyBytes));
+      log('user data: $data');
       UserModel userInfo = UserModel.fromJson(data);
       _userInfo = userInfo;
       notifyListeners();

@@ -154,7 +154,6 @@ class AuthProvider extends ChangeNotifier {
       }
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
-        sharedPreferences.setString('kakaoAccessToken', token.accessToken);
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
 
@@ -163,6 +162,7 @@ class AuthProvider extends ChangeNotifier {
           final data = json.decode(utf8.decode(response.bodyBytes));
           int status = data['status'];
           if (status == 2) {
+            sharedPreferences.setString('kakaoAccessToken', token.accessToken);
             return LoginStatus.noAccount;
           }
           String accessToken = data['accessToken'];
@@ -213,7 +213,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   //naver signup
-  Future<void> signupNaver({
+  Future<SignupStatus> signupNaver({
     required String name,
     required DateTime birth,
     required GenderState gender,
@@ -222,33 +222,59 @@ class AuthProvider extends ChangeNotifier {
     required String img,
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
+    String? naverAccessToken = sharedPreferences.getString('naverAccessToken');
+    String genderStr = gender == GenderState.man ? "W" : "W";
+    log('$name, $birth, $gender,$height,$weight,$img');
+    var response = await ApiAuth.signupNaverService(
+      token: naverAccessToken!,
+      name: name,
+      birth: birth.toString(),
+      gender: genderStr,
+      height: double.parse(height),
+      weight: double.parse(weight),
+      img: img,
+    );
+    log('11: ${response!.statusCode}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      log('200');
+      int status = data['status'];
+      if (status == -1) {
+        log('errororor');
+        return SignupStatus.error;
+      }
+      log('200');
+      String accessToken = data['accessToken'] ?? '';
+      String refreshToken = data['refreshToken'] ?? '';
+      sharedPreferences.setString('accessToken', accessToken);
+      sharedPreferences.setString('refreshToken', refreshToken);
+      return SignupStatus.success;
+    }
+    log('err');
+    return SignupStatus.error;
   }
 
   //naver login
   Future<LoginStatus> loginNaver() async {
-    log('1');
     var sharedPreferences = await SharedPreferences.getInstance();
-    log('2');
     final NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
-    log('3');
     NaverAccessToken naverTokens = await FlutterNaverLogin.currentAccessToken;
     log('$naverLoginResult, ${naverTokens.accessToken}, ${naverTokens.refreshToken}');
     var response =
         await ApiAuth.loginNaverService(token: naverTokens.accessToken);
 
     int statusCode = response!.statusCode;
-    log('status code: $statusCode');
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       int status = data['status'];
-      log('status: $status');
       if (status == 2) {
-        log('no accoont');
+        sharedPreferences.setString(
+            'naverAccessToken', naverTokens.accessToken);
         return LoginStatus.noAccount;
       }
       String accessToken = data['accessToken'];
       String refreshToken = data['refreshToken'];
-      sharedPreferences.setString('accessToken', accessToken);
+      sharedPreferences.setString('naverAccessToken', accessToken);
       sharedPreferences.setString('refreshToken', refreshToken);
       sharedPreferences.setString('lastLoginMethod', 'naver');
       return LoginStatus.success;

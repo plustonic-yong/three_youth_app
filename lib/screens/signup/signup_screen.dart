@@ -228,6 +228,43 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                         },
                                       );
                                     }
+                                  } else if (signupState == SignupState.naver) {
+                                    log('naver');
+                                    var result = await context
+                                        .read<AuthProvider>()
+                                        .signupNaver(
+                                          name: _name,
+                                          birth: _birth,
+                                          gender: _gender,
+                                          height: _height,
+                                          weight: _weight,
+                                          img: _selectedImg.path,
+                                        );
+                                    if (result == SignupStatus.success) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content:
+                                                const Text('회원가입이 완료되었습니다.'),
+                                            actions: [
+                                              GestureDetector(
+                                                onTap: () => Navigator.of(
+                                                        context)
+                                                    .pushNamedAndRemoveUntil(
+                                                        '/main',
+                                                        (route) => false),
+                                                child: const Text(
+                                                  '확인',
+                                                  style:
+                                                      TextStyle(fontSize: 18.0),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
                                   }
                                 }
                                 setState(() {

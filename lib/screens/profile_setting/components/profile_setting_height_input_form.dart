@@ -9,7 +9,7 @@ class ProfileSettingHeightInputForm extends StatelessWidget {
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
     double _screenHeight = MediaQuery.of(context).size.height;
-    int? _height = context.watch<UserProvider>().userInfo!.height;
+    double? _height = context.watch<UserProvider>().userInfo!.height;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

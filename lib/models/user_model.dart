@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 class UserModel {
   final String name;
   final String birth;
   final String gender;
-  final int height;
-  final int weight;
+  final double height;
+  final double weight;
   final String imgUrl;
   final String code;
 
@@ -20,9 +22,9 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         name: json['name'] ?? '',
         birth: json['birth'] ?? '',
-        gender: json['gender'] ?? '',
-        height: json['height'] ?? 0,
-        weight: json['weight'] ?? 0,
+        gender: json['gender'] ?? 'M',
+        height: double.parse(json['height']),
+        weight: double.parse(json['weight']),
         imgUrl: json['imgUrl'] ?? '',
         code: json['code'] ?? '',
       );

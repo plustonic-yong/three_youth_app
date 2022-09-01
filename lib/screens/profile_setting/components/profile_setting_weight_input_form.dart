@@ -9,7 +9,7 @@ class ProfileSettingWeightInputForm extends StatelessWidget {
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
     double _screenHeight = MediaQuery.of(context).size.height;
-    int? _weight = context.watch<UserProvider>().userInfo!.weight;
+    double? _weight = context.watch<UserProvider>().userInfo!.weight;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
