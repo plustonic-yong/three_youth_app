@@ -10,6 +10,7 @@ import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/auth_interceptor.dart';
 import 'package:three_youth_app/services/expired_token_retry_policy.dart';
 import 'package:three_youth_app/utils/constants.dart' as Constants;
+import 'package:http/http.dart' as http;
 
 class ApiBp {
   late SharedPreferences pref;
@@ -73,6 +74,43 @@ class ApiBp {
           "Content-Type": "application/json",
         },
       );
+      return response;
+    } catch (e) {
+      log('$e');
+    }
+  }
+
+  static Future<Response?> getBloodPressureOcrService({
+    required String imgPath,
+  }) async {
+    try {
+      // var request = http.MultipartRequest(
+      //   'POST',
+      //   Uri.parse(Constants.API_OCR),
+      // );
+      // request.fields['apikey'] = Constants.API_KEY_OCR;
+      // request.files.add(await http.MultipartFile.fromPath('file', imgPath));
+      // request.headers.addAll({
+      //   "Content-Type": "application/json",
+      // });
+
+      // var response = await http.Response.fromStream(await request.send());
+      // log('ocr res: ${response.body}');
+      // log('ocr res: ${response.statusCode}');
+
+      var bytes = File(imgPath.toString()).readAsBytesSync();
+      String img64 = base64Encode(bytes);
+
+      var url = 'https://api.ocr.space/parse/image';
+      var payload = {
+        "base64Image": "data:image/jpg;base64,${img64.toString()}",
+        "language": "eng"
+      };
+      var header = {"apikey": Constants.API_KEY_OCR};
+      var response =
+          await http.post(Uri.parse(url), body: payload, headers: header);
+      // var response = jsonDecode(post.body);
+
       return response;
     } catch (e) {
       log('$e');

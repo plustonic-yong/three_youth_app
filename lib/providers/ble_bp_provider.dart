@@ -533,58 +533,11 @@ class BleBpProvider extends ChangeNotifier {
     //}
   }
 
-  // Future<void> startPairing() async {
-  //   _isPairing = true;
-  //   _foundDeviceWaitingToConnect = false;
-  //   _connected = false;
-  //   try {
-  //     _ble.deinitialize();
-  //     _ble.initialize();
-  //   } catch (err) {
-  //     log('$err');
-  //   }
-  //   notifyListeners();
-  // }
-
-  // void _startScan() async {
-  //   // bool permGranted = false;
-
-  //   _iFindCnt = 0;
-  //   _isScanning = true;
-
-  //   _ble.statusStream.listen((status) {
-  //     if (status == BleStatus.poweredOff) {
-  //     } else if (status == BleStatus.ready) {
-  //     } else if (status == BleStatus.unauthorized) {}
-  //   });
-
-  //   if (true) {
-  //     _scanStream =
-  //         _ble.scanForDevices(withServices: [serviceUuid]).listen((device) {
-  //       log("########## SCAN = " + device.name);
-  //       // Change this string to what you defined in Zephyr
-  //       if (device.name.contains('A&D_UA-651BLE')) {
-  //         setState(() {
-  //           iFindCnt++;
-  //         });
-  //         log(
-  //             '##################### $_isPaired $isPairing $_foundDeviceWaitingToConnect $_connected');
-  //         if ((_isPaired == false && isPairing == true) || _isPaired) {
-  //           if (_foundDeviceWaitingToConnect == false) {
-  //             setState(() {
-  //               _foundDeviceWaitingToConnect = true;
-  //               _ubiqueDevice = device;
-  //             });
-  //             _connectToDevice();
-  //           }
-  //         }
-  //       }
-  //     });
-
-  //     _scanStream.onDone(() {
-  //       _isScanning = false;
-  //       log('##################### SCAN END ###############');
-  //     });
-  //   }
-  // }
+  Future<void> getBloodPressureOcr(String imgPath) async {
+    var response = await ApiBp.getBloodPressureOcrService(imgPath: imgPath);
+    // log('res: ${response!.body}');
+    int statusCode = response!.statusCode;
+    final data = json.decode(utf8.decode(response.bodyBytes));
+    log('ocr data: ${data['ParsedResults'][0]['ParsedText']}');
+  }
 }
