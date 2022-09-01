@@ -30,8 +30,8 @@ class AuthProvider extends ChangeNotifier {
       name: name,
       birth: birth.toString(),
       gender: genderStr,
-      height: int.parse(height),
-      weight: int.parse(weight),
+      height: double.parse(height),
+      weight: double.parse(weight),
       img: img,
     );
     if (response!.statusCode == 200) {
@@ -106,8 +106,8 @@ class AuthProvider extends ChangeNotifier {
       name: name,
       birth: birth.toString(),
       gender: genderStr,
-      height: int.parse(height),
-      weight: int.parse(weight),
+      height: double.parse(height),
+      weight: double.parse(weight),
       img: img,
     );
     int statusCode = response!.statusCode;

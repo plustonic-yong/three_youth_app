@@ -33,8 +33,8 @@ class ApiAuth {
     required String name,
     required String birth,
     required String gender,
-    required int height,
-    required int weight,
+    required double height,
+    required double weight,
     required String img,
   }) async {
     try {
@@ -81,8 +81,8 @@ class ApiAuth {
     required String name,
     required String birth,
     required String gender,
-    required int height,
-    required int weight,
+    required double height,
+    required double weight,
     required String img,
   }) async {
     try {
