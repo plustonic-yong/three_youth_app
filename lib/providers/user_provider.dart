@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +55,6 @@ class UserProvider extends ChangeNotifier {
       String? refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       final data = json.decode(utf8.decode(response.bodyBytes));
-      log('user data: $data');
       UserModel userInfo = UserModel.fromJson(data);
       _userInfo = userInfo;
       notifyListeners();
@@ -66,8 +64,8 @@ class UserProvider extends ChangeNotifier {
   Future<bool> updateUser(
       {required String height, required String weight, String? img}) async {
     var response = await ApiAuth.updateUserService(
-      height: int.parse(height),
-      weight: int.parse(weight),
+      height: double.parse(height),
+      weight: double.parse(weight),
       img: img,
     );
     int stautsCode = response!.statusCode;

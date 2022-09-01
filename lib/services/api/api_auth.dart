@@ -254,8 +254,8 @@ class ApiAuth {
   }
 
   static Future<Response?> updateUserService({
-    required int height,
-    required int weight,
+    required double height,
+    required double weight,
     String? img,
   }) async {
     try {
