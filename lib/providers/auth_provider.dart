@@ -1,18 +1,69 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/utils/enums.dart';
+
+import 'package:crypto/crypto.dart';
 
 class AuthProvider extends ChangeNotifier {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String? _lastLoginMethod = '';
   String? get lastLoginMethod => _lastLoginMethod;
+
+  /// Generates a cryptographically secure random nonce, to be included in a
+  /// credential request.
+  String generateNonce([int length = 32]) {
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
+  }
+
+  /// Returns the sha256 hash of [input] in hex notation.
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  //apple login
+  Future<void> loginApple() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    debugPrint('hello apple');
+    // To prevent replay attacks with the credential returned from Apple, we
+    // include a nonce in the credential request. When signing in with
+    // Firebase, the nonce in the id token returned by Apple, is expected to
+    // match the sha256 hash of `rawNonce`.
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
+
+    // Request credential for the currently signed in Apple account.
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: nonce,
+    );
+    debugPrint('idToken: ${appleCredential.identityToken}');
+    // Create an `OAuthCredential` from the credential returned by Apple.
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      rawNonce: rawNonce,
+    );
+
+    // Sign in the user with Firebase. If the nonce we generated earlier does
+    // not match the nonce in `appleCredential.identityToken`, sign in will fail.
+    await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+  }
 
   Future<SignupStatus> signupGoogle({
     required String name,
@@ -187,7 +238,7 @@ class AuthProvider extends ChangeNotifier {
         debugPrint('로그인 성공 ${token.accessToken}');
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
-        log('res: ${response!.body}');
+        debugPrint('res: ${response!.body}');
         int statusCode = response.statusCode;
         final data = json.decode(utf8.decode(response.bodyBytes));
         if (statusCode == 200) {
@@ -234,23 +285,18 @@ class AuthProvider extends ChangeNotifier {
       weight: double.parse(weight),
       img: img,
     );
-    log('11: ${response!.statusCode}');
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    if (response!.statusCode == 200 || response.statusCode == 201) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      log('200');
       int status = data['status'];
       if (status == -1) {
-        log('errororor');
         return SignupStatus.error;
       }
-      log('200');
       String accessToken = data['accessToken'] ?? '';
       String refreshToken = data['refreshToken'] ?? '';
       sharedPreferences.setString('accessToken', accessToken);
       sharedPreferences.setString('refreshToken', refreshToken);
       return SignupStatus.success;
     }
-    log('err');
     return SignupStatus.error;
   }
 
@@ -259,7 +305,6 @@ class AuthProvider extends ChangeNotifier {
     var sharedPreferences = await SharedPreferences.getInstance();
     final NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
     NaverAccessToken naverTokens = await FlutterNaverLogin.currentAccessToken;
-    log('$naverLoginResult, ${naverTokens.accessToken}, ${naverTokens.refreshToken}');
     var response =
         await ApiAuth.loginNaverService(token: naverTokens.accessToken);
 
