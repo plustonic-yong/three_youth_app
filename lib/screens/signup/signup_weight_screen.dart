@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +44,10 @@ class SignupWeightScreen extends StatelessWidget {
       child: TextField(
         controller: _weightController,
         enableInteractiveSelection: false,
-        keyboardType: TextInputType.number,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+        ],
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(

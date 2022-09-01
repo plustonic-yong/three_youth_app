@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:provider/provider.dart';
+import 'dart:math' as math;
 
 class SignupHeightScreen extends StatelessWidget {
   const SignupHeightScreen({Key? key}) : super(key: key);
@@ -40,30 +42,33 @@ class SignupHeightScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: width * 0.1),
       child: TextField(
-        controller: _heightController,
-        enableInteractiveSelection: false,
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
-          hintText: 'cm',
-          hintStyle: const TextStyle(color: Colors.white),
-          // ignore: use_full_hex_values_for_flutter_colors
-          fillColor: const Color(0xff00000033).withOpacity(0.25),
-          filled: true,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40.0),
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          controller: _heightController,
+          enableInteractiveSelection: false,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+          ],
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
+            hintText: 'cm',
+            hintStyle: const TextStyle(color: Colors.white),
+            // ignore: use_full_hex_values_for_flutter_colors
+            fillColor: const Color(0xff00000033).withOpacity(0.25),
+            filled: true,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40.0),
+              borderSide: const BorderSide(color: Colors.white, width: 1.5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(40.0),
+              borderSide: const BorderSide(color: Colors.white),
+            ),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40.0),
-            borderSide: const BorderSide(color: Colors.white),
-          ),
-        ),
-        onChanged: (value) =>
-            context.read<SignupProvider>().onChangeHeight(value: value),
-      ),
+          onChanged: (value) {
+            context.read<SignupProvider>().onChangeHeight(value: value);
+          }),
     );
   }
 }
