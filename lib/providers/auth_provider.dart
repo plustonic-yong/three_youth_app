@@ -305,6 +305,12 @@ class AuthProvider extends ChangeNotifier {
       } catch (error) {
         print('로그아웃 실패 $error');
       }
+    } else if (lastLoginMethod == 'naver') {
+      try {
+        await FlutterNaverLogin.logOut();
+      } catch (e) {
+        print(e);
+      }
     }
     sharedPreferences.remove('accessToken');
     sharedPreferences.remove('refreshToken');

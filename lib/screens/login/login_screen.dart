@@ -493,16 +493,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             : Container(),
                       ],
                     ),
-                    SizedBox(height: height * 0.02),
-                    CommonButton(
-                      height: 40.0,
-                      width: 140.0,
-                      title: '네아로아웃',
-                      buttonColor: ButtonColor.orange,
-                      onTap: () {
-                        context.read<AuthProvider>().naverLogout();
-                      },
-                    ),
                     const Spacer(),
                     Text(
                       '제3의 청춘 주식회사',
