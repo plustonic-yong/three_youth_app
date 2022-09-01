@@ -224,7 +224,7 @@ class AuthProvider extends ChangeNotifier {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? naverAccessToken = sharedPreferences.getString('naverAccessToken');
     String genderStr = gender == GenderState.man ? "W" : "W";
-    log('$name, $birth, $gender,$height,$weight,$img');
+
     var response = await ApiAuth.signupNaverService(
       token: naverAccessToken!,
       name: name,
@@ -283,11 +283,6 @@ class AuthProvider extends ChangeNotifier {
     } else {
       return LoginStatus.failed;
     }
-  }
-
-  Future<void> naverLogout() async {
-    final NaverLoginResult naverLogoutResult = await FlutterNaverLogin.logOut();
-    log('$naverLogoutResult');
   }
 
   Future<void> logout() async {

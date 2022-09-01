@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +48,7 @@ class UserProvider extends ChangeNotifier {
       final data = json.decode(utf8.decode(response.bodyBytes));
       log('user data: $data');
       UserModel userInfo = UserModel.fromJson(data);
-      log('user model: $userInfo');
+      log('user model: ${userInfo.gender}');
       _userInfo = userInfo;
       _height = _userInfo!.height.toString();
       _weight = _userInfo!.weight.toString();
@@ -99,6 +100,12 @@ class UserProvider extends ChangeNotifier {
           print('회원탈퇴 성공, SDK에서 토큰 삭제');
         } catch (error) {
           print('회원탈퇴 실패 $error');
+        }
+      } else if (lastLoginMethod == 'naver') {
+        try {
+          await FlutterNaverLogin.logOut();
+        } catch (e) {
+          print(e);
         }
       }
       sharedPreferences.remove('accessToken');

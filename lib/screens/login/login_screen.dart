@@ -10,7 +10,6 @@ import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
-import 'package:three_youth_app/widget/common/common_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -390,9 +389,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         GestureDetector(
                           onTap: () async {
+                            log('naver');
                             var result =
                                 await context.read<AuthProvider>().loginNaver();
-                            log('na result: $result');
+
                             if (result == LoginStatus.success) {
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 '/main',
