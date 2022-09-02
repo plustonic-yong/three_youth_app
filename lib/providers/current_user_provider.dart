@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class CurrentUser with ChangeNotifier {
+class CurrentUserProvider with ChangeNotifier {
   bool _isER2000S = true;
   String _id = '';
   String _pwd = '';

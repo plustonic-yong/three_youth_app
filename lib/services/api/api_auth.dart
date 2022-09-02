@@ -10,8 +10,11 @@ import 'package:three_youth_app/utils/constants.dart' as Constants;
 import 'package:http/http.dart' as http;
 
 class ApiAuth {
-  static Map<String, String> _getHeader() {
-    return {"Content-Type": "application/json"};
+  static Map<String, String> _getHeader(String? accessToken) {
+    return {
+      HttpHeaders.authorizationHeader: "Bearer $accessToken",
+      "Content-Type": "application/json",
+    };
   }
 
   static Future<void> logoutService() async {
@@ -21,7 +24,7 @@ class ApiAuth {
       ]);
       await client.post(
         Uri.parse('${Constants.API_HOST}/logout'),
-        headers: _getHeader(),
+        headers: {"Content-Type": "application/json"},
       );
     } catch (e) {
       print(e);
@@ -38,24 +41,6 @@ class ApiAuth {
     required String img,
   }) async {
     try {
-      // Client client = InterceptedClient.build(
-      //   interceptors: [AuthInterceptor()],
-      // );
-      // var response = await client.post(
-      //   Uri.parse('${Constants.API_HOST}/signup/google'),
-      //   body: json.encode({
-      //     'token': token,
-      //     "name": name,
-      //     "birth": birth,
-      //     "gender": gender,
-      //     "height": height,
-      //     "weight": weight,
-      //   }),
-      //   headers: _getHeader(),
-      // );
-      // final data = json.decode(utf8.decode(response.bodyBytes));
-      // return data;
-
       var request = http.MultipartRequest(
         'POST',
         Uri.parse('${Constants.API_HOST}/signup/google'),
@@ -67,7 +52,7 @@ class ApiAuth {
       request.fields['height'] = height.toString();
       request.fields['weight'] = weight.toString();
       request.files.add(await http.MultipartFile.fromPath('img', img));
-      request.headers.addAll(_getHeader());
+      request.headers.addAll({"Content-Type": "application/json"});
 
       var response = await http.Response.fromStream(await request.send());
       return response;
@@ -86,21 +71,6 @@ class ApiAuth {
     required String img,
   }) async {
     try {
-      // Client client =
-      //     InterceptedClient.build(interceptors: [AuthInterceptor()]);
-      // var response = await http.post(
-      //   Uri.parse('${Constants.API_HOST}/signup/kakao'),
-      //   body: json.encode({
-      //     'token': token,
-      //     "name": name,
-      //     "birth": birth,
-      //     "gender": gender,
-      //     "height": height,
-      //     "weight": weight,
-      //     "img": img,
-      //   }),
-      //   headers: _getHeader(),
-      // );
       var request = http.MultipartRequest(
         'POST',
         Uri.parse('${Constants.API_HOST}/signup/kakao'),
@@ -112,7 +82,7 @@ class ApiAuth {
       request.fields['height'] = height.toString();
       request.fields['weight'] = weight.toString();
       request.files.add(await http.MultipartFile.fromPath('img', img));
-      request.headers.addAll(_getHeader());
+      request.headers.addAll({"Content-Type": "application/json"});
 
       var response = await http.Response.fromStream(await request.send());
       return response;
@@ -142,7 +112,7 @@ class ApiAuth {
       request.fields['height'] = height.toString();
       request.fields['weight'] = weight.toString();
       request.files.add(await http.MultipartFile.fromPath('img', img));
-      request.headers.addAll(_getHeader());
+      request.headers.addAll({"Content-Type": "application/json"});
 
       var response = await http.Response.fromStream(await request.send());
       return response;
@@ -159,7 +129,7 @@ class ApiAuth {
 
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/login/google'),
-        headers: _getHeader(),
+        headers: {"Content-Type": "application/json"},
         body: json.encode({
           'token': token,
         }),
@@ -177,7 +147,7 @@ class ApiAuth {
       ]);
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/login/kakao'),
-        headers: _getHeader(),
+        headers: {"Content-Type": "application/json"},
         body: json.encode({
           'token': token,
         }),
@@ -195,7 +165,7 @@ class ApiAuth {
       ]);
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/login/naver'),
-        headers: _getHeader(),
+        headers: {"Content-Type": "application/json"},
         body: json.encode({
           'token': token,
         }),
@@ -214,7 +184,7 @@ class ApiAuth {
       ]);
       var response = await client.post(
         Uri.parse('${Constants.API_HOST}/token/refresh'),
-        headers: _getHeader(),
+        headers: {"Content-Type": "application/json"},
         body: json.encode({
           'refreshToken': refreshToken,
         }),
@@ -272,10 +242,7 @@ class ApiAuth {
       if (img != null) {
         request.files.add(await http.MultipartFile.fromPath('img', img));
       }
-      request.headers.addAll({
-        HttpHeaders.authorizationHeader: "Bearer $accessToken",
-        "Content-Type": "application/json",
-      });
+      request.headers.addAll(_getHeader(accessToken));
       var response = await http.Response.fromStream(await request.send());
       return response;
     } catch (e) {

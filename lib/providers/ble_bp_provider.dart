@@ -17,30 +17,38 @@ class BleBpProvider extends ChangeNotifier {
   BpScanStatus _bpScanStatus = BpScanStatus.scanning;
   BpScanStatus get bpScanStatus => _bpScanStatus;
 
+  //혈압계 안내에서의 현재 페이지
   int _currentPage = 0;
   int get currentPage => _currentPage;
 
+  //페어링 중인지 아닌지
   bool _isPairing = false;
   bool get isPairing => _isPairing;
 
+  //페어링 끝났는지
   bool _isPaired = false;
   bool get isPaired => _isPaired;
 
+  //기기 찾는중인지 아닌지
   bool _foundDeviceWaitingToConnect = false;
   bool get foundDeviceWaitingToConnect => _foundDeviceWaitingToConnect;
 
+  //기기연동여부
   bool _connected = false;
   bool get connected => _connected;
 
+  //측정중인지 여부
   bool _isScanning = false;
   bool get isScanning => _isScanning;
 
   StreamSubscription<DiscoveredDevice>? _scanStream;
   StreamSubscription<DiscoveredDevice>? get scanStream => _scanStream;
 
+  //측정시작시간
   DateTime _dtStart = DateTime.now();
   DateTime get dtStart => _dtStart;
 
+  //측정종료시간
   DateTime _dtStop = DateTime.now();
   DateTime get dtStop => _dtStop;
 
@@ -61,6 +69,9 @@ class BleBpProvider extends ChangeNotifier {
 
   final Uuid _bleRx = Uuid.parse("00002a35-0000-1000-8000-00805f9b34fb");
   final Uuid _bleTx = Uuid.parse("00002a08-0000-1000-8000-00805f9b34fb");
+
+  //Rx: recive 보내는 데이터
+  //Tx: Transaction 받는 데이터
 
   QualifiedCharacteristic? _rxCharacteristic;
   QualifiedCharacteristic? get rxCharacteristic => _rxCharacteristic;
@@ -88,12 +99,15 @@ class BleBpProvider extends ChangeNotifier {
   bool _isUpdated = false;
   bool get isUpdated => _isUpdated;
 
+  //sys 데이터
   List<double> _lDataSYS = [0];
   List<double> get lDataSYS => _lDataSYS;
 
+  //dia 데이터
   List<double> _lDataDIA = [0];
   List<double> get lDataDIA => _lDataDIA;
 
+  //pul데이터
   List<double> _lDataPUL = [0];
   List<double> get lDataPUL => _lDataPUL;
 
@@ -110,6 +124,7 @@ class BleBpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //앱 초기 로그인 시작시 페어링 여부 확인
   Future<void> findIsPaired() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isPaired = await prefs.setBool('isSphyFairing', true);
@@ -125,15 +140,19 @@ class BleBpProvider extends ChangeNotifier {
     var pref = await SharedPreferences.getInstance();
     var response = await ApiBp.getBloodPressureService();
     int statusCode = response!.statusCode;
+    //accessToken 만료 시 token refresh
     if (statusCode == 401) {
       var refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiBp.getBloodPressureService();
     }
+
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response!.bodyBytes));
       List<BpModel> bpList =
           (data as List).map((json) => BpModel.fromJson(json)).toList();
+
+      //가장 최근의 혈압데이터 가져오기
       if (bpList.isNotEmpty) {
         bpList.sort((a, b) => a.measureDatetime.compareTo(b.measureDatetime));
         _lastBpHistory = bpList.last;
@@ -159,12 +178,15 @@ class BleBpProvider extends ChangeNotifier {
       List<BpModel> bpList =
           (data as List).map((json) => BpModel.fromJson(json)).toList();
       List<BpModel> filtedBpList = [];
+
+      //선택한 날짜와 일치하는 데이터 추출
       bpList.forEach((element) {
         if (Utils.formatDatetime(element.measureDatetime).split(' ')[0] ==
             Utils.formatDatetime(measureDatetime).split(' ')[0]) {
           filtedBpList.add(element);
         }
       });
+      //선택한 날짜와 일치하는 데이터중 최신 시간대 순으로 배열
       filtedBpList
           .sort((a, b) => b.measureDatetime.compareTo(a.measureDatetime));
       _bpHistories = filtedBpList;

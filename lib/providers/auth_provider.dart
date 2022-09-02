@@ -116,6 +116,8 @@ class AuthProvider extends ChangeNotifier {
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       int status = data['status'];
+
+      //sns인증 성공했지만 회원가입 되어있지 않을 시
       if (status == 2) {
         return LoginStatus.noAccount;
       }
@@ -212,6 +214,8 @@ class AuthProvider extends ChangeNotifier {
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
           int status = data['status'];
+
+          //sns인증 성공했지만 회원가입 되어있지 않을 시
           if (status == 2) {
             sharedPreferences.setString('kakaoAccessToken', token.accessToken);
             return LoginStatus.noAccount;
@@ -244,6 +248,8 @@ class AuthProvider extends ChangeNotifier {
         if (statusCode == 200) {
           final data = json.decode(utf8.decode(response.bodyBytes));
           int status = data['status'];
+
+          //sns인증 성공했지만 회원가입 되어있지 않을 시
           if (status == 2) {
             return LoginStatus.noAccount;
           }
@@ -312,6 +318,8 @@ class AuthProvider extends ChangeNotifier {
     if (statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       int status = data['status'];
+
+      //sns인증 성공했지만 회원가입 되어있지 않을 시
       if (status == 2) {
         sharedPreferences.setString(
             'naverAccessToken', naverTokens.accessToken);
