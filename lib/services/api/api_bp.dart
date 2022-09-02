@@ -84,33 +84,34 @@ class ApiBp {
     required String imgPath,
   }) async {
     try {
-      // var request = http.MultipartRequest(
-      //   'POST',
-      //   Uri.parse(Constants.API_OCR),
-      // );
-      // request.fields['apikey'] = Constants.API_KEY_OCR;
-      // request.files.add(await http.MultipartFile.fromPath('file', imgPath));
-      // request.headers.addAll({
-      //   "Content-Type": "application/json",
-      // });
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(Constants.API_OCR),
+      );
+      request.fields['apikey'] = Constants.API_KEY_OCR;
+      request.files.add(await http.MultipartFile.fromPath('file', imgPath));
+      request.headers.addAll({
+        "Content-Type": "application/json",
+      });
 
-      // var response = await http.Response.fromStream(await request.send());
-      // log('ocr res: ${response.body}');
-      // log('ocr res: ${response.statusCode}');
+      var response = await http.Response.fromStream(await request.send());
 
-      var bytes = File(imgPath.toString()).readAsBytesSync();
-      String img64 = base64Encode(bytes);
+      //64byte 방식
+      // log('imgPath: $imgPath');
+      // var bytes = File(imgPath.toString()).readAsBytesSync();
+      // log('file size: ${File(imgPath.toString()).lengthSync()}');
+      // String img64 = base64Encode(bytes);
 
-      var url = 'https://api.ocr.space/parse/image';
-      var payload = {
-        "base64Image": "data:image/jpg;base64,${img64.toString()}",
-        "language": "eng"
-      };
-      var header = {"apikey": Constants.API_KEY_OCR};
-      var response =
-          await http.post(Uri.parse(url), body: payload, headers: header);
-      // var response = jsonDecode(post.body);
+      // var url = 'https://apipro3.ocr.space/parse/image';
+      // var payload = {
+      //   "base64Image": "data:image/jpg;base64,${img64.toString()}",
+      //   "language": "eng"
+      // };
+      // var header = {"apikey": "PR88M9EG4H6X"};
+      // var response =
+      //     await http.post(Uri.parse(url), body: payload, headers: header);
 
+      log('ocr data: ${response.body}');
       return response;
     } catch (e) {
       log('$e');

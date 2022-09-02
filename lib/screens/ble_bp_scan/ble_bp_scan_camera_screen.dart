@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
+import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_camera_result_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
@@ -46,11 +49,26 @@ class _BleBpScanCameraScreenState extends State<BleBpScanCameraScreen> {
                     final ImagePicker _picker = ImagePicker();
                     XFile? value = await _picker.pickImage(
                       source: ImageSource.camera,
-                      maxWidth: 750,
-                      maxHeight: 750,
+                      maxHeight: 1000,
+                      maxWidth: 640,
+                      imageQuality: 99,
                     );
-                    String _imgPath = value!.path;
-                    context.read<BleBpProvider>().getBloodPressureOcr(_imgPath);
+                    String? _imgPath = value!.path;
+                    Map<String, String> result = await context
+                        .read<BleBpProvider>()
+                        .getBloodPressureOcr(_imgPath);
+                    String? sys = result['sys'];
+                    String? dia = result['dia'];
+                    String? pul = result['pul'];
+                    Uint8List imgFile = await value.readAsBytes();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => BleBpScanCameraResultScreen(
+                        imgFile: imgFile,
+                        sys: sys,
+                        dia: dia,
+                        pul: pul,
+                      ),
+                    ));
                   },
                   child: Center(
                     child: Container(
