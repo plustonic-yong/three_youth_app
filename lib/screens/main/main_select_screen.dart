@@ -8,7 +8,7 @@ import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/ble_ecg_connect/ble_ecg_connect_screen_prev.dart';
+import 'package:three_youth_app/screens/ble_ecg_connect/prev/prev_ble_ecg_connect_screen.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/utils/enums.dart';
@@ -206,7 +206,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => BleECGConnectScreenPrev(),
+                                builder: (context) =>
+                                    const PrevBleECGConnectScreen(),
                               ),
                             );
                             Provider.of<CurrentUser>(context, listen: false)

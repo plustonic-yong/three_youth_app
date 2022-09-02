@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/screens/base/base_app_bar.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/signup/prev/pagecontroller_widget.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_pagecontroller_widget.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 
-class SignupScreen2 extends StatefulWidget {
-  const SignupScreen2({
+class PrevSignupScreen2 extends StatefulWidget {
+  const PrevSignupScreen2({
     Key? key,
     required this.pageController,
   }) : super(key: key);
@@ -17,7 +17,7 @@ class SignupScreen2 extends StatefulWidget {
   _SignupScreen2State createState() => _SignupScreen2State();
 }
 
-class _SignupScreen2State extends State<SignupScreen2> {
+class _SignupScreen2State extends State<PrevSignupScreen2> {
   bool isLoading = true;
   // ignore: unused_field
   late final double _screenHeight;
@@ -110,7 +110,7 @@ class _SignupScreen2State extends State<SignupScreen2> {
                     const SizedBox(
                       height: 50,
                     ),
-                    PagecontrollerWidget(
+                    PrevPagecontrollerWidget(
                       screenHeight: _screenHeight,
                       screenWidth: _screenWidth,
                       widget2: widget,

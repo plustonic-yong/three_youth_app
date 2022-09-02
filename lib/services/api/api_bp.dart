@@ -80,6 +80,7 @@ class ApiBp {
     }
   }
 
+  //혈압계 ocr 결과 가져오기
   static Future<Response?> getBloodPressureOcrService({
     required String imgPath,
   }) async {

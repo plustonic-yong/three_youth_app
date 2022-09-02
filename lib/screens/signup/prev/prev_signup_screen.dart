@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/signup/prev/signup_screen_1.dart';
-import 'package:three_youth_app/screens/signup/prev/signup_screen_1a.dart';
-import 'package:three_youth_app/screens/signup/prev/signup_screen_2.dart';
-import 'package:three_youth_app/screens/signup/prev/signup_screen_3.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_1.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_1a.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_2.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_3.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+class PrevSignupScreen extends StatefulWidget {
+  const PrevSignupScreen({Key? key}) : super(key: key);
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  _PrevSignupScreenState createState() => _PrevSignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _PrevSignupScreenState extends State<PrevSignupScreen> {
   bool isLoading = true;
   // ignore: unused_field
   late final double _screenHeight;
@@ -42,16 +42,16 @@ class _SignupScreenState extends State<SignupScreen> {
             controller: pageController,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              SignupScreen1(
+              PrevSignupScreen1(
                 pageController: pageController,
               ),
-              SignupScreen1a(
+              PrevSignupScreen1a(
                 pageController: pageController,
               ),
-              SignupScreen2(
+              PrevSignupScreen2(
                 pageController: pageController,
               ),
-              SignupScreen3(
+              PrevSignupScreen3(
                 pageController: pageController,
               ),
             ],

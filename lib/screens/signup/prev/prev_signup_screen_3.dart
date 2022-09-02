@@ -1,68 +1,62 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:three_youth_app/screens/base/base_app_bar.dart';
+import 'package:three_youth_app/screens/base/spinkit.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_pagecontroller_widget.dart';
+import 'package:three_youth_app/utils/color.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:three_youth_app/services/php/cube_class_api.dart';
-import 'package:three_youth_app/screens/base/navigate_app_bar.dart';
-import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/custom/common_button.dart';
-import 'package:three_youth_app/utils/color.dart';
-import 'package:three_youth_app/utils/toast.dart';
+import 'package:three_youth_app/utils/current_user.dart';
 
 enum Gender { male, female }
 
-class ProfileSettingScreen extends StatefulWidget {
-  const ProfileSettingScreen({Key? key}) : super(key: key);
+class PrevSignupScreen3 extends StatefulWidget {
+  const PrevSignupScreen3({
+    Key? key,
+    required this.pageController,
+  }) : super(key: key);
+  final PageController pageController;
 
   @override
-  _ProfileSettingScreenState createState() => _ProfileSettingScreenState();
+  _SignupScreen3State createState() => _SignupScreen3State();
 }
 
-class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
+class _SignupScreen3State extends State<PrevSignupScreen3> {
   bool isLoading = true;
-  // ignore: unused_field
-  late final double _screenHeight;
-  // ignore: unused_field
-  late final double _screenWidth;
-  bool isBirthDate = true;
-  String dateTime = '';
-  CubeClassAPI cubeClassAPI = CubeClassAPI();
-  Gender? gender = Gender.male;
-  late SharedPreferences prefs;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final GlobalKey<FormFieldState> _nameFormKey = GlobalKey<FormFieldState>();
   final GlobalKey<FormFieldState> _heightFormKey = GlobalKey<FormFieldState>();
   final GlobalKey<FormFieldState> _weightFormKey = GlobalKey<FormFieldState>();
+  // ignore: unused_field
+  late final double _screenHeight;
+  // ignore: unused_field
+  late final double _screenWidth;
+  bool isMale = false;
+  bool isBirthDate = false;
+  Gender? gender = Gender.male;
+  String dateTime = '';
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      prefs = await SharedPreferences.getInstance();
-
-      String id = prefs.getString('id') ?? '';
-      String sql = 'SELECT * FROM login_info WHERE 아이디=("$id")';
-      String result = '';
-      try {
-        result = await cubeClassAPI.sqlToText(sql);
-      } on FormatException catch (e) {
-        log(e.toString());
-        showToast('서버 연결 에러, 인터넷 연결 확인 후 다시 시도해보세요');
-      }
-      Map mapResult = jsonDecode(result);
       setState(() {
-        _nameController.text = mapResult['result'][0]['8'];
-        _heightController.text = mapResult['result'][0]['4'];
-        _weightController.text = mapResult['result'][0]['5'];
-        gender =
-            mapResult['result'][0]['6'] == 'true' ? Gender.male : Gender.female;
-        dateTime = mapResult['result'][0]['7'];
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
+        _nameController.text =
+            Provider.of<CurrentUser>(context, listen: false).name;
+        _heightController.text =
+            Provider.of<CurrentUser>(context, listen: false).height;
+        _weightController.text =
+            Provider.of<CurrentUser>(context, listen: false).weight;
+        dateTime = Provider.of<CurrentUser>(context, listen: false).birthDate;
+        gender = Provider.of<CurrentUser>(context, listen: false).isMale
+            ? Gender.male
+            : Gender.female;
+        if (dateTime != '') {
+          isBirthDate = true;
+        }
         isLoading = false;
       });
     });
@@ -71,25 +65,41 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorAssets.commonBackgroundDark,
-      appBar: const NavigateAppBar(),
-      //drawer: ,
-      body: SingleChildScrollView(
-        child: isLoading
-            ? spinkit
-            : Center(
+    return isLoading
+        ? spinkit
+        : Scaffold(
+            backgroundColor: ColorAssets.commonBackgroundDark,
+            appBar: const BaseAppBar(),
+            //drawer: ,
+            body: SingleChildScrollView(
+              child: Center(
                 child: Column(
                   children: [
                     const SizedBox(
                       height: 20,
                     ),
                     const Text(
-                      '프로필 설정',
+                      '회원가입 4/4',
                       style: TextStyle(
                           color: ColorAssets.fontDarkGrey,
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const SizedBox(
+                      width: 300,
+                      height: 20,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        child: LinearProgressIndicator(
+                          value: 0.999,
+                          backgroundColor: ColorAssets.progressBackground,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              ColorAssets.purpleGradient2),
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
@@ -191,37 +201,35 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                     ),
                     genderSelect(),
                     const SizedBox(
-                      height: 20,
+                      height: 40,
                     ),
                     birthDateForm(context),
                     const SizedBox(
-                      height: 30,
-                    ),
-                    CommonButton(
-                        screenWidth: _screenWidth * 0.6,
-                        txt: '프로필 변경',
-                        onPressed: () async {
-                          String id = prefs.getString('id') ?? '';
-                          String sql =
-                              'UPDATE login_info SET 신장 = "${_heightController.text}", 몸무게 = "${_weightController.text}" , 성별 = "${gender == Gender.male}", 생년월일 = "$dateTime", 이름 = "${_nameController.text}" WHERE 아이디=("$id")';
-                          //'UPDATE login_info SET 신장 = ${_heightController.text}, 몸무게 = ${_weightController.text}, 성별 = ${gender == Gender.male}, 생년월일 = $dateTime, 이름 = ${_nameController.text} WHERE 아이디=("$id")';
-                          try {
-                            await cubeClassAPI.sqlToText(sql);
-                            showToast('변경완료');
-                            Navigator.pop(context);
-                          } on FormatException catch (e) {
-                            log(e.toString());
-                            showToast('서버 연결 에러, 인터넷 연결 확인 후 다시 시도해보세요');
-                          }
-                        }),
-                    const SizedBox(
                       height: 50,
+                    ),
+                    PrevPagecontrollerWidget(
+                      screenHeight: _screenHeight,
+                      screenWidth: _screenWidth,
+                      widget3: widget,
+                      isAble: _isFormValid(),
+                      name: _nameController.text,
+                      height: _heightController.text,
+                      weight: _weightController.text,
+                      birthDate: dateTime,
+                      isMale: gender == Gender.male,
                     ),
                   ],
                 ),
               ),
-      ),
-    );
+            ),
+          );
+  }
+
+  bool _isFormValid() {
+    return ((_nameController.text != '' &&
+        _weightController.text != '' &&
+        _heightController.text != '' &&
+        isBirthDate));
   }
 
   SizedBox birthDateForm(BuildContext context) {

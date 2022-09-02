@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/services/php/cube_class_api.dart';
 import 'package:three_youth_app/screens/custom/gradient_small_button.dart';
-import 'package:three_youth_app/screens/signup/prev/signup_screen_1.dart';
-import 'package:three_youth_app/screens/signup/prev/signup_screen_1a.dart';
-import 'package:three_youth_app/screens/signup/prev/signup_screen_2.dart';
-import 'package:three_youth_app/screens/signup/prev/signup_screen_3.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_1.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_1a.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_2.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_3.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/current_user.dart';
 import 'package:three_youth_app/utils/toast.dart';
 
-class PagecontrollerWidget extends StatelessWidget {
+class PrevPagecontrollerWidget extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
-  final SignupScreen1? widget1;
-  final SignupScreen1a? widget1a;
-  final SignupScreen2? widget2;
-  final SignupScreen3? widget3;
+  final PrevSignupScreen1? widget1;
+  final PrevSignupScreen1a? widget1a;
+  final PrevSignupScreen2? widget2;
+  final PrevSignupScreen3? widget3;
   final bool isAble;
   final String? id;
   final String? pwd;
@@ -29,7 +29,7 @@ class PagecontrollerWidget extends StatelessWidget {
   final bool? isMale;
   final String? birthDate;
 
-  const PagecontrollerWidget(
+  const PrevPagecontrollerWidget(
       {Key? key,
       required this.screenHeight,
       required this.screenWidth,

@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:three_youth_app/screens/base/base_app_bar.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
-import 'package:three_youth_app/screens/signup/prev/pagecontroller_widget.dart';
+import 'package:three_youth_app/screens/signup/prev/prev_pagecontroller_widget.dart';
 import 'package:three_youth_app/utils/color.dart';
 
-class SignupScreen1 extends StatefulWidget {
-  const SignupScreen1({
+class PrevSignupScreen1a extends StatefulWidget {
+  const PrevSignupScreen1a({
     Key? key,
     required this.pageController,
   }) : super(key: key);
   final PageController pageController;
 
   @override
-  _SignupScreen1State createState() => _SignupScreen1State();
+  _SignupScreen1aState createState() => _SignupScreen1aState();
 }
 
-class _SignupScreen1State extends State<SignupScreen1> {
+class _SignupScreen1aState extends State<PrevSignupScreen1a> {
   bool isLoading = true;
   // ignore: unused_field
   late final double _screenHeight;
@@ -41,7 +41,7 @@ class _SignupScreen1State extends State<SignupScreen1> {
   }
 
   void readAgree() async {
-    final ss = await rootBundle.loadString('assets/agree.txt');
+    final ss = await rootBundle.loadString('assets/person.txt');
     setState(() {
       sAgree = ss;
     });
@@ -73,7 +73,7 @@ class _SignupScreen1State extends State<SignupScreen1> {
                       height: 20,
                     ),
                     const Text(
-                      '회원가입 1/4',
+                      '회원가입 2/4',
                       style: TextStyle(
                           color: ColorAssets.fontDarkGrey,
                           fontSize: 24,
@@ -160,10 +160,10 @@ class _SignupScreen1State extends State<SignupScreen1> {
                     const SizedBox(
                       height: 50,
                     ),
-                    PagecontrollerWidget(
+                    PrevPagecontrollerWidget(
                       screenHeight: _screenHeight,
                       screenWidth: _screenWidth,
-                      widget1: widget,
+                      widget1a: widget,
                       isAble: isConsent,
                     ),
                   ],

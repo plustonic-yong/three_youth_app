@@ -30,7 +30,7 @@ import 'package:three_youth_app/screens/history/history_screen.dart';
 import 'package:three_youth_app/screens/login/findpwd_screen.dart';
 import 'package:three_youth_app/screens/login/login_screen.dart';
 import 'package:three_youth_app/screens/main/main_screen.dart';
-import 'package:three_youth_app/screens/profile_setting/prev/profile_setting_screen.dart';
+import 'package:three_youth_app/screens/profile_setting/prev/prev_profile_setting_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_screen.dart';
 import 'package:three_youth_app/screens/signup_agreement/signup_agreement_screen.dart';
 import 'package:three_youth_app/screens/sphygmomanometer_setting/sphygmomanometer_setting_screen.dart';
@@ -92,7 +92,6 @@ class MyApp extends StatelessWidget {
               const BleEcgScanMeasurementScreen(),
           '/history': (context) => const HistoryScreen(),
           '/agreement': (context) => const AgreementScreen(),
-          '/profile': (context) => const ProfileSettingScreen(),
           '/safecontent': (context) => const SafeContentScreen(),
           '/electrocardiogram': (context) =>
               const ElectrocardiogramSettingScreen(),
