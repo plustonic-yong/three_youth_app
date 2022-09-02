@@ -4,7 +4,7 @@ import 'package:three_youth_app/screens/base/base_app_bar.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/screens/signup/prev/prev_pagecontroller_widget.dart';
 import 'package:three_youth_app/utils/color.dart';
-import 'package:three_youth_app/utils/current_user.dart';
+import 'package:three_youth_app/providers/current_user_provider.dart';
 
 class PrevSignupScreen2 extends StatefulWidget {
   const PrevSignupScreen2({
@@ -42,9 +42,9 @@ class _SignupScreen2State extends State<PrevSignupScreen2> {
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
         _emailController.text =
-            Provider.of<CurrentUser>(context, listen: false).id;
+            Provider.of<CurrentUserProvider>(context, listen: false).id;
         _passwordController.text =
-            Provider.of<CurrentUser>(context, listen: false).pwd;
+            Provider.of<CurrentUserProvider>(context, listen: false).pwd;
         _passwordController2.text = _passwordController.text;
         if (_emailController.text != '') {
           _isEmailForm = true;

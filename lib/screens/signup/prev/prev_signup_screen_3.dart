@@ -6,7 +6,7 @@ import 'package:three_youth_app/screens/signup/prev/prev_pagecontroller_widget.d
 import 'package:three_youth_app/utils/color.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:three_youth_app/utils/current_user.dart';
+import 'package:three_youth_app/providers/current_user_provider.dart';
 
 enum Gender { male, female }
 
@@ -45,13 +45,14 @@ class _SignupScreen3State extends State<PrevSignupScreen3> {
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
         _nameController.text =
-            Provider.of<CurrentUser>(context, listen: false).name;
+            Provider.of<CurrentUserProvider>(context, listen: false).name;
         _heightController.text =
-            Provider.of<CurrentUser>(context, listen: false).height;
+            Provider.of<CurrentUserProvider>(context, listen: false).height;
         _weightController.text =
-            Provider.of<CurrentUser>(context, listen: false).weight;
-        dateTime = Provider.of<CurrentUser>(context, listen: false).birthDate;
-        gender = Provider.of<CurrentUser>(context, listen: false).isMale
+            Provider.of<CurrentUserProvider>(context, listen: false).weight;
+        dateTime =
+            Provider.of<CurrentUserProvider>(context, listen: false).birthDate;
+        gender = Provider.of<CurrentUserProvider>(context, listen: false).isMale
             ? Gender.male
             : Gender.female;
         if (dateTime != '') {

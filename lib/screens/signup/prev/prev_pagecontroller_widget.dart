@@ -10,7 +10,7 @@ import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_1a.dart';
 import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_2.dart';
 import 'package:three_youth_app/screens/signup/prev/prev_signup_screen_3.dart';
 import 'package:three_youth_app/utils/color.dart';
-import 'package:three_youth_app/utils/current_user.dart';
+import 'package:three_youth_app/providers/current_user_provider.dart';
 import 'package:three_youth_app/utils/toast.dart';
 
 class PrevPagecontrollerWidget extends StatelessWidget {
@@ -89,23 +89,26 @@ class PrevPagecontrollerWidget extends StatelessWidget {
                   curve: Curves.easeInOut,
                 );
               } else if (widget2 != null) {
-                Provider.of<CurrentUser>(context, listen: false).id = id!;
-                Provider.of<CurrentUser>(context, listen: false).pwd = pwd!;
+                Provider.of<CurrentUserProvider>(context, listen: false).id =
+                    id!;
+                Provider.of<CurrentUserProvider>(context, listen: false).pwd =
+                    pwd!;
 
                 widget2!.pageController.previousPage(
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut,
                 );
               } else {
-                Provider.of<CurrentUser>(context, listen: false).isMale =
-                    isMale!;
-                Provider.of<CurrentUser>(context, listen: false).name = name!;
-                Provider.of<CurrentUser>(context, listen: false).height =
-                    height!;
-                Provider.of<CurrentUser>(context, listen: false).weight =
-                    weight!;
-                Provider.of<CurrentUser>(context, listen: false).birthDate =
-                    birthDate!;
+                Provider.of<CurrentUserProvider>(context, listen: false)
+                    .isMale = isMale!;
+                Provider.of<CurrentUserProvider>(context, listen: false).name =
+                    name!;
+                Provider.of<CurrentUserProvider>(context, listen: false)
+                    .height = height!;
+                Provider.of<CurrentUserProvider>(context, listen: false)
+                    .weight = weight!;
+                Provider.of<CurrentUserProvider>(context, listen: false)
+                    .birthDate = birthDate!;
 
                 widget3!.pageController.previousPage(
                   duration: const Duration(milliseconds: 400),
@@ -150,7 +153,7 @@ class PrevPagecontrollerWidget extends StatelessWidget {
               if (isAble) {
                 if (widget3 != null) {
                   String sql =
-                      "INSERT INTO login_info (아이디, 패스워드, 신장, 몸무게, 성별, 생년월일, 이름 ) VALUES ('${Provider.of<CurrentUser>(context, listen: false).id}', '${Provider.of<CurrentUser>(context, listen: false).pwd}', '$height', '$weight', '$isMale', '$birthDate', '$name')";
+                      "INSERT INTO login_info (아이디, 패스워드, 신장, 몸무게, 성별, 생년월일, 이름 ) VALUES ('${Provider.of<CurrentUserProvider>(context, listen: false).id}', '${Provider.of<CurrentUserProvider>(context, listen: false).pwd}', '$height', '$weight', '$isMale', '$birthDate', '$name')";
                   try {
                     await cubeClassAPI.sqlToText(sql);
                   } on FormatException catch (e) {
@@ -170,8 +173,10 @@ class PrevPagecontrollerWidget extends StatelessWidget {
                     curve: Curves.easeInOut,
                   );
                 } else {
-                  Provider.of<CurrentUser>(context, listen: false).id = id!;
-                  Provider.of<CurrentUser>(context, listen: false).pwd = pwd!;
+                  Provider.of<CurrentUserProvider>(context, listen: false).id =
+                      id!;
+                  Provider.of<CurrentUserProvider>(context, listen: false).pwd =
+                      pwd!;
 
                   String sql = 'SELECT * FROM login_info WHERE 아이디=("$id")';
                   String result = '';

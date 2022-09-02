@@ -12,16 +12,16 @@ import 'package:three_youth_app/screens/custom/gradient_small_button.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/toast.dart';
 
-class BleBPConnectScreenPrev extends StatefulWidget {
-  const BleBPConnectScreenPrev({Key? key}) : super(key: key);
+class PrevBleBPConnectScreen extends StatefulWidget {
+  const PrevBleBPConnectScreen({Key? key}) : super(key: key);
 
-  static BleBPConnectScreenPrevState? of(BuildContext context) =>
-      context.findAncestorStateOfType<BleBPConnectScreenPrevState>();
+  static PrevBleBPConnectScreenState? of(BuildContext context) =>
+      context.findAncestorStateOfType<PrevBleBPConnectScreenState>();
   @override
-  BleBPConnectScreenPrevState createState() => BleBPConnectScreenPrevState();
+  PrevBleBPConnectScreenState createState() => PrevBleBPConnectScreenState();
 }
 
-class BleBPConnectScreenPrevState extends State<BleBPConnectScreenPrev> {
+class PrevBleBPConnectScreenState extends State<PrevBleBPConnectScreen> {
   bool isLoading = true;
   // ignore: unused_field
   late final double _screenHeight;

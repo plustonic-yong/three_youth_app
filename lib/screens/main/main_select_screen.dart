@@ -10,7 +10,7 @@ import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/screens/ble_ecg_connect/prev/prev_ble_ecg_connect_screen.dart';
 import 'package:three_youth_app/services/php/classCubeAPI.dart';
-import 'package:three_youth_app/utils/current_user.dart';
+import 'package:three_youth_app/providers/current_user_provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/utils/utils.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
@@ -210,7 +210,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                     const PrevBleECGConnectScreen(),
                               ),
                             );
-                            Provider.of<CurrentUser>(context, listen: false)
+                            Provider.of<CurrentUserProvider>(context,
+                                    listen: false)
                                 .isER2000S = true;
                           },
                         ),
@@ -228,7 +229,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                   context,
                                   '/scanecg',
                                 );
-                                Provider.of<CurrentUser>(context, listen: false)
+                                Provider.of<CurrentUserProvider>(context,
+                                        listen: false)
                                     .isER2000S = true;
                               },
                             ),

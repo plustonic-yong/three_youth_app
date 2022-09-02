@@ -16,6 +16,7 @@ import 'package:three_youth_app/screens/agreement/agreement_screen.dart';
 import 'package:three_youth_app/screens/agreement/safecontent_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_info_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_pairing_screen.dart';
+
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_camera_screen.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_measurement_screen.dart';
@@ -30,11 +31,10 @@ import 'package:three_youth_app/screens/history/history_screen.dart';
 import 'package:three_youth_app/screens/login/findpwd_screen.dart';
 import 'package:three_youth_app/screens/login/login_screen.dart';
 import 'package:three_youth_app/screens/main/main_screen.dart';
-import 'package:three_youth_app/screens/profile_setting/prev/prev_profile_setting_screen.dart';
 import 'package:three_youth_app/screens/signup/signup_screen.dart';
 import 'package:three_youth_app/screens/signup_agreement/signup_agreement_screen.dart';
 import 'package:three_youth_app/screens/sphygmomanometer_setting/sphygmomanometer_setting_screen.dart';
-import 'package:three_youth_app/utils/current_user.dart';
+import 'package:three_youth_app/providers/current_user_provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 late final SharedPreferences prefsmain;
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BleEcgScanProvider()),
         ChangeNotifierProvider(create: (context) => HistoryProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider.value(value: CurrentUser()),
+        ChangeNotifierProvider.value(value: CurrentUserProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

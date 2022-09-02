@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
-import 'package:three_youth_app/screens/ble_bp_scan/components/ble_bp_scan_measurement_result.dart';
-import 'package:three_youth_app/screens/ble_bp_scan/components/ble_bp_scan_measurement_scanning.dart';
+import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_measurement_result.dart';
+import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_measurement_scanning.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' as foundation;
