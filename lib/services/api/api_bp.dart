@@ -85,37 +85,15 @@ class ApiBp {
     required String imgPath,
   }) async {
     try {
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(Constants.API_OCR),
-      );
-      request.fields['apikey'] = Constants.API_KEY_OCR;
-      request.files.add(await http.MultipartFile.fromPath('file', imgPath));
-      request.headers.addAll({
-        "Content-Type": "application/json",
-      });
-
-      var response = await http.Response.fromStream(await request.send());
-
-      //64byte 방식
-      // log('imgPath: $imgPath');
-      // var bytes = File(imgPath.toString()).readAsBytesSync();
-      // log('file size: ${File(imgPath.toString()).lengthSync()}');
-      // String img64 = base64Encode(bytes);
-
-      // var url = 'https://apipro3.ocr.space/parse/image';
-      // var payload = {
-      //   "base64Image": "data:image/jpg;base64,${img64.toString()}",
-      //   "language": "eng"
-      // };
-      // var header = {"apikey": "PR88M9EG4H6X"};
-      // var response =
-      //     await http.post(Uri.parse(url), body: payload, headers: header);
-
-      log('ocr data: ${response.body}');
+      var bytes = File(imgPath.toString()).readAsBytesSync();
+      String img64 = base64Encode(bytes);
+      var url = Constants.API_OCR;
+      var payload = {"base64Image": img64.toString(), "language": "eng"};
+      var response = await http.post(Uri.parse(url), body: payload);
       return response;
     } catch (e) {
       log('$e');
+      return null;
     }
   }
 }

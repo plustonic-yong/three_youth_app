@@ -557,11 +557,18 @@ class BleBpProvider extends ChangeNotifier {
 
   Future<Map<String, String>> getBloodPressureOcr(String imgPath) async {
     var response = await ApiBp.getBloodPressureOcrService(imgPath: imgPath);
-    int statusCode = response!.statusCode;
-    final data = json.decode(utf8.decode(response.bodyBytes));
-    log('ocr ParsedText: ${data['ParsedResults'][0]['ParsedText']}');
-    //필터작업
+    log(response?.body ?? '');
+    var result = [];
+    if (response != null) {
+      result = json.decode(response.body);
+    } else {
+      result.addAll([0, 0, 0]);
+    }
+    // int statusCode = response!.statusCode;
+    // final data = json.decode(utf8.decode(response.bodyBytes));
+    // log('ocr ParsedText: ${data['ParsedResults'][0]['ParsedText']}');
+    // //필터작업
 
-    return {"sys": "152", "dia": "94", "pul": "102"};
+    return {"sys": result[0], "dia": result[1], "pul": result[2]};
   }
 }
