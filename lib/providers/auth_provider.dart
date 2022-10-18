@@ -108,8 +108,11 @@ class AuthProvider extends ChangeNotifier {
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
-    // Create a new credential
 
+    // Set Google idToken
+    sharedPreferences.setString('idToken', '${googleAuth?.idToken}');
+
+    // Create a new credential
     var response =
         await ApiAuth.loginGoogleService(token: '${googleAuth?.idToken}');
     int statusCode = response!.statusCode;
