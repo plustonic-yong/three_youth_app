@@ -58,6 +58,20 @@ class SignupBirthGenderScreen extends StatelessWidget {
                         child: ScrollDatePicker(
                           locale: const Locale('ko'),
                           selectedDate: _birth,
+                          scrollViewOptions: const DatePickerScrollViewOptions(
+                              day: ScrollViewDetailOptions(
+                                  margin: EdgeInsets.all(16),
+                                  textStyle: TextStyle(fontSize: 20),
+                                  selectedTextStyle: TextStyle(fontSize: 20)),
+                              month: ScrollViewDetailOptions(
+                                  margin: EdgeInsets.all(16),
+                                  textStyle: TextStyle(fontSize: 20),
+                                  selectedTextStyle: TextStyle(fontSize: 20)),
+                              year: ScrollViewDetailOptions(
+                                  margin: EdgeInsets.all(16),
+                                  textStyle: TextStyle(fontSize: 20),
+                                  selectedTextStyle: TextStyle(fontSize: 20))),
+                          options: const DatePickerOptions(itemExtent: 35),
                           onDateTimeChanged: (value) async {
                             context
                                 .read<SignupProvider>()

@@ -22,22 +22,22 @@ class SignupProvider extends ChangeNotifier {
   XFile? _selectedImg;
   XFile? get selectedImg => _selectedImg;
 
-  TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   TextEditingController get nameController => _nameController;
 
-  TextEditingController _heightController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
   TextEditingController get heightController => _heightController;
 
-  TextEditingController _weightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
   TextEditingController get weightController => _weightController;
 
-  TextEditingController _yearController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
   TextEditingController get yearController => _yearController;
 
-  TextEditingController _monthController = TextEditingController();
+  final TextEditingController _monthController = TextEditingController();
   TextEditingController get monthController => _monthController;
 
-  TextEditingController _dayController = TextEditingController();
+  final TextEditingController _dayController = TextEditingController();
   TextEditingController get dayController => _dayController;
 
   void onChangeCurrentPage({required int page}) {

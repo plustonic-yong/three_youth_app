@@ -1,8 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
+
+import '../../providers/ble_bp_provider.dart';
 
 class BleBpScanCameraResultScreen extends StatelessWidget {
   const BleBpScanCameraResultScreen({
@@ -196,7 +199,39 @@ class BleBpScanCameraResultScreen extends StatelessWidget {
                       width: 165.0,
                       title: '결과저장',
                       buttonColor: ButtonColor.primary,
-                      onTap: () {},
+                      onTap: () async {
+                        var result = await context
+                            .read<BleBpProvider>()
+                            .postBloodPressure(
+                              sys: int.parse(sys!),
+                              dia: int.parse(dia!),
+                              pul: int.parse(pul!),
+                            );
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                contentPadding: const EdgeInsets.all(30.0),
+                                actionsPadding: const EdgeInsets.all(10.0),
+                                actions: [
+                                  GestureDetector(
+                                    onTap: () => Navigator.of(context).pop(),
+                                    child: const Text(
+                                      '확인',
+                                      style: TextStyle(fontSize: 18.0),
+                                    ),
+                                  ),
+                                ],
+                                content: Text(
+                                  // ignore: unrelated_type_equality_checks
+                                  result == BpSaveDataStatus.success
+                                      ? '데이터 저장에 성공했습니다.'
+                                      : '데이터 저장에 실패했습니다.',
+                                  style: const TextStyle(fontSize: 18.0),
+                                ),
+                              );
+                            });
+                      },
                     ),
                   ],
                 ),

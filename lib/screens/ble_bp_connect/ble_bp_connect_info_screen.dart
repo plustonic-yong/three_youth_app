@@ -197,7 +197,7 @@ class _BleBpConnectInfoScreenState extends State<BleBpConnectInfoScreen> {
   Widget _getInfo1() {
     return Column(
       children: [
-        const SizedBox(height: 80.0),
+        const Spacer(flex: 2),
         const Text(
           "혈압계의 'Start/전원' 버튼을\n길게 눌러주세요.",
           textAlign: TextAlign.center,
@@ -206,7 +206,7 @@ class _BleBpConnectInfoScreenState extends State<BleBpConnectInfoScreen> {
             fontSize: 22.0,
           ),
         ),
-        const SizedBox(height: 40.0),
+        const Spacer(flex: 1),
         Center(
           child: Container(
             padding: const EdgeInsets.all(30.0),
@@ -220,15 +220,16 @@ class _BleBpConnectInfoScreenState extends State<BleBpConnectInfoScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 30.0),
+        const Spacer(flex: 1),
         const Text(
-          "혈압계의 화면에 'Pr' 이라는\n문자가 보이면 버튼에서 을 떼주세요.",
+          "혈압계의 화면에 'Pr' 이라는\n문자가 보이면 버튼에서 손을 떼주세요.",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
             fontSize: 22.0,
           ),
         ),
+        const Spacer(flex: 1),
       ],
     );
   }

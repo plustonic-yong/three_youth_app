@@ -209,7 +209,12 @@ class AuthProvider extends ChangeNotifier {
         }
       }
       try {
-        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        OAuthToken token;
+        if (await isKakaoTalkInstalled()) {
+          token = await UserApi.instance.loginWithKakaoTalk();
+        } else {
+          token = await UserApi.instance.loginWithKakaoAccount();
+        }
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
 
@@ -241,7 +246,12 @@ class AuthProvider extends ChangeNotifier {
     } else {
       debugPrint('발급된 토큰 없음');
       try {
-        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        OAuthToken token;
+        if (await isKakaoTalkInstalled()) {
+          token = await UserApi.instance.loginWithKakaoTalk();
+        } else {
+          token = await UserApi.instance.loginWithKakaoAccount();
+        }
         debugPrint('로그인 성공 ${token.accessToken}');
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);

@@ -76,7 +76,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                   _userInfo != null
                       ? Row(
                           children: [
-                            _userInfo.imgUrl != ''
+                            _userInfo.imgUrl !=
+                                    "https://3youth.s3.ap-northeast-2.amazonaws.com/undefined"
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(90.0),
                                     child: Image.network(
@@ -167,7 +168,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  '7.15(화) 오후 7:21',
+                                  '2022.7.15(화) 오후 7:21',
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -219,35 +220,41 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            CommonButton(
-                              width: 135.0,
-                              height: 40.0,
-                              title: '측정하기',
-                              buttonColor: ButtonColor.inactive,
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/scanecg',
-                                );
-                                Provider.of<CurrentUserProvider>(context,
-                                        listen: false)
-                                    .isER2000S = true;
-                              },
+                            Expanded(
+                              child: CommonButton(
+                                width: 135.0,
+                                height: 40.0,
+                                title: '측정하기',
+                                buttonColor: ButtonColor.inactive,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/scanecg',
+                                  );
+                                  Provider.of<CurrentUserProvider>(context,
+                                          listen: false)
+                                      .isER2000S = true;
+                                },
+                              ),
                             ),
-                            CommonButton(
-                              width: 135.0,
-                              height: 40.0,
-                              title: '연동하기',
-                              buttonColor: ButtonColor.primary,
-                              onTap: () {
-                                // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (context) =>
-                                //         const BleECGConnectScreenPrev(),
-                                //   ),
-                                // );
-                                Navigator.of(context).pushNamed('/connectecg');
-                              },
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: CommonButton(
+                                width: 135.0,
+                                height: 40.0,
+                                title: '연동하기',
+                                buttonColor: ButtonColor.primary,
+                                onTap: () {
+                                  // Navigator.of(context).push(
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) =>
+                                  //         const BleECGConnectScreenPrev(),
+                                  //   ),
+                                  // );
+                                  Navigator.of(context)
+                                      .pushNamed('/connectecg');
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -304,7 +311,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${Utils.formatDatetime(_lastBpHistory.measureDatetime).split(' ')[0]} ${Utils.formatDatetime(_lastBpHistory.measureDatetime).split(' ')[1]}',
+                                          Utils.formatDatetime(
+                                              _lastBpHistory.measureDatetime),
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),
@@ -335,7 +343,7 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                     )
                                   : const SizedBox(
                                       child: Text(
-                                        '혈압 데이터가 없습니다.',
+                                        '측정기록이 없습니다.\n측정기록을 남겨보세요!',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 18.0,
@@ -349,46 +357,50 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              CommonButton(
-                                width: 135.0,
-                                height: 40.0,
-                                title: '측정하기',
-                                buttonColor: _isPaired
-                                    ? ButtonColor.white
-                                    : ButtonColor.inactive,
-                                onTap: _isPaired
-                                    ? () {
-                                        log('scan');
-                                        Navigator.pushNamed(
-                                          context,
-                                          '/scan',
-                                        );
-                                      }
-                                    : null,
+                              Expanded(
+                                child: CommonButton(
+                                  width: 135.0,
+                                  height: 40.0,
+                                  title: '측정하기',
+                                  buttonColor: _isPaired
+                                      ? ButtonColor.white
+                                      : ButtonColor.inactive,
+                                  onTap: _isPaired
+                                      ? () {
+                                          log('scan');
+                                          Navigator.pushNamed(context, '/scan');
+                                        }
+                                      : null,
+                                ),
                               ),
+                              const SizedBox(width: 12),
                               _isPaired
-                                  ? CommonButton(
-                                      width: 135.0,
-                                      height: 40.0,
-                                      title: '연동해제',
-                                      buttonColor: ButtonColor.orange,
-                                      onTap: () async {
-                                        await context
-                                            .read<BleBpProvider>()
-                                            .disConnectPairing();
-                                      },
+                                  ? Expanded(
+                                      child: CommonButton(
+                                        width: 135.0,
+                                        height: 40.0,
+                                        title: '연동해제',
+                                        buttonColor: ButtonColor.orange,
+                                        onTap: () async {
+                                          await context
+                                              .read<BleBpProvider>()
+                                              .disConnectPairing();
+                                        },
+                                      ),
                                     )
-                                  : CommonButton(
-                                      width: 135.0,
-                                      height: 40.0,
-                                      title: '연동하기',
-                                      buttonColor: ButtonColor.primary,
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          '/connect',
-                                        );
-                                      },
+                                  : Expanded(
+                                      child: CommonButton(
+                                        width: 135.0,
+                                        height: 40.0,
+                                        title: '연동하기',
+                                        buttonColor: ButtonColor.primary,
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/connect',
+                                          );
+                                        },
+                                      ),
                                     ),
                             ],
                           ),

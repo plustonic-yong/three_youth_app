@@ -555,20 +555,24 @@ class BleBpProvider extends ChangeNotifier {
     //}
   }
 
-  Future<Map<String, String>> getBloodPressureOcr(String imgPath) async {
-    var response = await ApiBp.getBloodPressureOcrService(imgPath: imgPath);
-    log(response?.body ?? '');
-    var result = [];
-    if (response != null) {
-      result = json.decode(response.body);
-    } else {
-      result.addAll([0, 0, 0]);
-    }
-    // int statusCode = response!.statusCode;
-    // final data = json.decode(utf8.decode(response.bodyBytes));
-    // log('ocr ParsedText: ${data['ParsedResults'][0]['ParsedText']}');
-    // //필터작업
+  Future<Map<String, String>?> getBloodPressureOcr(String imgPath) async {
+    try {
+      var response = await ApiBp.getBloodPressureOcrService(imgPath: imgPath);
+      log(response?.body ?? '');
+      var result = [];
+      if (response != null) {
+        result = json.decode(response.body);
+      } else {
+        result.addAll([0, 0, 0]);
+      }
+      // int statusCode = response!.statusCode;
+      // final data = json.decode(utf8.decode(response.bodyBytes));
+      // log('ocr ParsedText: ${data['ParsedResults'][0]['ParsedText']}');
+      // //필터작업
 
-    return {"sys": result[0], "dia": result[1], "pul": result[2]};
+      return {"sys": result[0], "dia": result[1], "pul": result[2]};
+    } catch (e) {
+      return null;
+    }
   }
 }

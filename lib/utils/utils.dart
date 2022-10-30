@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class Utils {
   static String formatDatetime(DateTime dateTime) {
-    return DateFormat('yyyy.MM.dd(E) ahh:mm').format(dateTime);
+    return DateFormat('yyyy.MM.dd(E) a hh:mm').format(dateTime);
   }
 
   static String getAge(String? birth) {

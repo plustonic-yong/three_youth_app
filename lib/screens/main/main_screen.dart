@@ -10,7 +10,12 @@ import 'package:three_youth_app/utils/color.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  final int currentIndex;
+
+  const MainScreen({
+    Key? key,
+    this.currentIndex = 0,
+  }) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -28,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+    _currentIndex = widget.currentIndex;
     Future.delayed(Duration.zero, () async {
       prefs = await SharedPreferences.getInstance();
       if (prefs.containsKey('isLogin') == false) {
@@ -45,6 +51,7 @@ class _MainScreenState extends State<MainScreen> {
         await context.read<BleBpProvider>().findIsPaired();
         await context.read<UserProvider>().getUserInfo();
         await context.read<BleBpProvider>().getLastBloodPressure();
+        setState(() => isLoading = false);
       });
 
       // var isSphyFairing = prefs.getBool('isSphyFairing') ?? false;
@@ -54,7 +61,6 @@ class _MainScreenState extends State<MainScreen> {
         //Provider.of<CurrentUser>(context, listen: false).isFairing = isFairing;
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
-        isLoading = false;
       });
     });
     super.initState();
@@ -72,7 +78,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        // appBar: _currentIndex == 0 ? null : const BaseAppBar(),
         bottomNavigationBar: ClipRRect(
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20.0),
@@ -125,43 +130,6 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 label: '내 정보',
               ),
-              // const BottomNavigationBarItem(
-              //   icon: Icon(
-              //     Icons.settings,
-              //     size: 27.0,
-              //   ),
-              //   activeIcon: Icon(
-              //     Icons.settings,
-              //     color: ColorAssets.greenGradient1,
-              //     size: 27.0,
-              //   ),
-              //   label: '설정',
-              // ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(
-              //     Icons.list,
-              //     size: 27,
-              //   ),
-              //   activeIcon: Icon(
-              //     Icons.list,
-              //     color: ColorAssets.greenGradient1,
-              //     size: 27,
-              //   ),
-              //   label: '히스토리',
-              // ),
-
-              // BottomNavigationBarItem(
-              //   icon: Icon(
-              //     Icons.bar_chart,
-              //     size: 27,
-              //   ),
-              //   activeIcon: Icon(
-              //     Icons.bar_chart,
-              //     color: ColorAssets.greenGradient1,
-              //     size: 27,
-              //   ),
-              //   label: '데이터',
-              // ),
             ],
           ),
         ),
@@ -185,14 +153,6 @@ class _MainScreenState extends State<MainScreen> {
       );
     } else {
       return Container();
-      // } else if (_currentIndex == 1) {
-      //   return const Center(child: HistoryScreen());
-      // } else if (_currentIndex == 2) {
-      //   return const Center(child: MainGraphScreen());
-      // } else if (_currentIndex == 3) {
-      //   return const Center(child: MainSettingScreen());
-      // } else {
-      //   return Container();
     }
   }
 }

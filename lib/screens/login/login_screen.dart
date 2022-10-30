@@ -19,6 +19,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _isLoading = false;
+
   bool isIos =
       foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS;
   bool isAndroid =
@@ -145,60 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Column(
                             children: [
                               GestureDetector(
-                                onTap: () async {
-                                  var result = await context
-                                      .read<AuthProvider>()
-                                      .loginGoogle();
-                                  if (result == LoginStatus.success) {
-                                    Navigator.of(context).pushNamed('/main');
-                                  } else if (result == LoginStatus.noAccount) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            contentPadding:
-                                                const EdgeInsets.all(30.0),
-                                            actionsPadding:
-                                                const EdgeInsets.all(10.0),
-                                            actions: [
-                                              GestureDetector(
-                                                onTap: () =>
-                                                    Navigator.of(context).pop(),
-                                                child: const Text(
-                                                  '취소',
-                                                  style:
-                                                      TextStyle(fontSize: 18.0),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 10.0),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  context
-                                                      .read<SignupProvider>()
-                                                      .onChangeSignupState(
-                                                        value:
-                                                            SignupState.google,
-                                                      );
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                    '/signup/agreement',
-                                                  );
-                                                },
-                                                child: const Text(
-                                                  '확인',
-                                                  style:
-                                                      TextStyle(fontSize: 18.0),
-                                                ),
-                                              ),
-                                            ],
-                                            content: const Text(
-                                              '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
-                                              style: TextStyle(fontSize: 18.0),
-                                            ),
-                                          );
-                                        });
-                                  }
-                                },
+                                onTap: () => _tapGoogleLogin(),
                                 child: Container(
                                   width: width * 0.48,
                                   height: height * 0.05,
@@ -256,74 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Column(
                       children: [
                         GestureDetector(
-                          onTap: () async {
-                            var result =
-                                await context.read<AuthProvider>().loginKakao();
-                            if (result == LoginStatus.success) {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/main',
-                                (route) => false,
-                              );
-                            } else if (result == LoginStatus.noAccount) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      contentPadding:
-                                          const EdgeInsets.all(30.0),
-                                      actionsPadding:
-                                          const EdgeInsets.all(10.0),
-                                      actions: [
-                                        GestureDetector(
-                                          onTap: () =>
-                                              Navigator.of(context).pop(),
-                                          child: const Text(
-                                            '취소',
-                                            style: TextStyle(fontSize: 18.0),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        GestureDetector(
-                                          onTap: () {
-                                            context
-                                                .read<SignupProvider>()
-                                                .onChangeSignupState(
-                                                  value: SignupState.kakao,
-                                                );
-                                            Navigator.of(context)
-                                                .pushNamed('/signup/agreement');
-                                          },
-                                          child: const Text(
-                                            '확인',
-                                            style: TextStyle(fontSize: 18.0),
-                                          ),
-                                        ),
-                                      ],
-                                      content: const Text(
-                                        '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
-                                        style: TextStyle(fontSize: 18.0),
-                                      ),
-                                    );
-                                  });
-                            }
-                            //  else {
-                            //   showDialog(
-                            //       context: context,
-                            //       builder: (context) {
-                            //         return AlertDialog(
-                            //           actions: [
-                            //             GestureDetector(
-                            //               onTap: () => Navigator.of(context).pop(),
-                            //               child: const Text('확인'),
-                            //             ),
-                            //           ],
-                            //           content: Container(
-                            //             child: const Text('로그인에 실패하였습니다.'),
-                            //           ),
-                            //         );
-                            //       });
-                            // }
-                          },
+                          onTap: () => _tapKakaoLogin(),
                           child: Container(
                             width: width * 0.48,
                             height: height * 0.05,
@@ -381,59 +263,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Column(
                       children: [
                         GestureDetector(
-                          onTap: () async {
-                            log('naver');
-                            var result =
-                                await context.read<AuthProvider>().loginNaver();
-
-                            if (result == LoginStatus.success) {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/main',
-                                (route) => false,
-                              );
-                            } else if (result == LoginStatus.noAccount) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      contentPadding:
-                                          const EdgeInsets.all(30.0),
-                                      actionsPadding:
-                                          const EdgeInsets.all(10.0),
-                                      actions: [
-                                        GestureDetector(
-                                          onTap: () =>
-                                              Navigator.of(context).pop(),
-                                          child: const Text(
-                                            '취소',
-                                            style: TextStyle(fontSize: 18.0),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10.0),
-                                        GestureDetector(
-                                          onTap: () {
-                                            context
-                                                .read<SignupProvider>()
-                                                .onChangeSignupState(
-                                                  value: SignupState.naver,
-                                                );
-                                            Navigator.of(context)
-                                                .pushNamed('/signup/agreement');
-                                          },
-                                          child: const Text(
-                                            '확인',
-                                            style: TextStyle(fontSize: 18.0),
-                                          ),
-                                        ),
-                                      ],
-                                      content: const Text(
-                                        '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
-                                        style: TextStyle(fontSize: 18.0),
-                                      ),
-                                    );
-                                  });
-                            }
-                          },
+                          onTap: () => _tapNaverLogin(),
                           child: Container(
                             width: width * 0.48,
                             height: height * 0.05,
@@ -499,9 +329,184 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+            if (_isLoading) const Center(child: CircularProgressIndicator())
           ],
         ),
       ),
     );
+  }
+
+  _tapGoogleLogin() async {
+    try {
+      setState(() => _isLoading = true);
+      var result = await context.read<AuthProvider>().loginGoogle();
+      if (result == LoginStatus.success) {
+        Navigator.of(context).pushNamed('/main');
+      } else if (result == LoginStatus.noAccount) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                contentPadding: const EdgeInsets.all(30.0),
+                actionsPadding: const EdgeInsets.all(10.0),
+                actions: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Text(
+                      '취소',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<SignupProvider>().onChangeSignupState(
+                            value: SignupState.google,
+                          );
+                      Navigator.of(context).pushNamed(
+                        '/signup/agreement',
+                      );
+                    },
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
+                content: const Text(
+                  '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              );
+            });
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  _tapKakaoLogin() async {
+    try {
+      setState(() => _isLoading = true);
+      var result = await context.read<AuthProvider>().loginKakao();
+      if (result == LoginStatus.success) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/main',
+          (route) => false,
+        );
+      } else if (result == LoginStatus.noAccount) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                contentPadding: const EdgeInsets.all(30.0),
+                actionsPadding: const EdgeInsets.all(10.0),
+                actions: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Text(
+                      '취소',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<SignupProvider>().onChangeSignupState(
+                            value: SignupState.kakao,
+                          );
+                      Navigator.of(context).pushNamed('/signup/agreement');
+                    },
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
+                content: const Text(
+                  '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              );
+            });
+      }
+      //  else {
+      //   showDialog(
+      //       context: context,
+      //       builder: (context) {
+      //         return AlertDialog(
+      //           actions: [
+      //             GestureDetector(
+      //               onTap: () => Navigator.of(context).pop(),
+      //               child: const Text('확인'),
+      //             ),
+      //           ],
+      //           content: Container(
+      //             child: const Text('로그인에 실패하였습니다.'),
+      //           ),
+      //         );
+      //       });
+      // }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  _tapNaverLogin() async {
+    try {
+      setState(() => _isLoading = true);
+      log('naver');
+      var result = await context.read<AuthProvider>().loginNaver();
+
+      if (result == LoginStatus.success) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/main',
+          (route) => false,
+        );
+      } else if (result == LoginStatus.noAccount) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                contentPadding: const EdgeInsets.all(30.0),
+                actionsPadding: const EdgeInsets.all(10.0),
+                actions: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Text(
+                      '취소',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<SignupProvider>().onChangeSignupState(
+                            value: SignupState.naver,
+                          );
+                      Navigator.of(context).pushNamed('/signup/agreement');
+                    },
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
+                content: const Text(
+                  '회원가입이 되어있지 않습니다.\n신규가입을 진행하시겠습니까?',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              );
+            });
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 }

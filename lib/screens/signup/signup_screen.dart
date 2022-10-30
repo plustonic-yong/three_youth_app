@@ -32,12 +32,12 @@ class _SignupScreenScreenState extends State<SignupScreen> {
     GenderState _gender = context.read<SignupProvider>().gender;
     DateTime _birth = context.watch<SignupProvider>().birth;
     XFile? _selectedImg = context.watch<SignupProvider>().selectedImg;
+    bool _loading = false;
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         body: WillPopScope(
           onWillPop: () async {
             Navigator.of(context)
@@ -96,6 +96,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               ? ButtonColor.primary
                               : ButtonColor.inactive,
                           onTap: () {
+                            FocusScope.of(context).unfocus();
                             if (_name == '') return;
                             setState(() {
                               _pageController.nextPage(
@@ -114,6 +115,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                               title: '이전',
                               buttonColor: ButtonColor.inactive,
                               onTap: () {
+                                FocusScope.of(context).unfocus();
                                 setState(() {
                                   _pageController.previousPage(
                                     duration: const Duration(milliseconds: 300),
@@ -143,128 +145,138 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                                           : _currentPage == 4
                                               ? _selectedImg != null
                                                   ? ButtonColor.primary
-                                                  : ButtonColor.inactive
+                                                  : ButtonColor.primary
                                               : ButtonColor.primary,
                               onTap: () async {
+                                FocusScope.of(context).unfocus();
                                 if (_currentPage == 1 && _height == '') {
                                   return;
                                 }
                                 if (_currentPage == 2 && _weight == '') {
                                   return;
                                 }
-                                if (_currentPage == 4 && _selectedImg != null) {
-                                  var signupState = context
-                                      .read<SignupProvider>()
-                                      .signupState;
-                                  if (signupState == SignupState.google) {
-                                    var result = await context
-                                        .read<AuthProvider>()
-                                        .signupGoogle(
-                                          name: _name,
-                                          birth: _birth,
-                                          gender: _gender,
-                                          height: _height,
-                                          weight: _weight,
-                                          img: _selectedImg.path,
-                                        );
-                                    if (result == SignupStatus.success) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            content:
-                                                const Text('회원가입이 완료되었습니다.'),
-                                            actions: [
-                                              GestureDetector(
-                                                onTap: () => Navigator.of(
-                                                        context)
-                                                    .pushNamedAndRemoveUntil(
-                                                        '/main',
-                                                        (route) => false),
-                                                child: const Text(
-                                                  '확인',
-                                                  style:
-                                                      TextStyle(fontSize: 18.0),
-                                                ),
-                                              ),
-                                            ],
+                                if (_currentPage == 4) {
+                                  try {
+                                    setState(() => _loading = true);
+                                    var signupState = context
+                                        .read<SignupProvider>()
+                                        .signupState;
+                                    if (signupState == SignupState.google) {
+                                      var result = await context
+                                          .read<AuthProvider>()
+                                          .signupGoogle(
+                                            name: _name,
+                                            birth: _birth,
+                                            gender: _gender,
+                                            height: _height,
+                                            weight: _weight,
+                                            img: _selectedImg?.path ?? '',
                                           );
-                                        },
-                                      );
-                                    }
-                                  } else if (signupState == SignupState.kakao) {
-                                    var result = await context
-                                        .read<AuthProvider>()
-                                        .signupKakao(
-                                          name: _name,
-                                          birth: _birth,
-                                          gender: _gender,
-                                          height: _height,
-                                          weight: _weight,
-                                          img: _selectedImg.path,
-                                        );
-                                    if (result == SignupStatus.success) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            content:
-                                                const Text('회원가입이 완료되었습니다.'),
-                                            actions: [
-                                              GestureDetector(
-                                                onTap: () => Navigator.of(
-                                                        context)
-                                                    .pushNamedAndRemoveUntil(
-                                                        '/main',
-                                                        (route) => false),
-                                                child: const Text(
-                                                  '확인',
-                                                  style:
-                                                      TextStyle(fontSize: 18.0),
+                                      if (result == SignupStatus.success) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content:
+                                                  const Text('회원가입이 완료되었습니다.'),
+                                              actions: [
+                                                GestureDetector(
+                                                  onTap: () => Navigator.of(
+                                                          context)
+                                                      .pushNamedAndRemoveUntil(
+                                                          '/main',
+                                                          (route) => false),
+                                                  child: const Text(
+                                                    '확인',
+                                                    style: TextStyle(
+                                                        fontSize: 18.0),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  } else if (signupState == SignupState.naver) {
-                                    log('naver');
-                                    var result = await context
-                                        .read<AuthProvider>()
-                                        .signupNaver(
-                                          name: _name,
-                                          birth: _birth,
-                                          gender: _gender,
-                                          height: _height,
-                                          weight: _weight,
-                                          img: _selectedImg.path,
+                                              ],
+                                            );
+                                          },
                                         );
-                                    if (result == SignupStatus.success) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            content:
-                                                const Text('회원가입이 완료되었습니다.'),
-                                            actions: [
-                                              GestureDetector(
-                                                onTap: () => Navigator.of(
-                                                        context)
-                                                    .pushNamedAndRemoveUntil(
-                                                        '/main',
-                                                        (route) => false),
-                                                child: const Text(
-                                                  '확인',
-                                                  style:
-                                                      TextStyle(fontSize: 18.0),
-                                                ),
-                                              ),
-                                            ],
+                                      }
+                                    } else if (signupState ==
+                                        SignupState.kakao) {
+                                      var result = await context
+                                          .read<AuthProvider>()
+                                          .signupKakao(
+                                            name: _name,
+                                            birth: _birth,
+                                            gender: _gender,
+                                            height: _height,
+                                            weight: _weight,
+                                            img: _selectedImg?.path ?? '',
                                           );
-                                        },
-                                      );
+                                      if (result == SignupStatus.success) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content:
+                                                  const Text('회원가입이 완료되었습니다.'),
+                                              actions: [
+                                                GestureDetector(
+                                                  onTap: () => Navigator.of(
+                                                          context)
+                                                      .pushNamedAndRemoveUntil(
+                                                          '/main',
+                                                          (route) => false),
+                                                  child: const Text(
+                                                    '확인',
+                                                    style: TextStyle(
+                                                        fontSize: 18.0),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    } else if (signupState ==
+                                        SignupState.naver) {
+                                      log('naver');
+                                      var result = await context
+                                          .read<AuthProvider>()
+                                          .signupNaver(
+                                            name: _name,
+                                            birth: _birth,
+                                            gender: _gender,
+                                            height: _height,
+                                            weight: _weight,
+                                            img: _selectedImg?.path ?? '',
+                                          );
+                                      if (result == SignupStatus.success) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content:
+                                                  const Text('회원가입이 완료되었습니다.'),
+                                              actions: [
+                                                GestureDetector(
+                                                  onTap: () => Navigator.of(
+                                                          context)
+                                                      .pushNamedAndRemoveUntil(
+                                                          '/main',
+                                                          (route) => false),
+                                                  child: const Text(
+                                                    '확인',
+                                                    style: TextStyle(
+                                                        fontSize: 18.0),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
                                     }
+                                  } catch (e) {
+                                    log(e.toString());
+                                  } finally {
+                                    setState(() => _loading = false);
                                   }
                                 }
                                 setState(() {
@@ -283,6 +295,7 @@ class _SignupScreenScreenState extends State<SignupScreen> {
                   SizedBox(height: _screenHeight * 0.045),
                 ],
               ),
+              if (_loading) const Center(child: CircularProgressIndicator()),
             ],
           ),
         ),
