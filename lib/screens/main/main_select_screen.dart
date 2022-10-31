@@ -16,6 +16,8 @@ import 'package:three_youth_app/utils/utils.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../ble_bp_scan/ble_bp_prev_history_screen.dart';
+
 class MainSelectScreen extends StatefulWidget {
   const MainSelectScreen({Key? key}) : super(key: key);
 
@@ -198,24 +200,24 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                             )
                           ],
                         ),
-                        const SizedBox(height: 25.0),
-                        CommonButton(
-                          width: MediaQuery.of(context).size.width,
-                          height: 40.0,
-                          title: '이전 코드 연동/측정 테스트',
-                          buttonColor: ButtonColor.inactive,
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const PrevBleECGConnectScreen(),
-                              ),
-                            );
-                            Provider.of<CurrentUserProvider>(context,
-                                    listen: false)
-                                .isER2000S = true;
-                          },
-                        ),
+                        // const SizedBox(height: 25.0),
+                        // CommonButton(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   height: 40.0,
+                        //   title: '이전 코드 연동/측정 테스트',
+                        //   buttonColor: ButtonColor.inactive,
+                        //   onTap: () {
+                        //     Navigator.of(context).push(
+                        //       MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             const PrevBleECGConnectScreen(),
+                        //       ),
+                        //     );
+                        //     Provider.of<CurrentUserProvider>(context,
+                        //             listen: false)
+                        //         .isER2000S = true;
+                        //   },
+                        // ),
                         const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -251,8 +253,9 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                   //         const BleECGConnectScreenPrev(),
                                   //   ),
                                   // );
-                                  Navigator.of(context)
-                                      .pushNamed('/connectecg');
+
+                                  // Navigator.of(context)
+                                  //     .pushNamed('/connectecg');
                                 },
                               ),
                             ),

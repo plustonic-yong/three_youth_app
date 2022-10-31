@@ -3,6 +3,8 @@ import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 
+import 'ble_bp_connect_pairing_screen.dart';
+
 class BleBpConnectScreen extends StatelessWidget {
   const BleBpConnectScreen({Key? key}) : super(key: key);
   @override
@@ -76,9 +78,15 @@ class BleBpConnectScreen extends StatelessWidget {
                     // await context.read<BleBpConnectProvider>().startPairing();
                     // Navigator.of(context).pushNamed('/connect/pairing');
 
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const BleBpConnectScreen(),
+                    //   ),
+                    // );
+
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const BleBpConnectScreen(),
+                        builder: (context) => const BleBpConnectPairingScreen(),
                       ),
                     );
                   },

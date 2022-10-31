@@ -24,7 +24,7 @@ class SignupProfileImgScreen extends StatelessWidget {
           ),
           SizedBox(height: height * 0.12),
           const Text(
-            '프로필 사진을 등록해주세요.',
+            '프로필 사진을 등록해주세요(선택사항)',
             style: TextStyle(color: Colors.white, fontSize: 18.0),
           ),
           const SizedBox(height: 40.0),

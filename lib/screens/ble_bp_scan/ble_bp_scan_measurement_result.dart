@@ -3,8 +3,11 @@ import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/providers/user_provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/utils/toast.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
+
+import 'ble_bp_prev_history_screen.dart';
 
 class BleBpScanMeasurementResult extends StatelessWidget {
   const BleBpScanMeasurementResult({Key? key}) : super(key: key);
@@ -218,7 +221,9 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                         title: 'PDF 공유',
                         buttonColor: ButtonColor.inactive,
                         fontSize: 16.0,
-                        onTap: () {},
+                        onTap: () {
+                          showToast('APP의 스토어 정식 등록 이후 구현 가능합니다.');
+                        },
                       ),
                     ),
                   ],
@@ -235,8 +240,12 @@ class BleBpScanMeasurementResult extends StatelessWidget {
                         buttonColor: ButtonColor.inactive,
                         fontSize: 16.0,
                         onTap: () {
-                          context.read<BleBpProvider>().dataClear();
-                          Navigator.of(context).pushNamed('/history');
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const BleBpPrevHistoryScreen(),
+                            ),
+                          );
                         },
                       ),
                     ),

@@ -75,7 +75,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? idToken = sharedPreferences.getString('idToken');
-    String genderStr = gender == GenderState.man ? "W" : "W";
+    String genderStr = gender == GenderState.man ? "M" : "W";
     var response = await ApiAuth.signupGoogleService(
       token: idToken!,
       name: name,

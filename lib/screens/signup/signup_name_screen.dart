@@ -46,7 +46,6 @@ class SignupNameScreen extends StatelessWidget {
         keyboardType: TextInputType.text,
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white),
-        scrollPadding: EdgeInsets.all(100),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
           hintText: '홍길동',
