@@ -36,14 +36,14 @@ Widget bpRecordCard({
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      Utils.formatDatetime(measureDatetime).split(' ')[0],
+                      Utils.formatDate(measureDatetime),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 23.0,
                       ),
                     ),
                     Text(
-                      Utils.formatDatetime(measureDatetime).split(' ')[1],
+                      Utils.formatTime(measureDatetime),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 23.0,

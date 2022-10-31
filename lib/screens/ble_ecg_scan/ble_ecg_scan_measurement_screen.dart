@@ -16,6 +16,8 @@ class BleEcgScanMeasurementScreen extends StatefulWidget {
 
 class _BleEcgScanMeasurementScreenState
     extends State<BleEcgScanMeasurementScreen> {
+  int _currentPage = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -43,13 +45,24 @@ class _BleEcgScanMeasurementScreenState
             ),
           ),
         ),
-        _ecgScanStatus == EcgScanStatus.waiting
-            ? _getWaiting(screenWidth: _screenWidth)
-            : _ecgScanStatus == EcgScanStatus.scanning
-                ? _getScanning(screenWidth: _screenWidth)
-                : _getScanningResult(screenWidth: _screenWidth),
+        _buildMeasure(_screenWidth),
+        // _ecgScanStatus == EcgScanStatus.waiting
+        //     ? _getWaiting(screenWidth: _screenWidth)
+        //     : _ecgScanStatus == EcgScanStatus.scanning
+        //         ? _getScanningResult(screenWidth: _screenWidth)
+        //         : _getScanning(screenWidth: _screenWidth)
       ],
     );
+  }
+
+  _buildMeasure(_screenWidth) {
+    if (_currentPage == 0) {
+      return _getWaiting(screenWidth: _screenWidth);
+    } else if (_currentPage == 1) {
+      return _getScanning(screenWidth: _screenWidth);
+    } else if (_currentPage == 2) {
+      return _getScanningResult(screenWidth: _screenWidth);
+    }
   }
 
   Widget _getWaiting({required double screenWidth}) {
@@ -61,54 +74,58 @@ class _BleEcgScanMeasurementScreenState
         title: const Text('측정준비'),
       ),
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 40.0),
-            Center(
-              child: Image.asset(
-                'assets/images/electrocardiogram_1@2x.png',
-                width: 100.0,
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => setState(() => _currentPage = ++_currentPage),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 40.0),
+              Center(
+                child: Image.asset(
+                  'assets/images/electrocardiogram_1@2x.png',
+                  width: 100.0,
+                ),
               ),
-            ),
-            const SizedBox(height: 20.0),
-            const Center(
-              child: Text(
-                '심전계의 측정이 시작되면\n이 화면은 자동으로 닫힙니다.',
-                style: TextStyle(
+              const SizedBox(height: 20.0),
+              const Center(
+                child: Text(
+                  '심전계의 측정이 시작되면\n이 화면은 자동으로 닫힙니다.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30.0),
+              Container(
+                padding: const EdgeInsets.all(25.0),
+                width: screenWidth,
+                decoration: BoxDecoration(
                   color: Colors.white,
-                  fontSize: 18.0,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: const Text(
+                  '심전계 상부 전극판(금속판)에 오른손\n손가락을 왼쪽 가슴 밑에 심전계 하부\n전극판을 접촉한 후 기기의 "O" 버튼을\n누르면 측정이 시작됩니다.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    height: 2.0,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30.0),
-            Container(
-              padding: const EdgeInsets.all(25.0),
-              width: screenWidth,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
+              const Spacer(),
+              CommonButton(
+                height: 50.0,
+                width: screenWidth,
+                title: '이전 화면으로',
+                buttonColor: ButtonColor.inactive,
+                onTap: () => Navigator.of(context).pop(),
               ),
-              child: const Text(
-                '심전계 상부 전극판(금속판)에 오른손\n손가락을 왼쪽 가슴 밑에 심전계 하부\n전극판을 접촉한 후 기기의 "O" 버튼을\n누르면 측정이 시작됩니다.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  height: 2.0,
-                ),
-              ),
-            ),
-            const Spacer(),
-            CommonButton(
-              height: 50.0,
-              width: screenWidth,
-              title: '이전 화면으로',
-              buttonColor: ButtonColor.inactive,
-              onTap: () => Navigator.of(context).pop(),
-            ),
-            const SizedBox(height: 30.0),
-          ],
+              const SizedBox(height: 30.0),
+            ],
+          ),
         ),
       ),
     );
@@ -123,51 +140,17 @@ class _BleEcgScanMeasurementScreenState
         title: const Text('실시간 심전도 측정'),
       ),
       backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          const SizedBox(height: 280.0),
-          Container(
-            width: screenWidth,
-            height: 1.0,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 180.0),
-          Stack(
-            children: [
-              Container(
-                width: 100.0,
-                height: 50.0,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFF849D),
-                ),
-              ),
-              Container(
-                width: 300.0,
-                height: 50.0,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          // SizedBox(
-          //   height: 80.0,
-          //   child: PieChart(
-          //     PieChartData(
-          //         sections: data,
-          //         centerSpaceRadius: 60.0,
-          //         startDegreeOffset: 270.0
-          //         // sectionsSpace: 10.0,
-
-          //         ),
-          //   ),
-          // ),
-        ],
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => setState(() => _currentPage = ++_currentPage),
+        child: Column(
+          children: [
+            const SizedBox(height: 180.0),
+            Image.asset('assets/images/graph.png'),
+            const SizedBox(height: 150.0),
+            Image.asset('assets/images/heart_graph.png', height: 166),
+          ],
+        ),
       ),
     );
   }

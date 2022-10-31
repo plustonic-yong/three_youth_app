@@ -115,12 +115,7 @@ Widget ecgRecordCard({required BuildContext context}) {
             ],
           ),
           const SizedBox(height: 100.0),
-          const Divider(
-            color: Colors.white,
-            thickness: 1.0,
-            indent: 1.0,
-            endIndent: 1.0,
-          ),
+          Image.asset('assets/images/graph.png'),
           const SizedBox(height: 60.0),
         ],
       ),

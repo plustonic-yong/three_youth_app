@@ -20,6 +20,14 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
   final PageController _pageController = PageController();
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<BleEcgConnectProvider>().onChangeCurrentPage(page: 0);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _currentPage = context.watch<BleEcgConnectProvider>().currentPage;
     return Stack(

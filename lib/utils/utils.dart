@@ -1,6 +1,14 @@
 import 'package:intl/intl.dart';
 
 class Utils {
+  static String formatDate(DateTime dateTime) {
+    return DateFormat('yyyy.MM.dd(E)').format(dateTime);
+  }
+
+  static String formatTime(DateTime dateTime) {
+    return DateFormat('a hh:mm').format(dateTime);
+  }
+
   static String formatDatetime(DateTime dateTime) {
     return DateFormat('yyyy.MM.dd(E) a hh:mm').format(dateTime);
   }
