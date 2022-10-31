@@ -254,8 +254,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                                   //   ),
                                   // );
 
-                                  // Navigator.of(context)
-                                  //     .pushNamed('/connectecg');
+                                  Navigator.of(context)
+                                      .pushNamed('/connectecg');
                                 },
                               ),
                             ),

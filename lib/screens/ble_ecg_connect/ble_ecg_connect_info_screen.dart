@@ -5,14 +5,23 @@ import 'package:provider/provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 
-class BleEcgConnectInfoScreen extends StatelessWidget {
+import '../../providers/current_user_provider.dart';
+
+class BleEcgConnectInfoScreen extends StatefulWidget {
   const BleEcgConnectInfoScreen({Key? key}) : super(key: key);
 
   @override
+  State<BleEcgConnectInfoScreen> createState() =>
+      _BleEcgConnectInfoScreenState();
+}
+
+class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
+  int _currentPage = 0;
+  final PageController _pageController = PageController();
+
+  @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width;
-    int _currentPage = context.watch<BleEcgConnectProvider>().currentPage;
-    PageController _pageController = PageController();
+    _currentPage = context.watch<BleEcgConnectProvider>().currentPage;
     return Stack(
       children: [
         //배경이미지
@@ -45,13 +54,13 @@ class BleEcgConnectInfoScreen extends StatelessWidget {
                     children: [
                       _getInfo0(),
                       _getInfo1(),
-                      // _getInfo2(),
-                      // _getInfo3(),
+                      _getInfo2(),
+                      _getInfo3(),
                     ],
                   ),
                 ),
                 DotsIndicator(
-                  dotsCount: 2,
+                  dotsCount: 4,
                   position: _currentPage.roundToDouble(),
                   decorator: DotsDecorator(
                     size: const Size.square(9.0),
@@ -62,62 +71,7 @@ class BleEcgConnectInfoScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40.0),
-                _currentPage == 0
-                    ? CommonButton(
-                        width: _screenWidth,
-                        height: 50.0,
-                        title: '다음',
-                        buttonColor: ButtonColor.primary,
-                        onTap: () {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn,
-                          );
-                          context
-                              .read<BleEcgConnectProvider>()
-                              .onChangeCurrentPage(page: _currentPage);
-                        },
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //이전버튼
-                          CommonButton(
-                            width: 150.0,
-                            height: 50.0,
-                            title: '이전',
-                            buttonColor: ButtonColor.inactive,
-                            onTap: () {
-                              _pageController.previousPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn,
-                              );
-                              context
-                                  .read<BleEcgConnectProvider>()
-                                  .onChangeCurrentPage(page: _currentPage);
-                            },
-                          ),
-                          const SizedBox(
-                            width: 15.0,
-                          ),
-                          //다음버튼
-                          CommonButton(
-                            width: 150.0,
-                            height: 50.0,
-                            title: '심전계찾기',
-                            buttonColor: ButtonColor.primary,
-                            onTap: () {
-                              _pageController.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn,
-                              );
-                              context
-                                  .read<BleEcgConnectProvider>()
-                                  .onChangeCurrentPage(page: _currentPage);
-                            },
-                          )
-                        ],
-                      ),
+                _buildBottomButton(),
                 const SizedBox(height: 30.0)
               ],
             ),
@@ -125,6 +79,126 @@ class BleEcgConnectInfoScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  _buildBottomButton() {
+    switch (_currentPage) {
+      case 0:
+        return CommonButton(
+          width: MediaQuery.of(context).size.width,
+          height: 50.0,
+          title: '다음',
+          buttonColor: ButtonColor.primary,
+          onTap: () {
+            _pageController.nextPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeIn,
+            );
+            context
+                .read<BleEcgConnectProvider>()
+                .onChangeCurrentPage(page: _currentPage);
+          },
+        );
+      case 1:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //이전버튼
+            CommonButton(
+              width: 150.0,
+              height: 50.0,
+              title: '이전',
+              buttonColor: ButtonColor.inactive,
+              onTap: () {
+                _pageController.previousPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+                context
+                    .read<BleEcgConnectProvider>()
+                    .onChangeCurrentPage(page: _currentPage);
+              },
+            ),
+            const SizedBox(
+              width: 15.0,
+            ),
+            //다음버튼
+            CommonButton(
+              width: 150.0,
+              height: 50.0,
+              title: '다음',
+              buttonColor: ButtonColor.primary,
+              onTap: () {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+                context
+                    .read<BleEcgConnectProvider>()
+                    .onChangeCurrentPage(page: _currentPage);
+              },
+            )
+          ],
+        );
+      case 2:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //이전버튼
+            CommonButton(
+              width: 150.0,
+              height: 50.0,
+              title: '이전',
+              buttonColor: ButtonColor.inactive,
+              onTap: () {
+                _pageController.previousPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+                context
+                    .read<BleEcgConnectProvider>()
+                    .onChangeCurrentPage(page: _currentPage);
+              },
+            ),
+            const SizedBox(
+              width: 15.0,
+            ),
+            //다음버튼
+            CommonButton(
+              width: 150.0,
+              height: 50.0,
+              title: '심전계찾기',
+              buttonColor: ButtonColor.primary,
+              onTap: () {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+                context
+                    .read<BleEcgConnectProvider>()
+                    .onChangeCurrentPage(page: _currentPage);
+              },
+            )
+          ],
+        );
+      case 3:
+        return CommonButton(
+          width: MediaQuery.of(context).size.width,
+          height: 50.0,
+          title: '측정화면으로 이동',
+          buttonColor: ButtonColor.primary,
+          onTap: () {
+            Navigator.pushNamed(context, '/scanecg');
+            Provider.of<CurrentUserProvider>(context, listen: false).isER2000S =
+                true;
+            context
+                .read<BleEcgConnectProvider>()
+                .onChangeCurrentPage(page: _currentPage);
+          },
+        );
+      default:
+        return const Center();
+    }
   }
 
 //1페이지
@@ -186,6 +260,89 @@ class BleEcgConnectInfoScreen extends StatelessWidget {
         const SizedBox(height: 40.0),
         const Text(
           "'블루투스 켜기'를 선택",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    );
+  }
+
+  //3페이지
+  Widget _getInfo2() {
+    return Column(
+      children: [
+        const SizedBox(height: 100.0),
+        const Text(
+          "심전계 화면에 안내되는\n4자리 번호를 입력해주세요.",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+          ),
+        ),
+        const SizedBox(height: 100.0),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: TextFormField(
+            keyboardType: TextInputType.text,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+              hintText: '4자리 번호',
+              hintStyle: const TextStyle(color: Colors.grey),
+              // ignore: use_full_hex_values_for_flutter_colors
+              fillColor: const Color(0xff00000033).withOpacity(0.25),
+              filled: true,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.0),
+                borderSide: const BorderSide(color: Colors.white, width: 1.5),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.0),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 40.0),
+      ],
+    );
+  }
+
+  //4페이지
+  Widget _getInfo3() {
+    return Column(
+      children: [
+        const SizedBox(height: 100.0),
+        Center(
+          child: Image.asset(
+            'assets/images/electrocardiogram_1@2x.png',
+            width: 100.0,
+          ),
+        ),
+        const SizedBox(height: 40.0),
+        Center(
+          child: Image.asset(
+            'assets/images/check.png',
+            width: 50.0,
+          ),
+        ),
+        const SizedBox(height: 10.0),
+        const Text(
+          "심전계 연동 완료!",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25.0,
+          ),
+        ),
+        const SizedBox(height: 40.0),
+        const Text(
+          "이제 측정 기록이 스마트폰에\n자동으로 저장됩니다.",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
