@@ -1,14 +1,15 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:three_youth_app/config.dart';
 import 'package:three_youth_app/firebase_options.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
-import 'package:three_youth_app/providers/ble_ecg_connect_provider.dart';
-import 'package:three_youth_app/providers/ble_ecg_scan_provider.dart';
+import 'package:three_youth_app/providers/ble_ecg_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
@@ -48,6 +49,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   var accessToken = prefsmain.getString('accessToken');
+  gCameras = await availableCameras();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
@@ -62,8 +64,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SignupAgreementProvider()),
         ChangeNotifierProvider(create: (context) => SignupProvider()),
         ChangeNotifierProvider(create: (context) => BleBpProvider()),
-        ChangeNotifierProvider(create: (context) => BleEcgConnectProvider()),
-        ChangeNotifierProvider(create: (context) => BleEcgScanProvider()),
+        ChangeNotifierProvider(create: (context) => BleEcgProvider()),
         ChangeNotifierProvider(create: (context) => HistoryProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider.value(value: CurrentUserProvider()),

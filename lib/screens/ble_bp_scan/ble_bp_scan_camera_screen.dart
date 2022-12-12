@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
-import 'package:three_youth_app/screens/base/spinkit.dart';
 import 'package:three_youth_app/screens/ble_bp_scan/ble_bp_scan_camera_result_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/utils/toast.dart';
@@ -13,7 +12,6 @@ import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/color.dart';
-import '../../utils/utils.dart';
 
 class BleBpScanCameraScreen extends StatefulWidget {
   const BleBpScanCameraScreen({Key? key}) : super(key: key);
@@ -98,6 +96,14 @@ class _BleBpScanCameraScreenState extends State<BleBpScanCameraScreen> {
                         ),
                       ),
                       const Spacer(),
+                      // CommonButton(
+                      //   height: 50.0,
+                      //   width: _screenWidth,
+                      //   title: '측정 가이드 보기',
+                      //   buttonColor: ButtonColor.primary,
+                      //   onTap: () => Navigator.of(context).pop(),
+                      // ),
+                      // const SizedBox(height: 20.0),
                       CommonButton(
                         height: 50.0,
                         width: _screenWidth,

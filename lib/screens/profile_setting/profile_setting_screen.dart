@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:three_youth_app/models/user_model.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/user_provider.dart';
@@ -207,13 +208,11 @@ class ProfileSettingScreen extends StatelessWidget {
               const ProfileSettingIdInputForm(),
               const Spacer(),
               //버전
-              const Text(
-                'Ver.22.06.07.a',
-                style: TextStyle(
-                  color: Color(0xffC8C8C8),
-                ),
-              ),
-
+              FutureBuilder<PackageInfo>(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) => Text(
+                      "${snapshot.data?.version}+${snapshot.data?.buildNumber}",
+                      style: const TextStyle(color: Color(0xffC8C8C8)))),
               const SizedBox(height: 30.0),
               //이용약관, 개인정보처리방침
               Row(

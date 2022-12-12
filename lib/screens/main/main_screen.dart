@@ -9,6 +9,8 @@ import 'package:three_youth_app/screens/profile_setting/profile_setting_screen.d
 import 'package:three_youth_app/utils/color.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/ble_ecg_provider.dart';
+
 class MainScreen extends StatefulWidget {
   final int currentIndex;
 
@@ -49,16 +51,14 @@ class _MainScreenState extends State<MainScreen> {
 
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
         await context.read<BleBpProvider>().findIsPaired();
+        await context.read<BleEcgProvider>().findIsPaired();
         await context.read<UserProvider>().getUserInfo();
         await context.read<BleBpProvider>().getLastBloodPressure();
+        await context.read<BleEcgProvider>().getLastEcg();
         setState(() => isLoading = false);
       });
 
-      // var isSphyFairing = prefs.getBool('isSphyFairing') ?? false;
-      // var isErFairing = prefs.getBool('isErFairing') ?? false;
       setState(() {
-        //isFairing = isSphyFairing || isErFairing;
-        //Provider.of<CurrentUser>(context, listen: false).isFairing = isFairing;
         _screenWidth = MediaQuery.of(context).size.width;
         _screenHeight = MediaQuery.of(context).size.height;
       });
@@ -68,7 +68,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //isFairing = Provider.of<CurrentUser>(context, listen: true).isFairing;
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(

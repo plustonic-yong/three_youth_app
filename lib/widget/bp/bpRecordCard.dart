@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/utils/color.dart';
-import 'package:three_youth_app/utils/toast.dart';
 import 'package:three_youth_app/utils/utils.dart';
 
 Widget bpRecordCard({
@@ -9,6 +8,7 @@ Widget bpRecordCard({
   required int sys,
   required int dia,
   required int pul,
+  GestureTapCallback? onShared,
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -53,7 +53,7 @@ Widget bpRecordCard({
                 ),
                 const SizedBox(width: 10.0),
                 GestureDetector(
-                  onTap: () => showToast('APP의 스토어 정식 등록 이후 구현 가능합니다.'),
+                  onTap: onShared,
                   child: Container(
                     padding: const EdgeInsets.all(5.0),
                     decoration: BoxDecoration(

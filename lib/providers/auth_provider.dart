@@ -95,6 +95,7 @@ class AuthProvider extends ChangeNotifier {
       String refreshToken = data['refreshToken'] ?? '';
       sharedPreferences.setString('accessToken', accessToken);
       sharedPreferences.setString('refreshToken', refreshToken);
+      sharedPreferences.setString('lastLoginMethod', 'google');
       return SignupStatus.success;
     }
     return SignupStatus.error;
@@ -156,7 +157,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? kakaoAccessToken = sharedPreferences.getString('kakaoAccessToken');
-    String genderStr = gender == GenderState.man ? "W" : "W";
+    String genderStr = gender == GenderState.man ? "M" : "W";
     var response = await ApiAuth.signupKakaoService(
       token: kakaoAccessToken!,
       name: name,
@@ -178,6 +179,7 @@ class AuthProvider extends ChangeNotifier {
       String refreshToken = data['refreshToken'] ?? '';
       sharedPreferences.setString('accessToken', accessToken);
       sharedPreferences.setString('refreshToken', refreshToken);
+      sharedPreferences.setString('lastLoginMethod', 'kakao');
       return SignupStatus.success;
     }
     return SignupStatus.error;
@@ -293,7 +295,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? naverAccessToken = sharedPreferences.getString('naverAccessToken');
-    String genderStr = gender == GenderState.man ? "W" : "W";
+    String genderStr = gender == GenderState.man ? "M" : "W";
 
     var response = await ApiAuth.signupNaverService(
       token: naverAccessToken!,
@@ -314,6 +316,7 @@ class AuthProvider extends ChangeNotifier {
       String refreshToken = data['refreshToken'] ?? '';
       sharedPreferences.setString('accessToken', accessToken);
       sharedPreferences.setString('refreshToken', refreshToken);
+      sharedPreferences.setString('lastLoginMethod', 'naver');
       return SignupStatus.success;
     }
     return SignupStatus.error;
@@ -322,6 +325,13 @@ class AuthProvider extends ChangeNotifier {
   //naver login
   Future<LoginStatus> loginNaver() async {
     var sharedPreferences = await SharedPreferences.getInstance();
+    try {
+      if (await FlutterNaverLogin.isLoggedIn) {
+        await FlutterNaverLogin.logOut();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
     final NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
     NaverAccessToken naverTokens = await FlutterNaverLogin.currentAccessToken;
     var response =

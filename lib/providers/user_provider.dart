@@ -41,22 +41,21 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> getUserInfo() async {
+    var pref = await SharedPreferences.getInstance();
     var response = await ApiAuth.getUserInfoService();
     int statusCode = response!.statusCode;
+    //accessToken 만료 시 token refresh
+    if (statusCode == 401) {
+      var refreshToken = pref.getString('refreshToken');
+      await ApiAuth.getTokenService(refreshToken: refreshToken!);
+      response = await ApiAuth.getUserInfoService();
+    }
     if (statusCode == 200) {
-      final data = json.decode(utf8.decode(response.bodyBytes));
+      final data = json.decode(utf8.decode(response!.bodyBytes));
       UserModel userInfo = UserModel.fromJson(data);
       _userInfo = userInfo;
       _height = _userInfo!.height.toString();
       _weight = _userInfo!.weight.toString();
-      notifyListeners();
-    } else if (statusCode == 401) {
-      var pref = await SharedPreferences.getInstance();
-      String? refreshToken = pref.getString('refreshToken');
-      await ApiAuth.getTokenService(refreshToken: refreshToken!);
-      final data = json.decode(utf8.decode(response.bodyBytes));
-      UserModel userInfo = UserModel.fromJson(data);
-      _userInfo = userInfo;
       notifyListeners();
     }
   }

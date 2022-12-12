@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,22 +111,6 @@ class _BleBpConnectPairingTestScreenState
     _lDataSYS.clear();
   }
 
-  Widget getAppBar() {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      title: const Text('기기 연동'),
-      centerTitle: true,
-      leading: Container(),
-      // GestureDetector(
-      //   onTap: () async {
-      //     await context.read<BleBpProvider>().disConnectPairing();
-      //     Navigator.of(context).pop();
-      //   },
-      //   child: const Icon(Icons.arrow_back_ios),
-      // ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     _isPairing = context.read<BleBpProvider>().isPairing;
@@ -177,13 +162,16 @@ class _BleBpConnectPairingTestScreenState
               title: const Text('기기 연동'),
               centerTitle: true,
               leading: Container(),
-              // GestureDetector(
-              //   onTap: () async {
-              //     await context.read<BleBpProvider>().disConnectPairing();
-              //     Navigator.of(context).pop();
-              //   },
-              //   child: const Icon(Icons.arrow_back_ios),
-              // ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pushNamed('/main'),
+                    child: const Center(
+                        child: Icon(CupertinoIcons.xmark, color: Colors.white)),
+                  ),
+                ),
+              ],
             ),
             backgroundColor: Colors.transparent,
             body: isLoading
@@ -318,7 +306,8 @@ class _BleBpConnectPairingTestScreenState
             buttonColor: ButtonColor.orange,
             onTap: () async {
               await context.read<BleBpProvider>().disConnectPairing();
-              Navigator.of(context).pop();
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/main', (route) => false);
             },
           ),
           const SizedBox(height: 30.0)

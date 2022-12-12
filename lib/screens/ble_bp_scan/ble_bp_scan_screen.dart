@@ -3,6 +3,8 @@ import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 
+import 'ble_bp_scan_camera_guide.dart';
+
 class BleBpScanScreen extends StatelessWidget {
   const BleBpScanScreen({Key? key}) : super(key: key);
 
@@ -80,7 +82,10 @@ class BleBpScanScreen extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 //촬영 측정
                 GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed('/scan/camera'),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BleBpScanCameraGuide())),
                   child: Container(
                     padding: const EdgeInsets.all(40.0),
                     width: _screenWidth,

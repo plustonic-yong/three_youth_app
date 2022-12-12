@@ -115,6 +115,10 @@ class BleBpProvider extends ChangeNotifier {
   List<BpModel>? _bpHistories = [];
   List<BpModel>? get bpHistories => _bpHistories;
 
+  //혈압계 데이터
+  List<BpModel>? _bpAllHistories = [];
+  List<BpModel>? get bpAllHistories => _bpAllHistories;
+
   //마지막 혈압계 데이터
   BpModel? _lastBpHistory;
   BpModel? get lastBpHistory => _lastBpHistory;
@@ -127,7 +131,7 @@ class BleBpProvider extends ChangeNotifier {
   //앱 초기 로그인 시작시 페어링 여부 확인
   Future<void> findIsPaired() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isPaired = await prefs.setBool('isSphyFairing', true);
+    _isPaired = prefs.getBool('isSphyFairing') ?? false;
     notifyListeners();
   }
 
@@ -189,6 +193,7 @@ class BleBpProvider extends ChangeNotifier {
       //선택한 날짜와 일치하는 데이터중 최신 시간대 순으로 배열
       filtedBpList
           .sort((a, b) => b.measureDatetime.compareTo(a.measureDatetime));
+      _bpAllHistories = bpList;
       _bpHistories = filtedBpList;
       notifyListeners();
     }

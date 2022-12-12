@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/signup_agreement_provider.dart';
@@ -12,11 +13,11 @@ class SignupAgreementScreen extends StatefulWidget {
 }
 
 class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
+  final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    PageController _pageController = PageController(initialPage: 0);
     bool _isInfoAgreeChecked =
         context.watch<SignupAgreementProvider>().isInfoAgreeChecked;
     bool _isTermsAgreeChecked =
@@ -26,10 +27,7 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil('/login', (route) => false);
-          },
+          onTap: () => _tapBack(_currentPage),
           child: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
@@ -39,11 +37,20 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
           _currentPage == 0 ? '이용약관' : '개인정보 처리방침',
           style: const TextStyle(color: Colors.black),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: GestureDetector(
+              onTap: () => _tapBack(0),
+              child: const Center(
+                  child: Icon(CupertinoIcons.xmark, color: Colors.black)),
+            ),
+          ),
+        ],
       ),
       body: WillPopScope(
         onWillPop: () async {
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil('/login', (route) => false);
+          _tapBack(_currentPage);
           return false;
         },
         child: Column(
@@ -61,6 +68,7 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
                 child: PageView(
                   controller: _pageController,
                   physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
                   pageSnapping: false,
                   onPageChanged: (page) {
                     context
@@ -68,11 +76,25 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
                         .onChangeAgreementCurrentPage(page: page);
                   },
                   children: [
-                    SingleChildScrollView(
-                      child: useOfTerms(),
+                    Scrollbar(
+                      controller: _pageController,
+                      thumbVisibility: true,
+                      thickness: 5,
+                      radius: const Radius.circular(20),
+                      child: SingleChildScrollView(
+                        primary: true,
+                        child: useOfTerms(),
+                      ),
                     ),
-                    SingleChildScrollView(
-                      child: personalInfoPolicy(),
+                    Scrollbar(
+                      controller: _pageController,
+                      thumbVisibility: true,
+                      thickness: 5,
+                      radius: const Radius.circular(20),
+                      child: SingleChildScrollView(
+                        primary: true,
+                        child: personalInfoPolicy(),
+                      ),
                     ),
                   ],
                 ),
@@ -309,5 +331,49 @@ class _SignupAgreementScreenState extends State<SignupAgreementScreen> {
         ),
       ),
     );
+  }
+
+  _tapBack(int curPage) {
+    if (curPage == 0) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              contentPadding: const EdgeInsets.all(30.0),
+              actionsPadding: const EdgeInsets.all(10.0),
+              actions: [
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: const Text(
+                    '취소',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                ),
+                const SizedBox(width: 10.0),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/login', (route) => false);
+                  },
+                  child: const Text(
+                    '확인',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                ),
+              ],
+              content: const Text(
+                '회원가입 절차를\n중단하시겠습니까?',
+                style: TextStyle(fontSize: 18.0),
+              ),
+            );
+          });
+    } else {
+      setState(() {
+        _pageController.previousPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutSine,
+        );
+      });
+    }
   }
 }

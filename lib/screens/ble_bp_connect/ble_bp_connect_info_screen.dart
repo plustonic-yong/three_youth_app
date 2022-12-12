@@ -1,4 +1,5 @@
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
 import 'package:three_youth_app/screens/ble_bp_connect/ble_bp_connect_pairing_screen.dart';
@@ -48,6 +49,25 @@ class _BleBpConnectInfoScreenState extends State<BleBpConnectInfoScreen> {
             elevation: 0,
             centerTitle: true,
             title: const Text('혈압계 연동안내'),
+            leading: GestureDetector(
+              onTap: () => Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/main', (route) => false),
+              child: const Icon(Icons.arrow_back),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const BleBpConnectPairingScreen(),
+                    ),
+                  ),
+                  child: const Center(
+                      child: Icon(CupertinoIcons.xmark, color: Colors.white)),
+                ),
+              ),
+            ],
           ),
           backgroundColor: Colors.transparent,
           body: Padding(

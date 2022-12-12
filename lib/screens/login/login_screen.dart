@@ -360,9 +360,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(width: 10.0),
                   GestureDetector(
                     onTap: () {
-                      context.read<SignupProvider>().onChangeSignupState(
-                            value: SignupState.google,
-                          );
+                      context
+                          .read<SignupProvider>()
+                          .onChangeSignupState(value: SignupState.google);
                       Navigator.of(context).pushNamed(
                         '/signup/agreement',
                       );
@@ -392,10 +392,8 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _isLoading = true);
       var result = await context.read<AuthProvider>().loginKakao();
       if (result == LoginStatus.success) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          '/main',
-          (route) => false,
-        );
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/main', (route) => false);
       } else if (result == LoginStatus.noAccount) {
         showDialog(
             context: context,
@@ -414,9 +412,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(width: 10.0),
                   GestureDetector(
                     onTap: () {
-                      context.read<SignupProvider>().onChangeSignupState(
-                            value: SignupState.kakao,
-                          );
+                      context
+                          .read<SignupProvider>()
+                          .onChangeSignupState(value: SignupState.kakao);
                       Navigator.of(context).pushNamed('/signup/agreement');
                     },
                     child: const Text(
