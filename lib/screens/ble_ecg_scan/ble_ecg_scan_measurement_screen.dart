@@ -48,7 +48,8 @@ class _BleEcgScanMeasurementScreenState
       Provider.of<BleEcgProvider>(context, listen: false).bleEcgState = 0;
       Provider.of<BleEcgProvider>(context, listen: false).lsData.clear();
       Provider.of<BleEcgProvider>(context, listen: false).lDataECG.clear();
-      Provider.of<BleEcgProvider>(context, listen: false).startScanAndConnect();
+      Provider.of<BleEcgProvider>(context, listen: false)
+          .startScanAndConnect(context);
     });
   }
 
@@ -326,24 +327,40 @@ class _BleEcgScanMeasurementScreenState
       }
       List<int> lDataECG = [];
       var cnt = 0;
-      for (var i = tmp.length - 1; i < tmp.length; i--) {
+      for (var i = 0; i < tmp.length; i++) {
         if (cnt > 4050) break;
         lDataECG.add(tmp[i]);
         cnt++;
       }
-
       Duration diffTime = ecgValueModel.last.measureDatetime
           .difference(ecgValueModel.first.measureDatetime);
+
+      var bytes = await controller.capture();
+      var usrInfo = Provider.of<UserProvider>(context, listen: false).userInfo;
+
+      var pdf = await PdfMkr.getPdfForEcg(
+          usrInfo!,
+          EcgModel(
+            bpm: bpm,
+            lDataECG: lDataECG,
+            duration: diffTime.inSeconds,
+            measureDatetime: DateTime.now(),
+            regDatetime: '',
+          ),
+          bytes!);
+
+      final output = await getTemporaryDirectory();
+      final file = File(
+          '${output.path}/${DateTime.now().millisecondsSinceEpoch}_심전계.pdf');
+      await file.writeAsBytes(await pdf.save());
 
       var result = await context.read<BleEcgProvider>().postEcg(
             bpm: bpm,
             lDataECG: lDataECG,
             duration: diffTime.inSeconds,
+            pdfPath: file.path,
           );
 
-      if (result) {
-        await context.read<BleEcgProvider>().getLastEcg();
-      }
       await showDialog(
           context: context,
           builder: (context) {
@@ -366,7 +383,12 @@ class _BleEcgScanMeasurementScreenState
               ),
             );
           });
-      _isSave = true;
+      if (result) {
+        _isSave = true;
+        await context.read<BleEcgProvider>().getLastEcg();
+      } else {
+        _isSave = false;
+      }
     } catch (e) {
       _isSave = false;
       showToast(e.toString());

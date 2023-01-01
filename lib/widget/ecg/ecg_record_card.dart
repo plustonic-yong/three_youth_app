@@ -41,20 +41,20 @@ class _EcgRecordCardState extends State<EcgRecordCard> {
     List<FlSpot> lDataECG2 = [];
     List<FlSpot> lDataECG3 = [];
     var cnt = 0;
-    for (var i = widget.ecgLst.length - 1; i < widget.ecgLst.length; i--) {
-      if (cnt > 500) break;
+    for (var i = 0; i < 500; i++) {
       lDataECG1.add(FlSpot(cnt.toDouble(), widget.ecgLst[i].toDouble()));
       cnt++;
+      if (cnt == widget.ecgLst.length) break;
     }
-    for (var i = cnt; i < widget.ecgLst.length; i--) {
-      if (cnt > 1000) break;
+    for (var i = 500; i < 1000; i++) {
       lDataECG2.add(FlSpot(cnt.toDouble(), widget.ecgLst[i].toDouble()));
       cnt++;
+      if (cnt == widget.ecgLst.length) break;
     }
-    for (var i = cnt; i < widget.ecgLst.length; i--) {
-      if (cnt > 1500) break;
+    for (var i = 1000; i < 1500; i++) {
       lDataECG3.add(FlSpot(cnt.toDouble(), widget.ecgLst[i].toDouble()));
       cnt++;
+      if (cnt == widget.ecgLst.length) break;
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),

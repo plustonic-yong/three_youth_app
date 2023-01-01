@@ -9,6 +9,7 @@ import 'package:three_youth_app/models/bp_model.dart';
 import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/api/api_bp.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/utils/toast.dart';
 import 'package:three_youth_app/utils/utils.dart';
 
 class BleBpProvider extends ChangeNotifier {
@@ -149,10 +150,11 @@ class BleBpProvider extends ChangeNotifier {
       var refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiBp.getBloodPressureService();
+      statusCode = response!.statusCode;
     }
 
     if (statusCode == 200) {
-      final data = json.decode(utf8.decode(response!.bodyBytes));
+      final data = json.decode(utf8.decode(response.bodyBytes));
       List<BpModel> bpList =
           (data as List).map((json) => BpModel.fromJson(json)).toList();
 
@@ -176,9 +178,10 @@ class BleBpProvider extends ChangeNotifier {
       var refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiBp.getBloodPressureService();
+      statusCode = response!.statusCode;
     }
     if (statusCode == 200) {
-      final data = json.decode(utf8.decode(response!.bodyBytes));
+      final data = json.decode(utf8.decode(response.bodyBytes));
       List<BpModel> bpList =
           (data as List).map((json) => BpModel.fromJson(json)).toList();
       List<BpModel> filtedBpList = [];
@@ -203,12 +206,14 @@ class BleBpProvider extends ChangeNotifier {
     required int sys,
     required int dia,
     required int pul,
+    required String pdfPath,
   }) async {
     var pref = await SharedPreferences.getInstance();
     var response = await ApiBp.postBloodPressureService(
       sys: sys,
       dia: dia,
       pul: pul,
+      pdfPath: pdfPath,
     );
     int statusCode = response!.statusCode;
     if (statusCode == 401) {
@@ -218,7 +223,9 @@ class BleBpProvider extends ChangeNotifier {
         sys: sys,
         dia: dia,
         pul: pul,
+        pdfPath: pdfPath,
       );
+      statusCode = response.statusCode;
     }
     if (statusCode == 200) {
       return BpSaveDataStatus.success;
@@ -263,7 +270,7 @@ class BleBpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadCounter() async {
+  Future<void> loadCounter(context) async {
     //YHR 추가  : 페어링 상태라면 기기인식 완료 라고 나오도록 추가함
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -313,7 +320,7 @@ class BleBpProvider extends ChangeNotifier {
         }
       }
       if (_isScanning == false) {
-        await startScan();
+        await startScan(context);
       }
 
       // if (isUpdated) {
@@ -327,12 +334,38 @@ class BleBpProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> startScan() async {
+  Future<void> startScan(context) async {
     _iFindCnt = 0;
     _isScanning = true;
 
     _ble.statusStream.listen((status) {
       if (status == BleStatus.poweredOff) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                contentPadding: const EdgeInsets.all(30.0),
+                actionsPadding: const EdgeInsets.all(10.0),
+                actions: [
+                  GestureDetector(
+                    onTap: () async {
+                      await disConnectPairing();
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/main', (route) => false);
+                    },
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
+                content: const Text(
+                  '설정에서 블루투스를 켜주세요.',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              );
+            });
+        return;
       } else if (status == BleStatus.ready) {
       } else if (status == BleStatus.unauthorized) {}
     });

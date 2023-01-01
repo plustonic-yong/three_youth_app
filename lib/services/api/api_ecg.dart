@@ -47,6 +47,7 @@ class ApiEcg {
     required int bpm,
     required List<int> lDataECG,
     required int duration,
+    required String pdfPath,
   }) async {
     var pref = await SharedPreferences.getInstance();
     var refreshToken = pref.getString('refreshToken');
@@ -55,26 +56,27 @@ class ApiEcg {
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
     }
     try {
-      Client client = InterceptedClient.build(
-        interceptors: [
-          AuthInterceptor(),
-        ],
-        retryPolicy: ExpiredTokenRetryPolicy(),
-      );
-      var response = await client.post(
+      var request = http.MultipartRequest(
+        'POST',
         Uri.parse('${Constants.API_HOST}/electrocardiogram'),
-        body: json.encode({
-          'measureDatetime':
-              DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()),
-          "bpm": bpm,
-          "lDataECG": lDataECG,
-          "duration": duration,
-        }),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $accessToken",
-          "Content-Type": "application/json",
-        },
       );
+      request.fields['bpm'] = bpm.toString();
+      request.fields['duration'] = duration.toString();
+      request.fields['measureDatetime'] =
+          DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now());
+      request.fields['lDataECG'] = json.encode(lDataECG);
+      if (pdfPath.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('pdf', pdfPath));
+      }
+      // for (int dataEcg in lDataECG) {
+      //   request.files
+      //       .add(http.MultipartFile.fromString('lDataECG', dataEcg.toString()));
+      // }
+      request.headers.addAll({
+        HttpHeaders.authorizationHeader: "Bearer $accessToken",
+        "Content-Type": "application/json",
+      });
+      var response = await http.Response.fromStream(await request.send());
       return response;
     } catch (e) {
       log('$e');

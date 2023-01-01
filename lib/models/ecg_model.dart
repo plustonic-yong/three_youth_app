@@ -19,7 +19,8 @@ class EcgModel {
 
   factory EcgModel.fromJson(Map<String, dynamic> map) => EcgModel(
         measureDatetime: DateTime.parse(map['measureDatetime']),
-        lDataECG: List<int>.from(map['ecg'].map((x) => x as int)),
+        lDataECG:
+            List<int>.from(map['ecg'].map((x) => x != null ? x as int : 0)),
         regDatetime: map['regDatetime'],
         bpm: map['bpm'],
         duration: map['duration'],

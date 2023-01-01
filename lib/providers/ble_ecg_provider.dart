@@ -85,19 +85,58 @@ class BleEcgProvider extends ChangeNotifier {
   }
 
   // 스캔 및 디바이스 등록
-  void startScanAndConnect() async {
+  void startScanAndConnect(context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    flutterBlue.state.listen((event) {
+      if (event == BluetoothState.off) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                contentPadding: const EdgeInsets.all(30.0),
+                actionsPadding: const EdgeInsets.all(10.0),
+                actions: [
+                  GestureDetector(
+                    onTap: () async {
+                      await disConnectPairing();
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/main', (route) => false);
+                    },
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
+                content: const Text(
+                  '설정에서 블루투스를 켜주세요.',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              );
+            });
+      }
+    });
+
     var list = await flutterBlue.connectedDevices;
 
     for (var item in list) {
       /// 연결된 디바이스 존재
       if (item.name == sBLEDevice) {
-        await prefs.setBool('isEcgFairing', true);
-        _isPaired = true;
-        _bleDevice = item;
-        measure();
-        await _bleDevice!.requestMtu(512);
-        notifyListeners();
+        try {
+          await prefs.setBool('isEcgFairing', true);
+          _isPaired = true;
+          _bleDevice = item;
+          await _bleDevice?.disconnect();
+          await _bleDevice?.connect();
+          await _bleDevice?.pair();
+          _bleDevice?.requestMtu(512);
+        } catch (e) {
+          debugPrint(e.toString());
+        } finally {
+          measure();
+          notifyListeners();
+        }
         return;
       }
     }
@@ -114,9 +153,10 @@ class BleEcgProvider extends ChangeNotifier {
             await flutterBlue.stopScan();
             await r.device.disconnect();
             await r.device.connect();
-            await r.device.requestMtu(512);
+            await r.device.pair();
             _bleDevice = r.device;
             isPaired = true;
+            r.device.requestMtu(512);
             measure();
             await prefs.setBool("isEcgFairing", true);
             return;
@@ -151,10 +191,10 @@ class BleEcgProvider extends ChangeNotifier {
       var refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiEcg.getEcgService();
+      statusCode = response!.statusCode;
     }
-
     if (statusCode == 200) {
-      final data = json.decode(utf8.decode(response!.bodyBytes));
+      final data = json.decode(utf8.decode(response.bodyBytes));
       List<EcgModel> ecgList =
           (data as List).map((json) => EcgModel.fromJson(json)).toList();
 
@@ -178,20 +218,21 @@ class BleEcgProvider extends ChangeNotifier {
       var refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiEcg.getEcgService();
+      statusCode = response!.statusCode;
     }
     if (statusCode == 200) {
-      final data = json.decode(utf8.decode(response!.bodyBytes));
+      final data = json.decode(utf8.decode(response.bodyBytes));
       List<EcgModel> ecgList =
           (data as List).map((json) => EcgModel.fromJson(json)).toList();
       List<EcgModel> filtedEcgList = [];
 
       //선택한 날짜와 일치하는 데이터 추출
-      ecgList.forEach((element) {
+      for (var element in ecgList) {
         if (Utils.formatDatetime(element.measureDatetime).split(' ')[0] ==
             Utils.formatDatetime(measureDatetime).split(' ')[0]) {
           filtedEcgList.add(element);
         }
-      });
+      }
       //선택한 날짜와 일치하는 데이터중 최신 시간대 순으로 배열
       filtedEcgList
           .sort((a, b) => b.measureDatetime.compareTo(a.measureDatetime));
@@ -205,12 +246,14 @@ class BleEcgProvider extends ChangeNotifier {
     required int bpm,
     required List<int> lDataECG,
     required int duration,
+    required String pdfPath,
   }) async {
     var pref = await SharedPreferences.getInstance();
     var response = await ApiEcg.postEcgService(
       bpm: bpm,
       lDataECG: lDataECG,
       duration: duration,
+      pdfPath: pdfPath,
     );
     int statusCode = response!.statusCode;
     if (statusCode == 401) {
@@ -220,7 +263,9 @@ class BleEcgProvider extends ChangeNotifier {
         duration: duration,
         bpm: bpm,
         lDataECG: lDataECG,
+        pdfPath: pdfPath,
       );
+      statusCode = response.statusCode;
     }
     if (statusCode == 200) {
       return true;
@@ -282,8 +327,9 @@ class BleEcgProvider extends ChangeNotifier {
             } else if (c.uuid.toString().toUpperCase() == sUUIDRx) {
               if (!c.isNotifying) {
                 _bleCharTx = c;
-                await lock
-                    .synchronized(() async => await c.setNotifyValue(true));
+                await c.setNotifyValue(true);
+                // await lock
+                //     .synchronized(() async => );
               }
               c.value.listen((value) => doPacket(value));
             }

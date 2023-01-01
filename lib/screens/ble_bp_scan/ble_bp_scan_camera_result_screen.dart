@@ -1,11 +1,17 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 
+import '../../models/bp_model.dart';
+import '../../models/user_model.dart';
 import '../../providers/ble_bp_provider.dart';
+import '../../providers/user_provider.dart';
+import '../../utils/pdf_mkr.dart';
 
 class BleBpScanCameraResultScreen extends StatefulWidget {
   const BleBpScanCameraResultScreen({
@@ -43,6 +49,7 @@ class _BleBpScanCameraResultScreenState
   @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
+    UserModel? _userInfo = context.watch<UserProvider>().userInfo;
     return Builder(builder: (context) {
       return GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -235,7 +242,7 @@ class _BleBpScanCameraResultScreenState
                             width: 165.0,
                             title: '결과저장',
                             buttonColor: ButtonColor.primary,
-                            onTap: () => _saveResult(),
+                            onTap: () => _saveResult(_userInfo!),
                           ),
                         ),
                       ],
@@ -264,13 +271,28 @@ class _BleBpScanCameraResultScreenState
     });
   }
 
-  _saveResult() async {
+  _saveResult(UserModel userInfo) async {
     try {
       setState(() => _isLoading = true);
+      var pdf = await PdfMkr.getPdfForBp(
+          userInfo,
+          BpModel(
+              measureDatetime: DateTime.now(),
+              sys: int.parse(_sys),
+              dia: int.parse(_dia),
+              pul: int.parse(_pul),
+              regDatetime: ''));
+
+      final output = await getTemporaryDirectory();
+
+      final file = File(
+          '${output.path}/${DateTime.now().millisecondsSinceEpoch}_혈압계.pdf');
+      await file.writeAsBytes(await pdf.save());
       var result = await context.read<BleBpProvider>().postBloodPressure(
             sys: int.parse(_sys),
             dia: int.parse(_dia),
             pul: int.parse(_pul),
+            pdfPath: file.path,
           );
       showDialog(
           context: context,

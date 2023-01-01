@@ -34,6 +34,10 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
           .read<BleEcgProvider>()
           .onChangeCurrentPage(page: widget.initPage ?? 0);
       _pageController.jumpToPage(widget.initPage ?? 0);
+      if (widget.initPage == 2) {
+        Provider.of<BleEcgProvider>(context, listen: false)
+            .startScanAndConnect(context);
+      }
     });
     super.initState();
   }
@@ -69,8 +73,16 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
                 padding: const EdgeInsets.only(right: 16),
                 child: GestureDetector(
                   onTap: () {
-                    context.read<BleEcgProvider>().onChangeCurrentPage(page: 2);
-                    _pageController.jumpToPage(2);
+                    if (context.read<BleEcgProvider>().currentPage == 2) {
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/main', (route) => false);
+                    } else {
+                      context
+                          .read<BleEcgProvider>()
+                          .onChangeCurrentPage(page: 2);
+                      _pageController.jumpToPage(2);
+                      _provider.startScanAndConnect(context);
+                    }
                   },
                   child: const Center(
                       child: Icon(CupertinoIcons.xmark, color: Colors.white)),
@@ -92,13 +104,13 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
                     children: [
                       _getInfo0(),
                       _getInfo1(),
-                      _getInfo2(),
+                      // _getInfo2(),
                       _getInfo3(),
                     ],
                   ),
                 ),
                 DotsIndicator(
-                  dotsCount: 4,
+                  dotsCount: 3,
                   position: _currentPage.roundToDouble(),
                   decorator: DotsDecorator(
                     size: const Size.square(9.0),
@@ -169,57 +181,49 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
                 height: 50.0,
                 title: '다음',
                 buttonColor: ButtonColor.primary,
-                onTap: () {
-                  _pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
-                  context
-                      .read<BleEcgProvider>()
-                      .onChangeCurrentPage(page: _currentPage);
-                },
-              ),
-            )
-          ],
-        );
-      case 2:
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //이전버튼
-            Expanded(
-              child: CommonButton(
-                width: 150.0,
-                height: 50.0,
-                title: '이전',
-                buttonColor: ButtonColor.inactive,
-                onTap: () {
-                  _pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
-                  context
-                      .read<BleEcgProvider>()
-                      .onChangeCurrentPage(page: _currentPage);
-                },
-              ),
-            ),
-            const SizedBox(
-              width: 15.0,
-            ),
-            //다음버튼
-            Expanded(
-              child: CommonButton(
-                width: 150.0,
-                height: 50.0,
-                title: '심전계찾기',
-                buttonColor: ButtonColor.primary,
                 onTap: () => _tapEcgScan(),
               ),
             )
           ],
         );
-      case 3:
+      // case 2:
+      //   return Row(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       //이전버튼
+      //       Expanded(
+      //         child: CommonButton(
+      //           width: 150.0,
+      //           height: 50.0,
+      //           title: '이전',
+      //           buttonColor: ButtonColor.inactive,
+      //           onTap: () {
+      //             _pageController.previousPage(
+      //               duration: const Duration(milliseconds: 300),
+      //               curve: Curves.easeIn,
+      //             );
+      //             context
+      //                 .read<BleEcgProvider>()
+      //                 .onChangeCurrentPage(page: _currentPage);
+      //           },
+      //         ),
+      //       ),
+      //       const SizedBox(
+      //         width: 15.0,
+      //       ),
+      //       //다음버튼
+      //       Expanded(
+      //         child: CommonButton(
+      //           width: 150.0,
+      //           height: 50.0,
+      //           title: '심전계찾기',
+      //           buttonColor: ButtonColor.primary,
+      //           onTap: () => _tapEcgScan(),
+      //         ),
+      //       )
+      //     ],
+      //   );
+      case 2:
         return _provider.isPaired
             ? CommonButton(
                 width: MediaQuery.of(context).size.width,
@@ -321,52 +325,52 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
   }
 
   //3페이지
-  Widget _getInfo2() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 100.0),
-          const Text(
-            "심전계 화면에 안내되는\n4자리 번호를 입력해주세요.",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
-          ),
-          const SizedBox(height: 100.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: TextFormField(
-              controller: _numCtrl,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
-              maxLength: 4,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8),
-                hintText: '4자리 번호',
-                hintStyle: const TextStyle(color: Colors.grey),
-                // ignore: use_full_hex_values_for_flutter_colors
-                fillColor: const Color(0xff00000033).withOpacity(0.25),
-                filled: true,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  borderSide: const BorderSide(color: Colors.white, width: 1.5),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  borderSide: const BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 40.0),
-        ],
-      ),
-    );
-  }
+  // Widget _getInfo2() {
+  //   return SingleChildScrollView(
+  //     child: Column(
+  //       children: [
+  //         const SizedBox(height: 100.0),
+  //         const Text(
+  //           "심전계 화면에 안내되는\n4자리 번호를 입력해주세요.",
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //             fontSize: 18.0,
+  //           ),
+  //         ),
+  //         const SizedBox(height: 100.0),
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 16.0),
+  //           child: TextFormField(
+  //             controller: _numCtrl,
+  //             keyboardType: TextInputType.number,
+  //             textAlign: TextAlign.center,
+  //             style: const TextStyle(color: Colors.white),
+  //             maxLength: 4,
+  //             maxLengthEnforcement: MaxLengthEnforcement.enforced,
+  //             decoration: InputDecoration(
+  //               contentPadding: const EdgeInsets.symmetric(vertical: 8),
+  //               hintText: '4자리 번호',
+  //               hintStyle: const TextStyle(color: Colors.grey),
+  //               // ignore: use_full_hex_values_for_flutter_colors
+  //               fillColor: const Color(0xff00000033).withOpacity(0.25),
+  //               filled: true,
+  //               enabledBorder: OutlineInputBorder(
+  //                 borderRadius: BorderRadius.circular(40.0),
+  //                 borderSide: const BorderSide(color: Colors.white, width: 1.5),
+  //               ),
+  //               focusedBorder: OutlineInputBorder(
+  //                 borderRadius: BorderRadius.circular(40.0),
+  //                 borderSide: const BorderSide(color: Colors.white),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         const SizedBox(height: 40.0),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   //4페이지
   Widget _getInfo3() {
@@ -432,7 +436,7 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
   _tapEcgScan() async {
     (await SharedPreferences.getInstance())
         .setString('ecgNum', _numCtrl.text.trim());
-    _provider.startScanAndConnect();
+    _provider.startScanAndConnect(context);
     _pageController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,

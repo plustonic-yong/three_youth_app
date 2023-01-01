@@ -47,6 +47,7 @@ class ApiBp {
     required int sys,
     required int dia,
     required int pul,
+    required String pdfPath,
   }) async {
     var pref = await SharedPreferences.getInstance();
     var refreshToken = pref.getString('refreshToken');
@@ -55,26 +56,24 @@ class ApiBp {
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
     }
     try {
-      Client client = InterceptedClient.build(
-        interceptors: [
-          AuthInterceptor(),
-        ],
-        retryPolicy: ExpiredTokenRetryPolicy(),
-      );
-      var response = await client.post(
+      var request = http.MultipartRequest(
+        'POST',
         Uri.parse('${Constants.API_HOST}/bloodpressure'),
-        body: json.encode({
-          'measureDatetime':
-              DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now()),
-          "sys": sys,
-          "dia": dia,
-          "pul": pul,
-        }),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $accessToken",
-          "Content-Type": "application/json",
-        },
       );
+      request.fields['measureDatetime'] =
+          DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now());
+      request.fields['sys'] = sys.toString();
+      request.fields['dia'] = dia.toString();
+      request.fields['pul'] = pul.toString();
+
+      if (pdfPath.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('pdf', pdfPath));
+      }
+      request.headers.addAll({
+        HttpHeaders.authorizationHeader: "Bearer $accessToken",
+        "Content-Type": "application/json",
+      });
+      var response = await http.Response.fromStream(await request.send());
       return response;
     } catch (e) {
       log('$e');

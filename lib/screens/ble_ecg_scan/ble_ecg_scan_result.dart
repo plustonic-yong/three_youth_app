@@ -43,21 +43,23 @@ class _BleEcgScanResultState extends State<BleEcgScanResult> {
     lDataECG2.clear();
     lDataECG3.clear();
     var cnt = 0;
-    for (var i = tmp.length - 1; i < tmp.length; i--) {
-      if (cnt > 500) break;
+
+    for (var i = 0; i < 500; i++) {
       lDataECG1.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
       cnt++;
+      if (cnt == tmp.length) break;
     }
-    for (var i = cnt; i < tmp.length; i--) {
-      if (cnt > 1000) break;
+    for (var i = 500; i < 1000; i++) {
       lDataECG2.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
       cnt++;
+      if (cnt == tmp.length) break;
     }
-    for (var i = cnt; i < tmp.length; i--) {
-      if (cnt > 1500) break;
+    for (var i = 1000; i < 1500; i++) {
       lDataECG3.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
       cnt++;
+      if (cnt == tmp.length) break;
     }
+
     super.initState();
   }
 

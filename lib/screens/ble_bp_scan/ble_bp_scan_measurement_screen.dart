@@ -25,7 +25,7 @@ class _BleBpScanMesurementScreenState extends State<BleBpScanMesurementScreen> {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await context.read<BleBpProvider>().dataClear();
-      await context.read<BleBpProvider>().loadCounter();
+      await context.read<BleBpProvider>().loadCounter(context);
       // Provider.of<BleEcgScanProvider>(context, listen: false).scanEcg();
     });
   }

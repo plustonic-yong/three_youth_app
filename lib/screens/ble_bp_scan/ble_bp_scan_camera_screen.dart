@@ -148,11 +148,37 @@ class _BleBpScanCameraScreenState extends State<BleBpScanCameraScreen> {
           ),
         ));
       } else {
-        showToast('측정이 제대로 되지 않았습니다\n다시 시도해주세요');
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: const Text('측정이 제대로 되지 않았습니다\n다시 시도해주세요'),
+              actions: [
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: const Text('확인', style: TextStyle(fontSize: 18.0)),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       log(e.toString());
-      showToast('측정이 제대로 되지 않았습니다\n다시 시도해주세요');
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Text('측정이 제대로 되지 않았습니다\n다시 시도해주세요'),
+            actions: [
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const Text('확인', style: TextStyle(fontSize: 18.0)),
+              ),
+            ],
+          );
+        },
+      );
     } finally {
       setState(() => _isLoading = false);
     }

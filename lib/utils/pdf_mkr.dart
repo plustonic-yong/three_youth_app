@@ -23,8 +23,11 @@ class PdfMkr {
     ByteData _bytes = await rootBundle.load('assets/images/bp_pdf.png');
     var warnImgBytes = _bytes.buffer.asUint8List();
     var warnPdfImg = pw.MemoryImage(warnImgBytes);
-
-    var profileImage = await networkImage(userInfo.imgUrl);
+    pw.ImageProvider? profileImage;
+    if (userInfo.imgUrl !=
+        'https://3youth.s3.ap-northeast-2.amazonaws.com/undefined') {
+      profileImage = await networkImage(userInfo.imgUrl);
+    }
 
     int bpIndex = 0;
 
@@ -53,14 +56,15 @@ class PdfMkr {
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
               pw.Row(children: [
-                pw.Container(
-                  width: 100,
-                  height: 100,
-                  decoration: pw.BoxDecoration(
-                    shape: pw.BoxShape.circle,
-                    image: pw.DecorationImage(image: profileImage),
+                if (profileImage != null)
+                  pw.Container(
+                    width: 100,
+                    height: 100,
+                    decoration: pw.BoxDecoration(
+                      shape: pw.BoxShape.circle,
+                      image: pw.DecorationImage(image: profileImage),
+                    ),
                   ),
-                ),
                 pw.SizedBox(width: 16),
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -306,7 +310,11 @@ class PdfMkr {
     var warnImgBytes2 = _bytes2.buffer.asUint8List();
     var warnPdfImg2 = pw.MemoryImage(warnImgBytes2);
 
-    var profileImage = await networkImage(userInfo.imgUrl);
+    pw.ImageProvider? profileImage;
+    if (userInfo.imgUrl !=
+        'https://3youth.s3.ap-northeast-2.amazonaws.com/undefined') {
+      profileImage = await networkImage(userInfo.imgUrl);
+    }
 
     var graphImage = pw.MemoryImage(graphBytes);
 
@@ -324,14 +332,15 @@ class PdfMkr {
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
               pw.Row(children: [
-                pw.Container(
-                  width: 100,
-                  height: 100,
-                  decoration: pw.BoxDecoration(
-                    shape: pw.BoxShape.circle,
-                    image: pw.DecorationImage(image: profileImage),
+                if (profileImage != null)
+                  pw.Container(
+                    width: 100,
+                    height: 100,
+                    decoration: pw.BoxDecoration(
+                      shape: pw.BoxShape.circle,
+                      image: pw.DecorationImage(image: profileImage),
+                    ),
                   ),
-                ),
                 pw.SizedBox(width: 16),
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,

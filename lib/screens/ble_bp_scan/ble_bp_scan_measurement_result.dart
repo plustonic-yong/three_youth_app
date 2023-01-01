@@ -191,8 +191,8 @@ class _BleBpScanMeasurementResultState
                                 : ButtonColor.inactive,
                             fontSize: 16.0,
                             onTap: _dataIsOK
-                                ? () =>
-                                    _dataSave(_lDataSYS, _lDataDIA, _lDataPUL)
+                                ? () => _dataSave(
+                                    _userInfo, _lDataSYS, _lDataDIA, _lDataPUL)
                                 : null,
                           ),
                         ),
@@ -263,14 +263,31 @@ class _BleBpScanMeasurementResultState
     );
   }
 
-  _dataSave(List<double> _lDataSYS, List<double> _lDataDIA,
+  _dataSave(UserModel userInfo, List<double> _lDataSYS, List<double> _lDataDIA,
       List<double> _lDataPUL) async {
     try {
       setState(() => _isLoading = true);
+
+      var pdf = await PdfMkr.getPdfForBp(
+          userInfo,
+          BpModel(
+              measureDatetime: DateTime.now(),
+              sys: _lDataSYS.last.round(),
+              dia: _lDataDIA.last.round(),
+              pul: _lDataPUL.last.round(),
+              regDatetime: ''));
+
+      final output = await getTemporaryDirectory();
+
+      final file = File(
+          '${output.path}/${DateTime.now().millisecondsSinceEpoch}_혈압계.pdf');
+      await file.writeAsBytes(await pdf.save());
+
       var result = await context.read<BleBpProvider>().postBloodPressure(
             sys: _lDataSYS.last.round(),
             dia: _lDataDIA.last.round(),
             pul: _lDataPUL.last.round(),
+            pdfPath: file.path,
           );
       if (result == BpSaveDataStatus.success) {
         await context.read<BleBpProvider>().getLastBloodPressure();

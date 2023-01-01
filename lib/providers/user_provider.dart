@@ -49,9 +49,10 @@ class UserProvider extends ChangeNotifier {
       var refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiAuth.getUserInfoService();
+      statusCode = response!.statusCode;
     }
     if (statusCode == 200) {
-      final data = json.decode(utf8.decode(response!.bodyBytes));
+      final data = json.decode(utf8.decode(response.bodyBytes));
       UserModel userInfo = UserModel.fromJson(data);
       _userInfo = userInfo;
       _height = _userInfo!.height.toString();

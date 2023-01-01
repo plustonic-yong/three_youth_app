@@ -98,7 +98,7 @@ class _BleBpConnectPairingTestScreenState
         isLoading = false;
       });
 
-      await context.read<BleBpProvider>().loadCounter();
+      await context.read<BleBpProvider>().loadCounter(context);
     });
 
     super.initState();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/utils/toast.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 
 class BleEcgScanScreen extends StatelessWidget {
@@ -48,8 +49,7 @@ class BleEcgScanScreen extends StatelessWidget {
                 const SizedBox(height: 50.0),
                 //심전도(30초)
                 GestureDetector(
-                  onTap: () =>
-                      Navigator.of(context).pushNamed('/scanecg/mesurement'),
+                  onTap: () => showToast('향후 지원 예정입니다'),
                   child: Container(
                     padding: const EdgeInsets.all(25.0),
                     width: _screenWidth,
@@ -72,8 +72,7 @@ class BleEcgScanScreen extends StatelessWidget {
                 const SizedBox(height: 50.0),
                 //연속 심전도 측정
                 GestureDetector(
-                  onTap: () =>
-                      Navigator.of(context).pushNamed('/scanecg/mesurement'),
+                  onTap: () => showToast('향후 지원 예정입니다'),
                   child: Container(
                     padding: const EdgeInsets.all(25.0),
                     width: _screenWidth,
