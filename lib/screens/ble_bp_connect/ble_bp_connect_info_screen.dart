@@ -52,7 +52,7 @@ class _BleBpConnectInfoScreenState extends State<BleBpConnectInfoScreen> {
             leading: GestureDetector(
               onTap: () => Navigator.of(context)
                   .pushNamedAndRemoveUntil('/main', (route) => false),
-              child: const Icon(Icons.arrow_back),
+              child: const Icon(Icons.home),
             ),
             actions: [
               Padding(
