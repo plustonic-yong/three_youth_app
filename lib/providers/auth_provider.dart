@@ -169,7 +169,7 @@ class AuthProvider extends ChangeNotifier {
     );
     int statusCode = response!.statusCode;
 
-    if (response.statusCode == 200 || statusCode == 201) {
+    if (statusCode == 200 || statusCode == 201) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       int status = data['status'];
       if (status == -1) {
@@ -183,16 +183,6 @@ class AuthProvider extends ChangeNotifier {
       return SignupStatus.success;
     }
     return SignupStatus.error;
-    // switch (data['msg']) {
-    //   case 'EMAIL_EXISTS_KAKAO':
-    //     return SignupStatus.duplicatedEmailKakao;
-    //   case 'EMAIL_EXISTS_NAVER':
-    //     return SignupStatus.duplicatedEmailNaver;
-    //   case 'EMAIL_EXISTS_GOOGLE':
-    //     return SignupStatus.duplicatedEmailGoogle;
-    //   default:
-    //     return SignupStatus.error;
-    // }
   }
 
   //kakao login
@@ -266,6 +256,7 @@ class AuthProvider extends ChangeNotifier {
 
           //sns인증 성공했지만 회원가입 되어있지 않을 시
           if (status == 2) {
+            sharedPreferences.setString('kakaoAccessToken', token.accessToken);
             return LoginStatus.noAccount;
           }
           sharedPreferences.setString('accessToken', data['accessToken']);
