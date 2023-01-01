@@ -121,7 +121,7 @@ class PdfMkr {
                                 color: _orange)),
                         pw.SizedBox(width: 12),
                         pw.Align(
-                          alignment: pw.Alignment.bottomCenter,
+                          alignment: pw.Alignment.bottomRight,
                           child: pw.Text('mmHg',
                               style:
                                   pw.TextStyle(color: _darkGrey, fontSize: 18)),
@@ -143,8 +143,30 @@ class PdfMkr {
                                 color: _orange)),
                         pw.SizedBox(width: 12),
                         pw.Align(
-                          alignment: pw.Alignment.bottomCenter,
+                          alignment: pw.Alignment.bottomRight,
                           child: pw.Text('mmHg',
+                              style:
+                                  pw.TextStyle(color: _darkGrey, fontSize: 18)),
+                        ),
+                        pw.SizedBox(width: 20),
+                      ],
+                    ),
+                    pw.SizedBox(height: 8),
+                    pw.Row(
+                      children: [
+                        pw.SizedBox(width: 20),
+                        pw.Text('분당맥박수(PUL)',
+                            style: const pw.TextStyle(fontSize: 22)),
+                        pw.Spacer(),
+                        pw.Text(bpData.pul.toString(),
+                            style: pw.TextStyle(
+                                fontSize: 36,
+                                fontWeight: pw.FontWeight.bold,
+                                color: _orange)),
+                        pw.SizedBox(width: 28),
+                        pw.Align(
+                          alignment: pw.Alignment.bottomRight,
+                          child: pw.Text('/min',
                               style:
                                   pw.TextStyle(color: _darkGrey, fontSize: 18)),
                         ),
