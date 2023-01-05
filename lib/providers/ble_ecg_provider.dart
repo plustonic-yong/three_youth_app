@@ -81,6 +81,7 @@ class BleEcgProvider extends ChangeNotifier {
     await prefs.setBool("isEcgFairing", false);
     _isScanning = false;
     _isPaired = false;
+    _bleDevice?.disconnect();
     notifyListeners();
   }
 
@@ -141,21 +142,24 @@ class BleEcgProvider extends ChangeNotifier {
       }
     }
     try {
+      isPairing = false;
       flutterBlue.startScan(timeout: const Duration(seconds: 10)).then((value) {
-        if (isPaired == false) {
+        if (isPairing == false) {
           showToast('다시 시도 해주세요');
+          Navigator.of(context).pop();
         }
       });
       flutterBlue.scanResults.listen((results) async {
         for (var r in results) {
           debugPrint(r.device.name);
           if (r.device.name.startsWith(sBLEDevice)) {
+            isPairing = true;
             await flutterBlue.stopScan();
             await r.device.disconnect();
             await r.device.connect();
             await r.device.pair();
-            _bleDevice = r.device;
             isPaired = true;
+            _bleDevice = r.device;
             r.device.requestMtu(512);
             measure();
             await prefs.setBool("isEcgFairing", true);
@@ -313,25 +317,22 @@ class BleEcgProvider extends ChangeNotifier {
       List<BluetoothService> services = await _bleDevice!.discoverServices();
       for (var service in services) {
         debugPrint('####### Service UUID = ${service.uuid.toString()}');
+
         if (service.uuid.toString().toUpperCase() == sUUIDService) {
           var characteristics = service.characteristics;
           for (BluetoothCharacteristic c in characteristics) {
             debugPrint('####### Character UUID = ${c.uuid.toString()}');
             if (c.uuid.toString().toUpperCase() == sUUIDTx) {
-              _bleCharTx = c;
+              // _bleCharTx = c;
               List<int> bytes = utf8.encode("DEBUG1<\r\n>");
               for (int i = 0; i < bytes.length; i++) {
                 debugPrint('####### $i = ${bytes[i].toString()}');
               }
               c.write(bytes);
             } else if (c.uuid.toString().toUpperCase() == sUUIDRx) {
-              if (!c.isNotifying) {
-                _bleCharTx = c;
-                await c.setNotifyValue(true);
-                // await lock
-                //     .synchronized(() async => );
-              }
-              c.value.listen((value) => doPacket(value));
+              _bleCharTx = c;
+              await _bleCharTx?.setNotifyValue(true);
+              _bleCharTx?.value.listen((value) => doPacket(value));
             }
           }
         }

@@ -124,7 +124,7 @@ class _BleEcgScanMeasurementScreenState
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: const Text(
-                '심전계 상부 전극판(금속판)에 오른손\n손가락을 왼쪽 가슴 밑에 심전계 하부\n전극판을 접촉한 후 기기의 "O" 버튼을\n누르면 측정이 시작됩니다.',
+                '외부 심전도 케이블을 장치에 연결한 후\n일회용 심전도 전극을 각각 왼쪽(노랑)과\n오른쪽(빨강)가슴, 왼쪽 배(흰색)에\n부착한 후 OK 버튼을 누릅니다.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   height: 2.0,
