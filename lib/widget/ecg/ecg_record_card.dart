@@ -37,22 +37,23 @@ class _EcgRecordCardState extends State<EcgRecordCard> {
 
   @override
   Widget build(BuildContext context) {
+    List<int> tmp = widget.ecgLst.where((e) => e != 0).toList();
     List<FlSpot> lDataECG1 = [];
     List<FlSpot> lDataECG2 = [];
     List<FlSpot> lDataECG3 = [];
     var cnt = 0;
     for (var i = 0; i < 500; i++) {
-      lDataECG1.add(FlSpot(cnt.toDouble(), widget.ecgLst[i].toDouble()));
+      lDataECG1.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
       cnt++;
       if (cnt == widget.ecgLst.length) break;
     }
     for (var i = 500; i < 1000; i++) {
-      lDataECG2.add(FlSpot(cnt.toDouble(), widget.ecgLst[i].toDouble()));
+      lDataECG2.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
       cnt++;
       if (cnt == widget.ecgLst.length) break;
     }
     for (var i = 1000; i < 1500; i++) {
-      lDataECG3.add(FlSpot(cnt.toDouble(), widget.ecgLst[i].toDouble()));
+      lDataECG3.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
       cnt++;
       if (cnt == widget.ecgLst.length) break;
     }

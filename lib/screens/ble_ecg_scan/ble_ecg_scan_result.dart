@@ -33,6 +33,11 @@ class _BleEcgScanResultState extends State<BleEcgScanResult> {
   List<FlSpot> lDataECG3 = [];
   @override
   void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<int> tmp = [];
     for (var ecgValue in widget.ecgLst) {
       for (var lData in ecgValue.lDataECG) {
@@ -60,11 +65,6 @@ class _BleEcgScanResultState extends State<BleEcgScanResult> {
       if (cnt == tmp.length) break;
     }
 
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Container(
@@ -180,10 +180,8 @@ class _BleEcgScanResultState extends State<BleEcgScanResult> {
         lineTouchData: LineTouchData(enabled: false),
         gridData: FlGridData(
           show: true,
-          drawHorizontalLine: true,
+          drawHorizontalLine: false,
           drawVerticalLine: true,
-          horizontalInterval: 1000,
-          verticalInterval: 100,
         ),
         titlesData: FlTitlesData(show: false),
         borderData: FlBorderData(show: false),

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/providers/ble_ecg_provider.dart';
 
-import '../../services/php/classCubeAPI.dart';
-
 class BleEcgScanChart extends StatefulWidget {
   const BleEcgScanChart({Key? key}) : super(key: key);
 

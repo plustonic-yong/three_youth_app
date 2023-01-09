@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -323,12 +324,17 @@ class BleEcgProvider extends ChangeNotifier {
           for (BluetoothCharacteristic c in characteristics) {
             debugPrint('####### Character UUID = ${c.uuid.toString()}');
             if (c.uuid.toString().toUpperCase() == sUUIDTx) {
-              // _bleCharTx = c;
-              List<int> bytes = utf8.encode("DEBUG1<\r\n>");
-              for (int i = 0; i < bytes.length; i++) {
-                debugPrint('####### $i = ${bytes[i].toString()}');
-              }
-              c.write(bytes);
+              var retry = 0;
+              do {
+                try {
+                  debugPrint(retry.toString());
+                  await c.write(utf8.encode("DEBUG1<\r\n>"),
+                      withoutResponse: true);
+                  break;
+                } on PlatformException {
+                  await Future.delayed(const Duration(milliseconds: 100));
+                }
+              } while (retry < 3);
             } else if (c.uuid.toString().toUpperCase() == sUUIDRx) {
               _bleCharTx = c;
               await _bleCharTx?.setNotifyValue(true);
@@ -341,13 +347,17 @@ class BleEcgProvider extends ChangeNotifier {
   }
 
   void doPacket(List<int> value) async {
-    if (value.isEmpty) return;
+    if (value.isEmpty) {
+      debugPrint('success packet listen');
+      return;
+    }
+
     if (_bleEcgState != 1) {
       bleEcgState = 1;
     }
 
     dataCnt++;
-    while (lsData.length >= 100) {
+    while (lsData.length >= 300) {
       lsData.removeAt(0);
     }
 
@@ -363,17 +373,19 @@ class BleEcgProvider extends ChangeNotifier {
     String next = String.fromCharCode(value.last);
 
     List<int> valueLst = [];
+    List<double> ecgData = [];
 
     for (var i = 1; i < value.length - 2; i++) {
       sdata2 += '${value[i]},';
       if (i % 2 == 0) {
         valueLst.add(value[i]);
         var list = Uint8List.fromList(valueLst);
-        var powerValue = ((list[0] << 8) + list[1]);
+        var powerValue = ((list[1] << 8) + list[0]);
         _sData += '$powerValue,';
         valueLst.clear();
         double dv = powerValue.toDouble();
         lsData.add(FlSpot(dataCnt.toDouble(), dv));
+        ecgData.add(dv);
         lsData = lsData;
         dataCnt++;
       } else {
@@ -382,8 +394,7 @@ class BleEcgProvider extends ChangeNotifier {
     }
     debugPrint('$command : $sData : $end $next');
     debugPrint('$command : $sdata2 : $end $next');
-    _lDataECG.add(EcgValueModel(
-        measureDatetime: now, lDataECG: lsData.map((e) => e.y).toList()));
+    _lDataECG.add(EcgValueModel(measureDatetime: now, lDataECG: ecgData));
     _lSQLECG.add(sData);
   }
 }

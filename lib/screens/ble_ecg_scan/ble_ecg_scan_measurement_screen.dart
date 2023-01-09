@@ -96,7 +96,6 @@ class _BleEcgScanMeasurementScreenState
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 40.0),
             Center(
@@ -163,10 +162,10 @@ class _BleEcgScanMeasurementScreenState
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const BleEcgScanChart(),
-            const SizedBox(height: 100),
-            Image.asset('assets/images/heart_graph.png', height: 166),
+          children: const [
+            BleEcgScanChart(),
+            SizedBox(height: 100),
+            // Image.asset('assets/images/heart_graph.png', height: 166),
           ],
         ),
       ),
@@ -289,7 +288,7 @@ class _BleEcgScanMeasurementScreenState
     List<DateTime> timeLst = [];
     for (var i = 0; i < dataLst.length; i++) {
       for (var j = 0; j < dataLst[i].lDataECG.length; j++) {
-        if (dataLst[i].lDataECG[j] > r) {
+        if (dataLst[i].lDataECG[j] > r || dataLst[i].lDataECG[j] < 10000) {
           r = dataLst[i].lDataECG[j];
         } else {
           r = 0.0;
@@ -310,7 +309,7 @@ class _BleEcgScanMeasurementScreenState
         dataLst.last.measureDatetime.difference(dataLst.first.measureDatetime);
     double difAvg = 0;
     for (var dif in difLst) {
-      difAvg += (dif * 0.01);
+      difAvg += (dif * 0.001);
     }
     difAvg /= difLst.length;
     return (diffTime.inSeconds / difAvg).round();
@@ -328,7 +327,7 @@ class _BleEcgScanMeasurementScreenState
       List<int> lDataECG = [];
       var cnt = 0;
       for (var i = 0; i < tmp.length; i++) {
-        if (cnt > 4050) break;
+        if (cnt > 10000) break;
         lDataECG.add(tmp[i]);
         cnt++;
       }
