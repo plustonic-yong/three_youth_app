@@ -231,7 +231,7 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
                 title: '측정화면으로 이동',
                 buttonColor: ButtonColor.primary,
                 onTap: () {
-                  Navigator.pushNamed(context, '/scanecg');
+                  Navigator.of(context).pushNamed('/scanecg/mesurement');
                   Provider.of<CurrentUserProvider>(context, listen: false)
                       .isER2000S = true;
                   context

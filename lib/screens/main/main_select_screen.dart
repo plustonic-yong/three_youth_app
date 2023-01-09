@@ -228,7 +228,8 @@ class _MainSelectScreenState extends State<MainSelectScreen> {
                           : ButtonColor.inactive,
                       onTap: _isEcgPaired
                           ? () {
-                              Navigator.pushNamed(context, '/scanecg');
+                              Navigator.of(context)
+                                  .pushNamed('/scanecg/mesurement');
                               Provider.of<CurrentUserProvider>(context,
                                       listen: false)
                                   .isER2000S = true;
