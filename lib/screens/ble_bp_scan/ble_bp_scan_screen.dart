@@ -80,7 +80,8 @@ class BleBpScanScreen extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 //촬영 측정
                 GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed('/scan/camera'),
+                  onTap: () =>
+                      Navigator.of(context).popAndPushNamed('/scan/camera'),
                   child: Container(
                     padding: const EdgeInsets.all(40.0),
                     width: _screenWidth,

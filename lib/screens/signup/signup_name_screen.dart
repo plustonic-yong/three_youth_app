@@ -9,23 +9,25 @@ class SignupNameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-        SizedBox(height: height * 0.12),
-        //로고
-        Image.asset(
-          'assets/icons/ic_logo.png',
-          width: width * 0.25,
-        ),
-        SizedBox(height: height * 0.16),
-        const Text(
-          '당신의 이름은 무엇인가요?',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
-        ),
-        SizedBox(height: height * 0.06),
-        const SizedBox(height: 30.0),
-        _nameInput(context: context, width: width, height: height)
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: height * 0.12),
+          //로고
+          Image.asset(
+            'assets/icons/ic_logo.png',
+            width: width * 0.25,
+          ),
+          SizedBox(height: height * 0.16),
+          const Text(
+            '당신의 이름은 무엇인가요?',
+            style: TextStyle(color: Colors.white, fontSize: 18.0),
+          ),
+          SizedBox(height: height * 0.06),
+          const SizedBox(height: 30.0),
+          _nameInput(context: context, width: width, height: height)
+        ],
+      ),
     );
   }
 

@@ -23,8 +23,8 @@ class UserModel {
         name: json['name'] ?? '',
         birth: json['birth'] ?? '',
         gender: json['gender'] ?? 'M',
-        height: double.parse(json['height']),
-        weight: double.parse(json['weight']),
+        height: json['height'] != null ? double.parse(json['height']) : 0,
+        weight: json['weight'] != null ? double.parse(json['weight']) : 0,
         imgUrl: json['imgUrl'] ?? '',
         code: json['code'] ?? '',
       );

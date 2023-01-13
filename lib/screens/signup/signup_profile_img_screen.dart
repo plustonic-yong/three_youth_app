@@ -15,18 +15,18 @@ class SignupProfileImgScreen extends StatelessWidget {
     XFile? _selectedImg = context.watch<SignupProvider>().selectedImg;
     return Column(
       children: [
-        SizedBox(height: height * 0.12),
+        const Spacer(),
         //로고
         Image.asset(
           'assets/icons/ic_logo.png',
           width: width * 0.25,
         ),
-        SizedBox(height: height * 0.12),
+        const Spacer(),
         const Text(
-          '프로필 사진을 등록해주세요.',
+          '프로필 사진을 등록해주세요(선택사항)',
           style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
-        const SizedBox(height: 40.0),
+        const Spacer(),
         GestureDetector(
           onTap: () async {
             final ImagePicker _picker = ImagePicker();
@@ -43,13 +43,13 @@ class SignupProfileImgScreen extends StatelessWidget {
                   child: Image.file(
                     File(_selectedImg.path),
                     fit: BoxFit.cover,
-                    width: 180.0,
-                    height: 180.0,
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: MediaQuery.of(context).size.width * 0.4,
                   ),
                 )
               : Container(
-                  width: 180.0,
-                  height: 180.0,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  height: MediaQuery.of(context).size.width * 0.4,
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(100.0),
@@ -63,9 +63,7 @@ class SignupProfileImgScreen extends StatelessWidget {
                   ),
                 ),
         ),
-        const SizedBox(
-          height: 20.0,
-        ),
+        const Spacer(),
         // GestureDetector(
         //   onTap: () => context.read<SignupProvider>().onDeleteProfileImg(),
         //   child: const Text(

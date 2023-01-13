@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:three_youth_app/models/ecg_model.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
+import 'package:three_youth_app/providers/ble_ecg_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:provider/provider.dart';
+import 'package:three_youth_app/utils/enums.dart';
+
+import '../../models/bp_model.dart';
 
 class HistoryWeekCalendar extends StatelessWidget {
-  const HistoryWeekCalendar({Key? key}) : super(key: key);
+  final List<BpModel>? bpList;
+  final List<EcgModel>? ecgList;
+  final HistoryType historyType;
+
+  const HistoryWeekCalendar(
+      {Key? key, this.bpList, this.ecgList, required this.historyType})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +46,30 @@ class HistoryWeekCalendar extends StatelessWidget {
       onDaySelected: (value, _) {
         context.read<HistoryProvider>().onDaySelect(value);
         context.read<BleBpProvider>().getBloodPressure(value);
+        context.read<BleEcgProvider>().getEcg(value);
+      },
+      eventLoader: (day) {
+        if (historyType == HistoryType.bp) {
+          return bpList
+                  ?.where((element) =>
+                      DateTime(
+                          element.measureDatetime.year,
+                          element.measureDatetime.month,
+                          element.measureDatetime.day) ==
+                      DateTime(day.year, day.month, day.day))
+                  .toList() ??
+              [];
+        } else {
+          return ecgList
+                  ?.where((element) =>
+                      DateTime(
+                          element.measureDatetime.year,
+                          element.measureDatetime.month,
+                          element.measureDatetime.day) ==
+                      DateTime(day.year, day.month, day.day))
+                  .toList() ??
+              [];
+        }
       },
       selectedDayPredicate: (value) => isSameDay(_selectedDay, value),
       startingDayOfWeek: StartingDayOfWeek.sunday,
@@ -43,24 +78,26 @@ class HistoryWeekCalendar extends StatelessWidget {
         weekdayStyle: TextStyle(color: Colors.white),
       ),
       calendarStyle: const CalendarStyle(
-        isTodayHighlighted: true,
-        defaultTextStyle: TextStyle(color: Colors.white),
-        weekendTextStyle: TextStyle(
-          color: ColorAssets.txtGrey,
-        ),
-        selectedDecoration: BoxDecoration(
-          color: ColorAssets.purpleGradient1,
-          shape: BoxShape.circle,
-        ),
-        todayDecoration: BoxDecoration(
-          color: Colors.transparent,
-        ),
-        todayTextStyle: TextStyle(
-          color: ColorAssets.purpleGradient1,
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
-        ),
-      ),
+          isTodayHighlighted: true,
+          defaultTextStyle: TextStyle(color: Colors.white),
+          weekendTextStyle: TextStyle(
+            color: ColorAssets.txtGrey,
+          ),
+          selectedDecoration: BoxDecoration(
+            color: ColorAssets.purpleGradient1,
+            shape: BoxShape.circle,
+          ),
+          todayDecoration: BoxDecoration(
+            color: Colors.transparent,
+          ),
+          todayTextStyle: TextStyle(
+            color: ColorAssets.purpleGradient1,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+          markersMaxCount: 1,
+          markerDecoration:
+              BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle)),
     );
   }
 }

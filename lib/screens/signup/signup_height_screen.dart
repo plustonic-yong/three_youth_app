@@ -11,23 +11,25 @@ class SignupHeightScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-        SizedBox(height: height * 0.12),
-        //로고
-        Image.asset(
-          'assets/icons/ic_logo.png',
-          width: width * 0.25,
-        ),
-        SizedBox(height: height * 0.16),
-        const Text(
-          '키는 몇 이신가요?',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
-        ),
-        SizedBox(height: height * 0.06),
-        const SizedBox(height: 30.0),
-        _heightInput(context: context, width: width, height: height)
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: height * 0.12),
+          //로고
+          Image.asset(
+            'assets/icons/ic_logo.png',
+            width: width * 0.25,
+          ),
+          SizedBox(height: height * 0.16),
+          const Text(
+            '키는 몇 이신가요?',
+            style: TextStyle(color: Colors.white, fontSize: 18.0),
+          ),
+          SizedBox(height: height * 0.06),
+          const SizedBox(height: 30.0),
+          _heightInput(context: context, width: width, height: height)
+        ],
+      ),
     );
   }
 
@@ -50,6 +52,7 @@ class SignupHeightScreen extends StatelessWidget {
           ],
           textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.white),
+          scrollPadding: EdgeInsets.all(100),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
             hintText: 'cm',

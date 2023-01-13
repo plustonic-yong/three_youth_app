@@ -3,6 +3,8 @@ import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 
+import 'ble_ecg_connect_info_screen.dart';
+
 class BleEcgConnectScreen extends StatelessWidget {
   const BleEcgConnectScreen({Key? key}) : super(key: key);
 
@@ -74,8 +76,13 @@ class BleEcgConnectScreen extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 //촬영 측정
                 GestureDetector(
-                  onTap: () =>
-                      Navigator.of(context).pushNamed('/connectecg/pairing'),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const BleEcgConnectInfoScreen(initPage: 2),
+                    ),
+                  ),
                   child: Container(
                     padding: const EdgeInsets.all(40.0),
                     width: _screenWidth,

@@ -1,14 +1,25 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:three_youth_app/models/bp_model.dart';
+import 'package:three_youth_app/models/ecg_model.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
+import 'package:three_youth_app/providers/ble_ecg_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
 import 'package:three_youth_app/widget/bp/bpRecordCard.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
+import 'package:three_youth_app/widget/ecg/ecg_record_card.dart';
 import 'package:three_youth_app/widget/history/history_month_calendar.dart';
 import 'package:three_youth_app/widget/history/history_week_calendar.dart';
+
+import '../../models/user_model.dart';
+import '../../providers/user_provider.dart';
+import '../../utils/pdf_mkr.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
@@ -20,10 +31,11 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      context.read<HistoryProvider>().onDaySelect(DateTime.now());
       await context.read<BleBpProvider>().getBloodPressure(DateTime.now());
+      await context.read<BleEcgProvider>().getEcg(DateTime.now());
     });
   }
 
@@ -34,6 +46,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
         context.watch<HistoryProvider>().historyCalendarType;
 
     List<BpModel>? _bpHistories = context.watch<BleBpProvider>().bpHistories;
+    List<BpModel>? _bpAllHistories =
+        context.watch<BleBpProvider>().bpAllHistories;
+    List<EcgModel>? _ecgHistories =
+        context.watch<BleEcgProvider>().ecgHistories;
+    List<EcgModel>? _ecgAllHistories =
+        context.watch<BleEcgProvider>().ecgAllHistories;
+    UserModel? _userInfo = context.watch<UserProvider>().userInfo;
 
     return SafeArea(
       child: SizedBox(
@@ -42,7 +61,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const HistoryWeekCalendar(),
+                  HistoryWeekCalendar(
+                      bpList: _bpAllHistories,
+                      ecgList: _ecgAllHistories,
+                      historyType: _historyType),
                   //심전도, 혈압계 선택
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -124,6 +146,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             context: context,
                                             measureDatetime: _bpHistories[index]
                                                 .measureDatetime,
+                                            onShared: () => _pdfShare(
+                                              context,
+                                              _userInfo!,
+                                              _bpHistories[index],
+                                            ),
                                             sys: _bpHistories[index].sys,
                                             dia: _bpHistories[index].dia,
                                             pul: _bpHistories[index].pul,
@@ -139,15 +166,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           ),
                                         ),
                                       )
-                                : const Center(
-                                    child: Text(
-                                      '심전도 측정 기록이 없습니다.',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 23.0,
+                                : _ecgHistories!.isNotEmpty
+                                    ? ListView.builder(
+                                        itemCount: _ecgHistories.length,
+                                        itemBuilder: (context, index) {
+                                          return EcgRecordCard(
+                                            duration: Duration(
+                                                seconds: _ecgHistories[index]
+                                                    .duration),
+                                            time: _ecgHistories[index]
+                                                .measureDatetime,
+                                            ecgLst:
+                                                _ecgHistories[index].lDataECG,
+                                            bpm: _ecgHistories[index].bpm,
+                                          );
+                                        },
+                                      )
+                                    : const Center(
+                                        child: Text(
+                                          '심전도 측정 기록이 없습니다.',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 23.0,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
                           ),
                           const SizedBox(height: 10.0),
                           CommonButton(
@@ -174,7 +217,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   children: [
-                    const HistoryMonthCalendar(),
+                    HistoryMonthCalendar(
+                        bpList: _bpAllHistories,
+                        ecgList: _ecgAllHistories,
+                        historyType: _historyType),
                     const Spacer(),
                     CommonButton(
                       height: 50.0,
@@ -184,8 +230,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       onTap: () => context
                           .read<HistoryProvider>()
                           .onChangeHistoryCalendarType(
-                            HistoryCalendarType.week,
-                          ),
+                              HistoryCalendarType.week),
                     ),
                     const SizedBox(
                       height: kBottomNavigationBarHeight + 55.0,
@@ -195,5 +240,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ),
       ),
     );
+  }
+
+  _pdfShare(context, UserModel userInfo, BpModel? bpData) async {
+    var pdf = await PdfMkr.getPdfForBp(userInfo, bpData!);
+
+    final output = await getTemporaryDirectory();
+    if (await output.exists()) {
+      final file = File(
+          '${output.path}/${DateTime.now().millisecondsSinceEpoch}_혈압계.pdf');
+      await file.writeAsBytes(await pdf.save());
+      await Share.shareFiles([file.path]);
+    }
   }
 }

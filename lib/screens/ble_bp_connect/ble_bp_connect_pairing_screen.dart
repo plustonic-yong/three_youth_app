@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,7 +98,7 @@ class _BleBpConnectPairingTestScreenState
         isLoading = false;
       });
 
-      await context.read<BleBpProvider>().loadCounter();
+      await context.read<BleBpProvider>().loadCounter(context);
     });
 
     super.initState();
@@ -108,22 +109,6 @@ class _BleBpConnectPairingTestScreenState
     _lDataDIA.clear();
     _lDataPUL.clear();
     _lDataSYS.clear();
-  }
-
-  Widget getAppBar() {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      title: const Text('기기 연동'),
-      centerTitle: true,
-      leading: Container(),
-      // GestureDetector(
-      //   onTap: () async {
-      //     await context.read<BleBpProvider>().disConnectPairing();
-      //     Navigator.of(context).pop();
-      //   },
-      //   child: const Icon(Icons.arrow_back_ios),
-      // ),
-    );
   }
 
   @override
@@ -177,13 +162,16 @@ class _BleBpConnectPairingTestScreenState
               title: const Text('기기 연동'),
               centerTitle: true,
               leading: Container(),
-              // GestureDetector(
-              //   onTap: () async {
-              //     await context.read<BleBpProvider>().disConnectPairing();
-              //     Navigator.of(context).pop();
-              //   },
-              //   child: const Icon(Icons.arrow_back_ios),
-              // ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pushNamed('/main'),
+                    child: const Center(
+                        child: Icon(CupertinoIcons.xmark, color: Colors.white)),
+                  ),
+                ),
+              ],
             ),
             backgroundColor: Colors.transparent,
             body: isLoading
@@ -226,7 +214,7 @@ class _BleBpConnectPairingTestScreenState
         ),
         const SizedBox(height: 50.0),
         const Text(
-          "혈압계 연동 완료!\n혈압계 화면에 'End' 문자를\n확인하셨나요?\n이제 측정 기록이 스마트폰에\n자동으로 저장됩니다.",
+          "혈압계 연동 완료!\n혈압계 화면에 'End' 문자를\n확인하셨나요?\n이제 측정 완료 후 스마트폰에\n혈압측정 기록을 저장할 수 있습니다.",
           style: TextStyle(
             color: Colors.white,
             fontSize: 18.0,
@@ -318,7 +306,8 @@ class _BleBpConnectPairingTestScreenState
             buttonColor: ButtonColor.orange,
             onTap: () async {
               await context.read<BleBpProvider>().disConnectPairing();
-              Navigator.of(context).pop();
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/main', (route) => false);
             },
           ),
           const SizedBox(height: 30.0)

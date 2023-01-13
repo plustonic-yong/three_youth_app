@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "three-youth-app",
+  "private_key_id": "9a1934d23181df588825f15b240905223f601c80",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCdjoAvCKqrzQ4d\ndDhbRxqXbHVgVCFChJvQtxXI8blGQ/1T6q6BNvn4Qtg+vNFt9hS8joL7kblInHWI\nHasa5uDkhcg6kd+1ul/CF9BmtF7O1gk4c8XeR454S9U71pPLQDapt2q7xRwKFAlD\nO3XwpSzxJn290XpyJEyTgleIXijDlnGgtQqanv6UF6grYbXHDZb+WDGqqB3I/Iim\nplMS1Vz9rslv2rQBm2ltSzY0K+MZ1DQyBMa2fCyZIhYavKJp18oqJJ6Aa5zBdhX2\n4riokXv2qW9TbO8Z8bCih/hWW0MLPmW8AkMFup3nCck2XlLqeCs36JQQH5rIEl5F\n7xewhfa7AgMBAAECggEAOBFv+EzjP4QXU8/6BjGFewFzu7X0qBE8ycd9jybGQgUL\n74MCWqVPy1MuVRUoijMaKgelARVYlEhpYuj77PTgbzJUkNM8gxUx4oZK+WGSo5Rz\nb41ziqh4QMLrvQGdUqUlTrwg1XVNhyCeMzjDvcFp/t8tvBEBvADC53No5vRrGT6v\nXCkapdFe7Gi6xSipCUbkHpZQWbZS1+fXPSY8aYO8rnecg7AexdvbeEd8kOqvk5tS\noPydTXXyhQ7jBkEKjoIVHX8uA6JDcfftFagwz6xwlv1dCdog2HMZNEi8/Z4xf22U\nHa+5qT0XobDTTPxuTVNImGw7553H5kVMLInaPJZDEQKBgQDRblL2hhJzz3YMOPkO\n70DC6fTBUjGMJYVvziFU8Hk/DtGcZ17/oAZV2+1Bqm0YsLWPYs2VQQfGUcnD2tv7\nBWEeGqqSf7Ppzx79rdcWzSF8zfwNpXj9JCuX6NH8We0j1TwqkfmmgjLROrC1A1wS\nHC/QUJiC3Yr6HyOE2wd5/4nO/QKBgQDAl0bCZy6NCB7Gcz0BiJ1T4HauiiL2u2MV\nt67MCf1ipTTp0bPE0xjZTTwX93SJ15R3OwQEMJg/9XFkLEtWzlafxWb/IQ1T7eP7\nIrj43EeqSvgcbLz3RDbgKHHvtcrt3RXL9KqXdDLaDmjJZ9qXSIvc7/9L7MWW2JpY\nZgfhD9c2FwKBgQC/0eaW+XHJNQmQZFZqAWU1oYeV0aykCnHPV+Nbou3Kfc4rDNsM\nEwv6c/c5H9nQtXl2HS7jN67hTGQayUiW//RV2GLGz8R/sD9YZnMM5VF4uEnWTesl\nII31Ez/RfKQhH9t9ujoI8lONI85Z3Pvlcn+ws0EdC8GRGhg0RVDxwsX8GQKBgDFJ\nha5SwbMOFPIso7w0vi6tDzJz36bNJfp026MUG2iXZwc/x4XjkERsY6iuh4CPT0uE\nKu73kL8tjStZup4oiDqzRjyctNB53RJ0PGpT1XNbZEvB+Eo/htuu/hmeqKRfJCji\nIJZKAomTjnWcwnBc/I46TVec7KRCIp3k3rdWWnlZAoGBAMO0WudpYhT+c4lkdXW1\nKe6dG4HjmIM5HK3H8G2nmOHLVglovsDKHBjZr5cV4CXPPqwY6p39yinXt9QKIK7i\ntDyiEA/A25RLcElsaMCQdoWd6noOtAPpBAFQE0dYMzpDGfZrxHRRQ/CbBH0iVD5Z\n/SZWu2CXx/9xthgiqNviH5A8\n-----END PRIVATE KEY-----\n",
+  "client_email": "vision-service-id@three-youth-app.iam.gserviceaccount.com",
+  "client_id": "103710927732858803308",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vision-service-id%40three-youth-app.iam.gserviceaccount.com"
+}

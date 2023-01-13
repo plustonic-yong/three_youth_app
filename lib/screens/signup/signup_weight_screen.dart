@@ -11,23 +11,25 @@ class SignupWeightScreen extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return Column(
-      children: [
-        SizedBox(height: height * 0.12),
-        //로고
-        Image.asset(
-          'assets/icons/ic_logo.png',
-          width: width * 0.25,
-        ),
-        SizedBox(height: height * 0.16),
-        const Text(
-          '몸무게는 어떻게 되세요?',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
-        ),
-        SizedBox(height: height * 0.06),
-        const SizedBox(height: 30.0),
-        _weightInput(context: context, width: width, height: height)
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: height * 0.12),
+          //로고
+          Image.asset(
+            'assets/icons/ic_logo.png',
+            width: width * 0.25,
+          ),
+          SizedBox(height: height * 0.16),
+          const Text(
+            '몸무게는 어떻게 되세요?',
+            style: TextStyle(color: Colors.white, fontSize: 18.0),
+          ),
+          SizedBox(height: height * 0.06),
+          const SizedBox(height: 30.0),
+          _weightInput(context: context, width: width, height: height)
+        ],
+      ),
     );
   }
 
@@ -50,6 +52,7 @@ class SignupWeightScreen extends StatelessWidget {
         ],
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white),
+        scrollPadding: EdgeInsets.all(100),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
           hintText: 'kg',

@@ -9,6 +9,7 @@ import 'package:three_youth_app/models/bp_model.dart';
 import 'package:three_youth_app/services/api/api_auth.dart';
 import 'package:three_youth_app/services/api/api_bp.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/utils/toast.dart';
 import 'package:three_youth_app/utils/utils.dart';
 
 class BleBpProvider extends ChangeNotifier {
@@ -115,6 +116,10 @@ class BleBpProvider extends ChangeNotifier {
   List<BpModel>? _bpHistories = [];
   List<BpModel>? get bpHistories => _bpHistories;
 
+  //혈압계 데이터
+  List<BpModel>? _bpAllHistories = [];
+  List<BpModel>? get bpAllHistories => _bpAllHistories;
+
   //마지막 혈압계 데이터
   BpModel? _lastBpHistory;
   BpModel? get lastBpHistory => _lastBpHistory;
@@ -127,7 +132,7 @@ class BleBpProvider extends ChangeNotifier {
   //앱 초기 로그인 시작시 페어링 여부 확인
   Future<void> findIsPaired() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isPaired = await prefs.setBool('isSphyFairing', true);
+    _isPaired = prefs.getBool('isSphyFairing') ?? false;
     notifyListeners();
   }
 
@@ -145,10 +150,11 @@ class BleBpProvider extends ChangeNotifier {
       var refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiBp.getBloodPressureService();
+      statusCode = response!.statusCode;
     }
 
     if (statusCode == 200) {
-      final data = json.decode(utf8.decode(response!.bodyBytes));
+      final data = json.decode(utf8.decode(response.bodyBytes));
       List<BpModel> bpList =
           (data as List).map((json) => BpModel.fromJson(json)).toList();
 
@@ -172,9 +178,10 @@ class BleBpProvider extends ChangeNotifier {
       var refreshToken = pref.getString('refreshToken');
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
       response = await ApiBp.getBloodPressureService();
+      statusCode = response!.statusCode;
     }
     if (statusCode == 200) {
-      final data = json.decode(utf8.decode(response!.bodyBytes));
+      final data = json.decode(utf8.decode(response.bodyBytes));
       List<BpModel> bpList =
           (data as List).map((json) => BpModel.fromJson(json)).toList();
       List<BpModel> filtedBpList = [];
@@ -189,6 +196,7 @@ class BleBpProvider extends ChangeNotifier {
       //선택한 날짜와 일치하는 데이터중 최신 시간대 순으로 배열
       filtedBpList
           .sort((a, b) => b.measureDatetime.compareTo(a.measureDatetime));
+      _bpAllHistories = bpList;
       _bpHistories = filtedBpList;
       notifyListeners();
     }
@@ -198,12 +206,14 @@ class BleBpProvider extends ChangeNotifier {
     required int sys,
     required int dia,
     required int pul,
+    required String pdfPath,
   }) async {
     var pref = await SharedPreferences.getInstance();
     var response = await ApiBp.postBloodPressureService(
       sys: sys,
       dia: dia,
       pul: pul,
+      pdfPath: pdfPath,
     );
     int statusCode = response!.statusCode;
     if (statusCode == 401) {
@@ -213,7 +223,9 @@ class BleBpProvider extends ChangeNotifier {
         sys: sys,
         dia: dia,
         pul: pul,
+        pdfPath: pdfPath,
       );
+      statusCode = response.statusCode;
     }
     if (statusCode == 200) {
       return BpSaveDataStatus.success;
@@ -258,7 +270,7 @@ class BleBpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadCounter() async {
+  Future<void> loadCounter(context) async {
     //YHR 추가  : 페어링 상태라면 기기인식 완료 라고 나오도록 추가함
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -308,7 +320,7 @@ class BleBpProvider extends ChangeNotifier {
         }
       }
       if (_isScanning == false) {
-        await startScan();
+        await startScan(context);
       }
 
       // if (isUpdated) {
@@ -322,12 +334,38 @@ class BleBpProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> startScan() async {
+  Future<void> startScan(context) async {
     _iFindCnt = 0;
     _isScanning = true;
 
     _ble.statusStream.listen((status) {
       if (status == BleStatus.poweredOff) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                contentPadding: const EdgeInsets.all(30.0),
+                actionsPadding: const EdgeInsets.all(10.0),
+                actions: [
+                  GestureDetector(
+                    onTap: () async {
+                      await disConnectPairing();
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/main', (route) => false);
+                    },
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
+                content: const Text(
+                  '설정에서 블루투스를 켜주세요.',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              );
+            });
+        return;
       } else if (status == BleStatus.ready) {
       } else if (status == BleStatus.unauthorized) {}
     });
@@ -555,13 +593,24 @@ class BleBpProvider extends ChangeNotifier {
     //}
   }
 
-  Future<Map<String, String>> getBloodPressureOcr(String imgPath) async {
-    var response = await ApiBp.getBloodPressureOcrService(imgPath: imgPath);
-    int statusCode = response!.statusCode;
-    final data = json.decode(utf8.decode(response.bodyBytes));
-    log('ocr ParsedText: ${data['ParsedResults'][0]['ParsedText']}');
-    //필터작업
+  Future<Map<String, String>?> getBloodPressureOcr(String imgPath) async {
+    try {
+      var response = await ApiBp.getBloodPressureOcrService(imgPath: imgPath);
+      log(response?.body ?? '');
+      var result = [];
+      if (response != null) {
+        result = json.decode(response.body);
+      } else {
+        result.addAll([0, 0, 0]);
+      }
+      // int statusCode = response!.statusCode;
+      // final data = json.decode(utf8.decode(response.bodyBytes));
+      // log('ocr ParsedText: ${data['ParsedResults'][0]['ParsedText']}');
+      // //필터작업
 
-    return {"sys": "152", "dia": "94", "pul": "102"};
+      return {"sys": result[0], "dia": result[1], "pul": result[2]};
+    } catch (e) {
+      return null;
+    }
   }
 }

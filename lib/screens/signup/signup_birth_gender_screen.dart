@@ -32,19 +32,19 @@ class SignupBirthGenderScreen extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: height * 0.12),
+        const Spacer(),
         //로고
         Image.asset(
           'assets/icons/ic_logo.png',
           width: width * 0.25,
         ),
-        SizedBox(height: height * 0.16),
+        const Spacer(),
         const Text(
           '생년월일과 성별을 입력해주세요.',
           style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
         // SizedBox(height: height * 0.06),
-        const SizedBox(height: 40.0),
+        const Spacer(),
         Column(
           children: [
             GestureDetector(
@@ -54,15 +54,56 @@ class SignupBirthGenderScreen extends StatelessWidget {
                     enableDrag: false,
                     builder: (context) {
                       return SizedBox(
-                        height: 200.0,
-                        child: ScrollDatePicker(
-                          locale: const Locale('ko'),
-                          selectedDate: _birth,
-                          onDateTimeChanged: (value) async {
-                            context
-                                .read<SignupProvider>()
-                                .onChangeBirth(value: value);
-                          },
+                        height: 250.0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                behavior: HitTestBehavior.translucent,
+                                child: Text(
+                                  '확인',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 200.0,
+                              child: ScrollDatePicker(
+                                locale: const Locale('ko'),
+                                selectedDate: _birth,
+                                scrollViewOptions:
+                                    const DatePickerScrollViewOptions(
+                                        day: ScrollViewDetailOptions(
+                                            margin: EdgeInsets.all(16),
+                                            textStyle: TextStyle(fontSize: 20),
+                                            selectedTextStyle:
+                                                TextStyle(fontSize: 20)),
+                                        month: ScrollViewDetailOptions(
+                                            margin: EdgeInsets.all(16),
+                                            textStyle: TextStyle(fontSize: 20),
+                                            selectedTextStyle:
+                                                TextStyle(fontSize: 20)),
+                                        year: ScrollViewDetailOptions(
+                                            margin: EdgeInsets.all(16),
+                                            textStyle: TextStyle(fontSize: 20),
+                                            selectedTextStyle:
+                                                TextStyle(fontSize: 20))),
+                                options:
+                                    const DatePickerOptions(itemExtent: 35),
+                                onDateTimeChanged: (value) async {
+                                  context
+                                      .read<SignupProvider>()
+                                      .onChangeBirth(value: value);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     });
@@ -160,7 +201,8 @@ class SignupBirthGenderScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontSize: 20.0),
                 ),
               ],
-            )
+            ),
+            SizedBox(height: height * 0.05),
           ],
         ),
       ],

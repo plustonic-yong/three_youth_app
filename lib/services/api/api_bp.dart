@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:intl/intl.dart';
@@ -46,6 +47,7 @@ class ApiBp {
     required int sys,
     required int dia,
     required int pul,
+    required String pdfPath,
   }) async {
     var pref = await SharedPreferences.getInstance();
     var refreshToken = pref.getString('refreshToken');
@@ -54,26 +56,24 @@ class ApiBp {
       await ApiAuth.getTokenService(refreshToken: refreshToken!);
     }
     try {
-      Client client = InterceptedClient.build(
-        interceptors: [
-          AuthInterceptor(),
-        ],
-        retryPolicy: ExpiredTokenRetryPolicy(),
-      );
-      var response = await client.post(
+      var request = http.MultipartRequest(
+        'POST',
         Uri.parse('${Constants.API_HOST}/bloodpressure'),
-        body: json.encode({
-          'measureDatetime':
-              DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()),
-          "sys": sys,
-          "dia": dia,
-          "pul": pul,
-        }),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $accessToken",
-          "Content-Type": "application/json",
-        },
       );
+      request.fields['measureDatetime'] =
+          DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now());
+      request.fields['sys'] = sys.toString();
+      request.fields['dia'] = dia.toString();
+      request.fields['pul'] = pul.toString();
+
+      if (pdfPath.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('pdf', pdfPath));
+      }
+      request.headers.addAll({
+        HttpHeaders.authorizationHeader: "Bearer $accessToken",
+        "Content-Type": "application/json",
+      });
+      var response = await http.Response.fromStream(await request.send());
       return response;
     } catch (e) {
       log('$e');
@@ -85,37 +85,15 @@ class ApiBp {
     required String imgPath,
   }) async {
     try {
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(Constants.API_OCR),
-      );
-      request.fields['apikey'] = Constants.API_KEY_OCR;
-      request.files.add(await http.MultipartFile.fromPath('file', imgPath));
-      request.headers.addAll({
-        "Content-Type": "application/json",
-      });
-
-      var response = await http.Response.fromStream(await request.send());
-
-      //64byte 방식
-      // log('imgPath: $imgPath');
-      // var bytes = File(imgPath.toString()).readAsBytesSync();
-      // log('file size: ${File(imgPath.toString()).lengthSync()}');
-      // String img64 = base64Encode(bytes);
-
-      // var url = 'https://apipro3.ocr.space/parse/image';
-      // var payload = {
-      //   "base64Image": "data:image/jpg;base64,${img64.toString()}",
-      //   "language": "eng"
-      // };
-      // var header = {"apikey": "PR88M9EG4H6X"};
-      // var response =
-      //     await http.post(Uri.parse(url), body: payload, headers: header);
-
-      log('ocr data: ${response.body}');
+      var bytes = File(imgPath.toString()).readAsBytesSync();
+      String img64 = base64Encode(bytes);
+      var url = Constants.API_OCR;
+      var payload = {"base64Image": img64.toString(), "language": "eng"};
+      var response = await http.post(Uri.parse(url), body: payload);
       return response;
     } catch (e) {
       log('$e');
+      return null;
     }
   }
 }

@@ -30,26 +30,23 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.620834252127-gfep92avvtggm430a2bb4amno7svjrrt</string>
-				<string>[UrlScheme]</string>
+				<string>naverlogin</string>
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>naversearchapp</string>
 		<string>naversearchthirdlogin</string>
 	</array>
-	<key>naverServiceAppUrlScheme</key>
-	<string>[UrlScheme]</string>
-	<key>naverConsumerKey</key>
-	<string>[ConsumerKey]</string>
-	<key>naverConsumerSecret</key>
-	<string>[ConsumerSecret]</string>
-	<key>naverServiceAppName</key>
-	<string>[ServiceAppName]</string>
-	<!-- http allows configurations -->
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+	 	<key>NSAllowsLocalNetworking</key>
+    	<true/>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 		<key>NSExceptionDomains</key>
@@ -70,27 +67,22 @@
 			</dict>
 		</dict>
 	</dict>
-
-	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Need BLE permission</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Need BLE permission</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Need Camera permission</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Need Location permission</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Need Location permission</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need Location permission</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Need Photo permission</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need Microphone permission</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Need Camera permission</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need Photo permission</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -110,5 +102,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>naverConsumerKey</key>
+	<string>7TIQWOGMyaRREiRoKPjL</string>
+	<key>naverConsumerSecret</key>
+	<string>2j57tPJxvD</string>
+	<key>naverServiceAppName</key>
+	<string>러닝하트</string>
+	<key>naverServiceAppUrlScheme</key>
+	<string>naverlogin</string>
 </dict>
 </plist>

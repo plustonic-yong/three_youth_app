@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:three_youth_app/models/ecg_model.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
+import 'package:three_youth_app/providers/ble_ecg_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:three_youth_app/utils/color.dart';
 import 'package:three_youth_app/utils/enums.dart';
 
+import '../../models/bp_model.dart';
+
 class HistoryMonthCalendar extends StatelessWidget {
-  const HistoryMonthCalendar({Key? key}) : super(key: key);
+  final List<BpModel>? bpList;
+  final List<EcgModel>? ecgList;
+  final HistoryType historyType;
+  const HistoryMonthCalendar(
+      {Key? key, this.bpList, this.ecgList, required this.historyType})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +48,7 @@ class HistoryMonthCalendar extends StatelessWidget {
             .read<HistoryProvider>()
             .onChangeHistoryCalendarType(HistoryCalendarType.week);
         context.read<BleBpProvider>().getBloodPressure(value);
+        context.read<BleEcgProvider>().getEcg(value);
       },
       selectedDayPredicate: (value) => isSameDay(_selectedDay, value),
       startingDayOfWeek: StartingDayOfWeek.sunday,
@@ -46,6 +56,29 @@ class HistoryMonthCalendar extends StatelessWidget {
         weekendStyle: TextStyle(color: Colors.white),
         weekdayStyle: TextStyle(color: Colors.white),
       ),
+      eventLoader: (day) {
+        if (historyType == HistoryType.bp) {
+          return bpList
+                  ?.where((element) =>
+                      DateTime(
+                          element.measureDatetime.year,
+                          element.measureDatetime.month,
+                          element.measureDatetime.day) ==
+                      DateTime(day.year, day.month, day.day))
+                  .toList() ??
+              [];
+        } else {
+          return ecgList
+                  ?.where((element) =>
+                      DateTime(
+                          element.measureDatetime.year,
+                          element.measureDatetime.month,
+                          element.measureDatetime.day) ==
+                      DateTime(day.year, day.month, day.day))
+                  .toList() ??
+              [];
+        }
+      },
       calendarStyle: const CalendarStyle(
         isTodayHighlighted: true,
         defaultTextStyle: TextStyle(color: Colors.white),
@@ -64,6 +97,9 @@ class HistoryMonthCalendar extends StatelessWidget {
           fontWeight: FontWeight.bold,
           fontSize: 20.0,
         ),
+        markersMaxCount: 1,
+        markerDecoration:
+            BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
       ),
     );
   }

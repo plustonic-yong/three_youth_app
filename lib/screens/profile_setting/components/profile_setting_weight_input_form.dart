@@ -23,7 +23,8 @@ class ProfileSettingWeightInputForm extends StatelessWidget {
             enableInteractiveSelection: false,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+              // FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+              FilteringTextInputFormatter.allow(RegExp(r'^\d{0,4}\.?\d{0,1}')),
             ],
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),

@@ -75,7 +75,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? idToken = sharedPreferences.getString('idToken');
-    String genderStr = gender == GenderState.man ? "W" : "W";
+    String genderStr = gender == GenderState.man ? "M" : "W";
     var response = await ApiAuth.signupGoogleService(
       token: idToken!,
       name: name,
@@ -95,6 +95,7 @@ class AuthProvider extends ChangeNotifier {
       String refreshToken = data['refreshToken'] ?? '';
       sharedPreferences.setString('accessToken', accessToken);
       sharedPreferences.setString('refreshToken', refreshToken);
+      sharedPreferences.setString('lastLoginMethod', 'google');
       return SignupStatus.success;
     }
     return SignupStatus.error;
@@ -108,8 +109,11 @@ class AuthProvider extends ChangeNotifier {
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
-    // Create a new credential
 
+    // Set Google idToken
+    sharedPreferences.setString('idToken', '${googleAuth?.idToken}');
+
+    // Create a new credential
     var response =
         await ApiAuth.loginGoogleService(token: '${googleAuth?.idToken}');
     int statusCode = response!.statusCode;
@@ -153,7 +157,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? kakaoAccessToken = sharedPreferences.getString('kakaoAccessToken');
-    String genderStr = gender == GenderState.man ? "W" : "W";
+    String genderStr = gender == GenderState.man ? "M" : "W";
     var response = await ApiAuth.signupKakaoService(
       token: kakaoAccessToken!,
       name: name,
@@ -165,7 +169,7 @@ class AuthProvider extends ChangeNotifier {
     );
     int statusCode = response!.statusCode;
 
-    if (response.statusCode == 200 || statusCode == 201) {
+    if (statusCode == 200 || statusCode == 201) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       int status = data['status'];
       if (status == -1) {
@@ -175,19 +179,10 @@ class AuthProvider extends ChangeNotifier {
       String refreshToken = data['refreshToken'] ?? '';
       sharedPreferences.setString('accessToken', accessToken);
       sharedPreferences.setString('refreshToken', refreshToken);
+      sharedPreferences.setString('lastLoginMethod', 'kakao');
       return SignupStatus.success;
     }
     return SignupStatus.error;
-    // switch (data['msg']) {
-    //   case 'EMAIL_EXISTS_KAKAO':
-    //     return SignupStatus.duplicatedEmailKakao;
-    //   case 'EMAIL_EXISTS_NAVER':
-    //     return SignupStatus.duplicatedEmailNaver;
-    //   case 'EMAIL_EXISTS_GOOGLE':
-    //     return SignupStatus.duplicatedEmailGoogle;
-    //   default:
-    //     return SignupStatus.error;
-    // }
   }
 
   //kakao login
@@ -206,7 +201,12 @@ class AuthProvider extends ChangeNotifier {
         }
       }
       try {
-        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        OAuthToken token;
+        if (await isKakaoTalkInstalled()) {
+          token = await UserApi.instance.loginWithKakaoTalk();
+        } else {
+          token = await UserApi.instance.loginWithKakaoAccount();
+        }
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
 
@@ -238,7 +238,12 @@ class AuthProvider extends ChangeNotifier {
     } else {
       debugPrint('발급된 토큰 없음');
       try {
-        OAuthToken token = await UserApi.instance.loginWithKakaoAccount();
+        OAuthToken token;
+        if (await isKakaoTalkInstalled()) {
+          token = await UserApi.instance.loginWithKakaoTalk();
+        } else {
+          token = await UserApi.instance.loginWithKakaoAccount();
+        }
         debugPrint('로그인 성공 ${token.accessToken}');
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
@@ -251,6 +256,7 @@ class AuthProvider extends ChangeNotifier {
 
           //sns인증 성공했지만 회원가입 되어있지 않을 시
           if (status == 2) {
+            sharedPreferences.setString('kakaoAccessToken', token.accessToken);
             return LoginStatus.noAccount;
           }
           sharedPreferences.setString('accessToken', data['accessToken']);
@@ -280,7 +286,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     String? naverAccessToken = sharedPreferences.getString('naverAccessToken');
-    String genderStr = gender == GenderState.man ? "W" : "W";
+    String genderStr = gender == GenderState.man ? "M" : "W";
 
     var response = await ApiAuth.signupNaverService(
       token: naverAccessToken!,
@@ -301,6 +307,7 @@ class AuthProvider extends ChangeNotifier {
       String refreshToken = data['refreshToken'] ?? '';
       sharedPreferences.setString('accessToken', accessToken);
       sharedPreferences.setString('refreshToken', refreshToken);
+      sharedPreferences.setString('lastLoginMethod', 'naver');
       return SignupStatus.success;
     }
     return SignupStatus.error;
@@ -309,6 +316,13 @@ class AuthProvider extends ChangeNotifier {
   //naver login
   Future<LoginStatus> loginNaver() async {
     var sharedPreferences = await SharedPreferences.getInstance();
+    try {
+      if (await FlutterNaverLogin.isLoggedIn) {
+        await FlutterNaverLogin.logOut();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
     final NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
     NaverAccessToken naverTokens = await FlutterNaverLogin.currentAccessToken;
     var response =

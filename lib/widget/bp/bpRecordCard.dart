@@ -8,6 +8,7 @@ Widget bpRecordCard({
   required int sys,
   required int dia,
   required int pul,
+  GestureTapCallback? onShared,
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -35,14 +36,14 @@ Widget bpRecordCard({
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      Utils.formatDatetime(measureDatetime).split(' ')[0],
+                      Utils.formatDate(measureDatetime),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 23.0,
                       ),
                     ),
                     Text(
-                      Utils.formatDatetime(measureDatetime).split(' ')[1],
+                      Utils.formatTime(measureDatetime),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 23.0,
@@ -51,16 +52,19 @@ Widget bpRecordCard({
                   ],
                 ),
                 const SizedBox(width: 10.0),
-                Container(
-                  padding: const EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                    color: ColorAssets.waterLevelWave1,
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Image.asset(
-                    'assets/icons/ic_share.png',
-                    width: 20.0,
-                    height: 20.0,
+                GestureDetector(
+                  onTap: onShared,
+                  child: Container(
+                    padding: const EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(
+                      color: ColorAssets.waterLevelWave1,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Image.asset(
+                      'assets/icons/ic_share.png',
+                      width: 20.0,
+                      height: 20.0,
+                    ),
                   ),
                 ),
                 // Container(width: 27.0)

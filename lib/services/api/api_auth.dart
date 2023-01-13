@@ -51,7 +51,9 @@ class ApiAuth {
       request.fields['gender'] = gender;
       request.fields['height'] = height.toString();
       request.fields['weight'] = weight.toString();
-      request.files.add(await http.MultipartFile.fromPath('img', img));
+      if (img.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('img', img));
+      }
       request.headers.addAll({"Content-Type": "application/json"});
 
       var response = await http.Response.fromStream(await request.send());
@@ -81,7 +83,9 @@ class ApiAuth {
       request.fields['gender'] = gender;
       request.fields['height'] = height.toString();
       request.fields['weight'] = weight.toString();
-      request.files.add(await http.MultipartFile.fromPath('img', img));
+      if (img.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('img', img));
+      }
       request.headers.addAll({"Content-Type": "application/json"});
 
       var response = await http.Response.fromStream(await request.send());
@@ -111,7 +115,9 @@ class ApiAuth {
       request.fields['gender'] = gender;
       request.fields['height'] = height.toString();
       request.fields['weight'] = weight.toString();
-      request.files.add(await http.MultipartFile.fromPath('img', img));
+      if (img.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('img', img));
+      }
       request.headers.addAll({"Content-Type": "application/json"});
 
       var response = await http.Response.fromStream(await request.send());

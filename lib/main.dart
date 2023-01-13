@@ -1,13 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_youth_app/firebase_options.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
-import 'package:three_youth_app/providers/ble_ecg_connect_provider.dart';
-import 'package:three_youth_app/providers/ble_ecg_scan_provider.dart';
+import 'package:three_youth_app/providers/ble_ecg_provider.dart';
 import 'package:three_youth_app/providers/history_provider.dart';
 import 'package:three_youth_app/providers/signup_agreement_provider.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
@@ -39,6 +39,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 late final SharedPreferences prefsmain;
 void main() async {
+  Intl.defaultLocale = 'ko';
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(nativeAppKey: 'e36a07410b2e00cd113dbf6a2102876a');
   prefsmain = await SharedPreferences.getInstance();
@@ -60,8 +61,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SignupAgreementProvider()),
         ChangeNotifierProvider(create: (context) => SignupProvider()),
         ChangeNotifierProvider(create: (context) => BleBpProvider()),
-        ChangeNotifierProvider(create: (context) => BleEcgConnectProvider()),
-        ChangeNotifierProvider(create: (context) => BleEcgScanProvider()),
+        ChangeNotifierProvider(create: (context) => BleEcgProvider()),
         ChangeNotifierProvider(create: (context) => HistoryProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider.value(value: CurrentUserProvider()),
@@ -102,6 +102,14 @@ class MyApp extends StatelessWidget {
           '/findpwd': (context) => const FindPwd(),
         },
         theme: ThemeData(fontFamily: 'NotoSansCJKkr'),
+        // localizationsDelegates: const [
+        //   GlobalMaterialLocalizations.delegate,
+        //   GlobalCupertinoLocalizations.delegate,
+        // ],
+        // supportedLocales: [
+        //   Locale('ko', ''),
+        //   Locale('en', ''),
+        // ],
       ),
     );
   }
