@@ -1,11 +1,9 @@
-import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:three_youth_app/config.dart';
 import 'package:three_youth_app/firebase_options.dart';
 import 'package:three_youth_app/providers/auth_provider.dart';
 import 'package:three_youth_app/providers/ble_bp_provider.dart';
@@ -49,7 +47,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   var accessToken = prefsmain.getString('accessToken');
-  gCameras = await availableCameras();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 

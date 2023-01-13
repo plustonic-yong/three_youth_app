@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>620834252127-gfep92avvtggm430a2bb4amno7svjrrt.apps.googleusercontent.com</string>
+	<string>620834252127-ec62jc7u0fpddt4423h7aorv6e5455qg.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.620834252127-gfep92avvtggm430a2bb4amno7svjrrt</string>
+	<string>com.googleusercontent.apps.620834252127-ec62jc7u0fpddt4423h7aorv6e5455qg</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>620834252127-0q1qehpltapun0qq80vo08mc9dvvjf6c.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDYFopIuPWupDdI_FerGgaydUZFW81jpRw</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.three-youth-app.bleapp</string>
+	<string>com.threeyouthapp.bleapp</string>
 	<key>PROJECT_ID</key>
 	<string>three-youth-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:620834252127:ios:601facd5c10724ce3e82ea</string>
+	<string>1:620834252127:ios:860cf4549de9ccef3e82ea</string>
 </dict>
 </plist>

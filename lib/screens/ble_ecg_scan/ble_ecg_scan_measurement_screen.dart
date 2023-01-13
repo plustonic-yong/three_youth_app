@@ -154,20 +154,60 @@ class _BleEcgScanMeasurementScreenState
         title: const Text('실시간 심전도 측정'),
       ),
       backgroundColor: Colors.transparent,
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          _time = DateTime.now();
-          Provider.of<BleEcgProvider>(context, listen: false).bleEcgState = 2;
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            BleEcgScanChart(),
-            SizedBox(height: 100),
-            // Image.asset('assets/images/heart_graph.png', height: 166),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(),
+          const BleEcgScanChart(),
+          const SizedBox(height: 100),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(40, 0, 40, 20),
+            child: CommonButton(
+              width: double.maxFinite,
+              height: 40,
+              title: '측정 중단',
+              buttonColor: ButtonColor.primary,
+              onTap: () async {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        contentPadding: const EdgeInsets.all(30.0),
+                        actionsPadding: const EdgeInsets.all(10.0),
+                        actions: [
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: const Text(
+                              '취소',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                          const SizedBox(width: 10.0),
+                          GestureDetector(
+                            onTap: () {
+                              _time = DateTime.now();
+                              Provider.of<BleEcgProvider>(context,
+                                      listen: false)
+                                  .bleEcgState = 2;
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text(
+                              '확인',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                        ],
+                        content: const Text(
+                          '측정을 중단하시겠습니까?',
+                          style: TextStyle(fontSize: 18.0),
+                        ),
+                      );
+                    });
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

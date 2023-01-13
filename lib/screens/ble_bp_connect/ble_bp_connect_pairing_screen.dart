@@ -214,7 +214,7 @@ class _BleBpConnectPairingTestScreenState
         ),
         const SizedBox(height: 50.0),
         const Text(
-          "혈압계 연동 완료!\n혈압계 화면에 'End' 문자를\n확인하셨나요?\n이제 측정 기록이 스마트폰에\n자동으로 저장됩니다.",
+          "혈압계 연동 완료!\n혈압계 화면에 'End' 문자를\n확인하셨나요?\n이제 측정 완료 후 스마트폰에\n혈압측정 기록을 저장할 수 있습니다.",
           style: TextStyle(
             color: Colors.white,
             fontSize: 18.0,

@@ -402,7 +402,7 @@ class _BleEcgConnectInfoScreenState extends State<BleEcgConnectInfoScreen> {
               ),
               const SizedBox(height: 40.0),
               const Text(
-                "이제 측정 기록이 스마트폰에\n자동으로 저장됩니다.",
+                "이제 측정 완료 후 스마트폰에\n심전도 측정 기록을 저장할 수 있습니다.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,

@@ -30,7 +30,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.620834252127-gfep92avvtggm430a2bb4amno7svjrrt</string>
-				<string>[UrlScheme]</string>
+				<string>naverlogin</string>
 			</array>
 		</dict>
 	</array>
@@ -45,6 +45,8 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+	 	<key>NSAllowsLocalNetworking</key>
+    	<true/>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 		<key>NSExceptionDomains</key>
@@ -101,12 +103,12 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>naverConsumerKey</key>
-	<string>[ConsumerKey]</string>
+	<string>7TIQWOGMyaRREiRoKPjL</string>
 	<key>naverConsumerSecret</key>
-	<string>[ConsumerSecret]</string>
+	<string>2j57tPJxvD</string>
 	<key>naverServiceAppName</key>
-	<string>[ServiceAppName]</string>
+	<string>러닝하트</string>
 	<key>naverServiceAppUrlScheme</key>
-	<string>[UrlScheme]</string>
+	<string>naverlogin</string>
 </dict>
 </plist>

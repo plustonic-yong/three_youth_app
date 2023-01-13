@@ -219,6 +219,10 @@ class _BleBpScanCameraResultScreenState
                                 ],
                               ),
                             ),
+                            const Text(
+                              '※ 실제 수치와 다르게 분석된 경우\n해당 수치를 눌러서 수정 하실 수 있습니다.',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ],
                         ),
                       ),

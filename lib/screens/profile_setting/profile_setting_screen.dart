@@ -263,56 +263,100 @@ class ProfileSettingScreen extends StatelessWidget {
                       buttonColor: ButtonColor.warning,
                       fontSize: 16.0,
                       onTap: () async {
-                        bool result =
-                            await context.read<UserProvider>().deleteUser();
                         showDialog(
-                          context: context,
-                          builder: (context) {
-                            return result
-                                ? AlertDialog(
-                                    contentPadding: const EdgeInsets.all(30.0),
-                                    actionsPadding: const EdgeInsets.all(10.0),
-                                    actions: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamedAndRemoveUntil(
-                                            '/login',
-                                            (route) => false,
-                                          );
-                                        },
-                                        child: const Text(
-                                          '확인',
-                                          style: TextStyle(fontSize: 18.0),
-                                        ),
-                                      ),
-                                    ],
-                                    content: const Text(
-                                      '회원탈퇴가 완료되었습니다.',
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                contentPadding: const EdgeInsets.all(30.0),
+                                actionsPadding: const EdgeInsets.all(10.0),
+                                actions: [
+                                  GestureDetector(
+                                    onTap: () => Navigator.of(context).pop(),
+                                    child: const Text(
+                                      '취소',
                                       style: TextStyle(fontSize: 18.0),
                                     ),
-                                  )
-                                : AlertDialog(
-                                    contentPadding: const EdgeInsets.all(30.0),
-                                    actionsPadding: const EdgeInsets.all(10.0),
-                                    actions: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
+                                  ),
+                                  const SizedBox(width: 10.0),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      bool result = await context
+                                          .read<UserProvider>()
+                                          .deleteUser();
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return result
+                                              ? AlertDialog(
+                                                  contentPadding:
+                                                      const EdgeInsets.all(
+                                                          30.0),
+                                                  actionsPadding:
+                                                      const EdgeInsets.all(
+                                                          10.0),
+                                                  actions: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pushNamedAndRemoveUntil(
+                                                          '/login',
+                                                          (route) => false,
+                                                        );
+                                                      },
+                                                      child: const Text(
+                                                        '확인',
+                                                        style: TextStyle(
+                                                            fontSize: 18.0),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  content: const Text(
+                                                    '회원탈퇴가 완료되었습니다.',
+                                                    style: TextStyle(
+                                                        fontSize: 18.0),
+                                                  ),
+                                                )
+                                              : AlertDialog(
+                                                  contentPadding:
+                                                      const EdgeInsets.all(
+                                                          30.0),
+                                                  actionsPadding:
+                                                      const EdgeInsets.all(
+                                                          10.0),
+                                                  actions: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text(
+                                                        '확인',
+                                                        style: TextStyle(
+                                                            fontSize: 18.0),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  content: const Text(
+                                                    '회원탈퇴를 실패했습니다..',
+                                                    style: TextStyle(
+                                                        fontSize: 18.0),
+                                                  ),
+                                                );
                                         },
-                                        child: const Text(
-                                          '확인',
-                                          style: TextStyle(fontSize: 18.0),
-                                        ),
-                                      ),
-                                    ],
-                                    content: const Text(
-                                      '회원탈퇴를 실패했습니다..',
+                                      );
+                                    },
+                                    child: const Text(
+                                      '확인',
                                       style: TextStyle(fontSize: 18.0),
                                     ),
-                                  );
-                          },
-                        );
+                                  ),
+                                ],
+                                content: const Text(
+                                  '탈퇴 시 기존 모든 정보가 삭제됩니다. 그래도 탈퇴 하시겠습니까?',
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                              );
+                            });
                       },
                     ),
                   ),

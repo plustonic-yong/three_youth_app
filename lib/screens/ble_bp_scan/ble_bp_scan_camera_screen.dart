@@ -62,7 +62,7 @@ class _BleBpScanCameraScreenState extends State<BleBpScanCameraScreen> {
                   child: Column(
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 100.0),
+                      const Spacer(),
                       GestureDetector(
                         onTap: () => _tapCamera(),
                         child: Center(
@@ -82,28 +82,21 @@ class _BleBpScanCameraScreenState extends State<BleBpScanCameraScreen> {
                       ),
                       const SizedBox(height: 20.0),
                       const Center(
-                        child: SizedBox(
-                          width: 140.0,
-                          height: 140.0,
-                          child: Text(
-                            '혈압계의 측정결과를 카메라로 촬영하여 앱에 저장합니다.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.0,
-                            ),
+                        child: Text(
+                          '혈압계의 측정결과를\n카메라로 촬영하여\n앱에 저장합니다.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
                           ),
                         ),
                       ),
                       const Spacer(),
-                      // CommonButton(
-                      //   height: 50.0,
-                      //   width: _screenWidth,
-                      //   title: '측정 가이드 보기',
-                      //   buttonColor: ButtonColor.primary,
-                      //   onTap: () => Navigator.of(context).pop(),
-                      // ),
-                      // const SizedBox(height: 20.0),
+                      const Text(
+                        '※ 혈압계 화면의 빛 반사 또는\n혈압계 화면과 스마트폰 카메라의 지문 등 오염에 의해 측정이 제대로 이루어 지지 않을 수 있으니 유의 해 주세요.',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(height: 20.0),
                       CommonButton(
                         height: 50.0,
                         width: _screenWidth,
