@@ -49,20 +49,27 @@ class _BleEcgScanResultState extends State<BleEcgScanResult> {
     lDataECG3.clear();
     var cnt = 0;
 
-    for (var i = 0; i < 500; i++) {
-      lDataECG1.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
-      cnt++;
-      if (cnt == tmp.length) break;
-    }
-    for (var i = 500; i < 1000; i++) {
-      lDataECG2.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
-      cnt++;
-      if (cnt == tmp.length) break;
-    }
-    for (var i = 1000; i < 1500; i++) {
-      lDataECG3.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
-      cnt++;
-      if (cnt == tmp.length) break;
+    if (tmp.length < 500) {
+      for (var i = 0; i < tmp.length; i++) {
+        lDataECG1.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
+        cnt++;
+      }
+    } else {
+      for (var i = 0; i < 500; i++) {
+        if (cnt == tmp.length) break;
+        lDataECG1.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
+        cnt++;
+      }
+      for (var i = 500; i < 1000; i++) {
+        if (cnt == tmp.length) break;
+        lDataECG2.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
+        cnt++;
+      }
+      for (var i = 1000; i < 1500; i++) {
+        if (cnt == tmp.length) break;
+        lDataECG3.add(FlSpot(cnt.toDouble(), tmp[i].toDouble()));
+        cnt++;
+      }
     }
 
     return Padding(
@@ -156,15 +163,17 @@ class _BleEcgScanResultState extends State<BleEcgScanResult> {
                         width: double.maxFinite,
                         child: LineChart(chartSetting(lDataECG1))),
                     const SizedBox(height: 8),
-                    SizedBox(
-                        height: 50,
-                        width: double.maxFinite,
-                        child: LineChart(chartSetting(lDataECG2))),
+                    if (tmp.length > 500)
+                      SizedBox(
+                          height: 50,
+                          width: double.maxFinite,
+                          child: LineChart(chartSetting(lDataECG2))),
                     const SizedBox(height: 8),
-                    SizedBox(
-                        height: 50,
-                        width: double.maxFinite,
-                        child: LineChart(chartSetting(lDataECG3))),
+                    if (tmp.length > 1000)
+                      SizedBox(
+                          height: 50,
+                          width: double.maxFinite,
+                          child: LineChart(chartSetting(lDataECG3))),
                   ],
                 ),
               ),
