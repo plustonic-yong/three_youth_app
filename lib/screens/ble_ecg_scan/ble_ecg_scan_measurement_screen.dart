@@ -185,11 +185,15 @@ class _BleEcgScanMeasurementScreenState
                           ),
                           const SizedBox(width: 10.0),
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              await Provider.of<BleEcgProvider>(context,
+                                      listen: false)
+                                  .stopMeasure();
                               _time = DateTime.now();
                               Provider.of<BleEcgProvider>(context,
                                       listen: false)
                                   .bleEcgState = 2;
+
                               Navigator.of(context).pop();
                             },
                             child: const Text(

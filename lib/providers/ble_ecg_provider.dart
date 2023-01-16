@@ -24,10 +24,6 @@ class BleEcgProvider extends ChangeNotifier {
   static const String sUUIDService = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
   static const String sUUIDRx = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
   static const String sUUIDTx = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
-  static const String sUUIDCharBloodPressureFeature =
-      "00002a49-0000-1000-8000-00805f9b34fb";
-  static const String sUUIDCharBloodPressureMeasurement =
-      "00002a35-0000-1000-8000-00805f9b34fb";
   static const String sUUIDCharDatetime =
       "00002a08-0000-1000-8000-00805f9b34fb";
 
@@ -46,6 +42,14 @@ class BleEcgProvider extends ChangeNotifier {
   bool get isPairing => _isPairing;
   set isPairing(bool isPairing) {
     _isPairing = isPairing;
+    notifyListeners();
+  }
+
+  //측정 페어링
+  bool _isReadMeasure = false;
+  bool get isReadMeasure => _isReadMeasure;
+  set isReadMeasure(bool isReadMeasure) {
+    _isReadMeasure = isReadMeasure;
     notifyListeners();
   }
 
@@ -129,16 +133,11 @@ class BleEcgProvider extends ChangeNotifier {
           await prefs.setBool('isEcgFairing', true);
           _isPaired = true;
           _bleDevice = item;
-          await _bleDevice?.disconnect();
-          await _bleDevice?.connect();
           await _bleDevice?.pair();
-          _bleDevice?.requestMtu(512);
+          measure();
         } catch (e) {
           debugPrint(e.toString());
-        } finally {
-          measure();
-          notifyListeners();
-        }
+        } finally {}
         return;
       }
     }
@@ -156,12 +155,11 @@ class BleEcgProvider extends ChangeNotifier {
           if (r.device.name.startsWith(sBLEDevice)) {
             isPairing = true;
             await flutterBlue.stopScan();
-            await r.device.disconnect();
             await r.device.connect();
             await r.device.pair();
+            await r.device.requestMtu(512);
             isPaired = true;
             _bleDevice = r.device;
-            r.device.requestMtu(512);
             measure();
             await prefs.setBool("isEcgFairing", true);
             return;
@@ -317,28 +315,19 @@ class BleEcgProvider extends ChangeNotifier {
     if (_bleDevice != null) {
       List<BluetoothService> services = await _bleDevice!.discoverServices();
       for (var service in services) {
-        debugPrint('####### Service UUID = ${service.uuid.toString()}');
-
         if (service.uuid.toString().toUpperCase() == sUUIDService) {
           var characteristics = service.characteristics;
           for (BluetoothCharacteristic c in characteristics) {
             debugPrint('####### Character UUID = ${c.uuid.toString()}');
             if (c.uuid.toString().toUpperCase() == sUUIDTx) {
-              var retry = 0;
-              do {
-                try {
-                  debugPrint(retry.toString());
-                  await c.write(utf8.encode("DEBUG1<\r\n>"),
-                      withoutResponse: true);
-                  break;
-                } on PlatformException {
-                  await Future.delayed(const Duration(milliseconds: 100));
-                }
-              } while (retry < 3);
+              _bleCharRx = c;
+              await startMeasure();
             } else if (c.uuid.toString().toUpperCase() == sUUIDRx) {
-              _bleCharTx = c;
-              await _bleCharTx?.setNotifyValue(true);
-              _bleCharTx?.value.listen((value) => doPacket(value));
+              if (!_isReadMeasure) {
+                _bleCharTx = c;
+                _bleCharTx?.value.listen((value) => doPacket(value));
+                debugPrint('read : measure');
+              }
             }
           }
         }
@@ -346,9 +335,40 @@ class BleEcgProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> startMeasure() async {
+    await _bleCharTx?.setNotifyValue(true);
+    var retry = 0;
+    do {
+      try {
+        await _bleCharRx?.write(utf8.encode("DEBUG1<\r\n>"),
+            withoutResponse: true);
+        retry++;
+      } on PlatformException {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+    } while (retry < 3);
+    debugPrint('write : start measure');
+  }
+
+  Future<void> stopMeasure() async {
+    await _bleCharTx?.setNotifyValue(false);
+    var retry = 0;
+    do {
+      try {
+        await _bleCharRx?.write(utf8.encode("DEBUG0<\r\n>"),
+            withoutResponse: true);
+        retry++;
+      } on PlatformException {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+    } while (retry < 3);
+    debugPrint('write : stop measure');
+  }
+
   void doPacket(List<int> value) async {
     if (value.isEmpty) {
       debugPrint('success packet listen');
+      _isReadMeasure = true;
       return;
     }
 
