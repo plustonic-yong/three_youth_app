@@ -328,35 +328,39 @@ class _BleEcgScanMeasurementScreenState
   ];
 
   _calBpm(List<EcgValueModel> dataLst) {
-    var r = 0.0;
-    List<DateTime> timeLst = [];
-    for (var i = 0; i < dataLst.length; i++) {
-      for (var j = 0; j < dataLst[i].lDataECG.length; j++) {
-        if (dataLst[i].lDataECG[j] > r || dataLst[i].lDataECG[j] < 10000) {
-          r = dataLst[i].lDataECG[j];
-        } else {
-          r = 0.0;
-          timeLst.add(dataLst[i].measureDatetime);
+    try {
+      var r = 0.0;
+      List<DateTime> timeLst = [];
+      for (var i = 0; i < dataLst.length; i++) {
+        for (var j = 0; j < dataLst[i].lDataECG.length; j++) {
+          if (dataLst[i].lDataECG[j] > r || dataLst[i].lDataECG[j] < 10000) {
+            r = dataLst[i].lDataECG[j];
+          } else {
+            r = 0.0;
+            timeLst.add(dataLst[i].measureDatetime);
+          }
         }
       }
-    }
 
-    List<int> difLst = [];
-    for (var i = 0; i < timeLst.length; i++) {
-      if (i != timeLst.length - 1) {
-        difLst.add(timeLst[i + 1].difference(timeLst[i]).inMilliseconds);
+      List<int> difLst = [];
+      for (var i = 0; i < timeLst.length; i++) {
+        if (i != timeLst.length - 1) {
+          difLst.add(timeLst[i + 1].difference(timeLst[i]).inMilliseconds);
+        }
       }
-    }
 
-    difLst = difLst.where((e) => e != 0).toList();
-    Duration diffTime =
-        dataLst.last.measureDatetime.difference(dataLst.first.measureDatetime);
-    double difAvg = 0;
-    for (var dif in difLst) {
-      difAvg += (dif * 0.001);
+      difLst = difLst.where((e) => e != 0).toList();
+      Duration diffTime = dataLst.last.measureDatetime
+          .difference(dataLst.first.measureDatetime);
+      double difAvg = 0;
+      for (var dif in difLst) {
+        difAvg += (dif * 0.001);
+      }
+      difAvg /= difLst.length;
+      return (diffTime.inSeconds / difAvg).round();
+    } catch (e) {
+      return 0;
     }
-    difAvg /= difLst.length;
-    return (diffTime.inSeconds / difAvg).round();
   }
 
   _dataSave(int bpm, List<EcgValueModel> ecgValueModel) async {

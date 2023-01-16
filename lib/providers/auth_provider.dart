@@ -85,7 +85,7 @@ class AuthProvider extends ChangeNotifier {
       weight: double.parse(weight),
       img: img,
     );
-    if (response!.statusCode == 200) {
+    if (response!.statusCode == 200 || response.statusCode == 201) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       int status = data['status'];
       if (status == -1) {
