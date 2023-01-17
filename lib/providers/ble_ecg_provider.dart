@@ -323,7 +323,7 @@ class BleEcgProvider extends ChangeNotifier {
               _bleCharRx = c;
               await startMeasure();
             } else if (c.uuid.toString().toUpperCase() == sUUIDRx) {
-              if (!_isReadMeasure) {
+              if (!c.isNotifying) {
                 _bleCharTx = c;
                 _bleCharTx?.value.listen((value) => doPacket(value));
                 debugPrint('read : measure');
