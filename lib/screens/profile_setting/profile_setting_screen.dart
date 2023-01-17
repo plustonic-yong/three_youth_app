@@ -11,6 +11,7 @@ import 'package:three_youth_app/screens/profile_setting/components/profile_setti
 import 'package:three_youth_app/screens/profile_setting/personal_info_policy_screen.dart';
 import 'package:three_youth_app/screens/profile_setting/use_of_terms_screen.dart';
 import 'package:three_youth_app/utils/enums.dart';
+import 'package:three_youth_app/utils/toast.dart';
 import 'package:three_youth_app/utils/utils.dart';
 import 'package:three_youth_app/widget/common/common_button.dart';
 import 'package:provider/provider.dart';
@@ -283,67 +284,16 @@ class ProfileSettingScreen extends StatelessWidget {
                                       bool result = await context
                                           .read<UserProvider>()
                                           .deleteUser();
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return result
-                                              ? AlertDialog(
-                                                  contentPadding:
-                                                      const EdgeInsets.all(
-                                                          30.0),
-                                                  actionsPadding:
-                                                      const EdgeInsets.all(
-                                                          10.0),
-                                                  actions: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .pushNamedAndRemoveUntil(
-                                                          '/login',
-                                                          (route) => false,
-                                                        );
-                                                      },
-                                                      child: const Text(
-                                                        '확인',
-                                                        style: TextStyle(
-                                                            fontSize: 18.0),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                  content: const Text(
-                                                    '회원탈퇴가 완료되었습니다.',
-                                                    style: TextStyle(
-                                                        fontSize: 18.0),
-                                                  ),
-                                                )
-                                              : AlertDialog(
-                                                  contentPadding:
-                                                      const EdgeInsets.all(
-                                                          30.0),
-                                                  actionsPadding:
-                                                      const EdgeInsets.all(
-                                                          10.0),
-                                                  actions: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: const Text(
-                                                        '확인',
-                                                        style: TextStyle(
-                                                            fontSize: 18.0),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                  content: const Text(
-                                                    '회원탈퇴를 실패했습니다..',
-                                                    style: TextStyle(
-                                                        fontSize: 18.0),
-                                                  ),
-                                                );
-                                        },
-                                      );
+
+                                      if (result) {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                          '/login',
+                                          (route) => false,
+                                        );
+                                      } else {
+                                        showToast('회원가입 실패');
+                                      }
                                     },
                                     child: const Text(
                                       '확인',
