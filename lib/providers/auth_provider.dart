@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
@@ -191,19 +192,20 @@ class AuthProvider extends ChangeNotifier {
 
     if (await AuthApi.instance.hasToken()) {
       try {
-        AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
-        debugPrint('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
-      } catch (error) {
-        if (error is KakaoException && error.isInvalidTokenError()) {
-          debugPrint('토큰 만료 $error');
-        } else {
-          debugPrint('토큰 정보 조회 실패 $error');
-        }
-      }
-      try {
         OAuthToken token;
-        if (await isKakaoTalkInstalled()) {
-          token = await UserApi.instance.loginWithKakaoTalk();
+        bool talkInstalled = await isKakaoTalkInstalled();
+
+        if (talkInstalled) {
+          try {
+            token = await UserApi.instance.loginWithKakaoTalk();
+          } catch (e) {
+            if (e is PlatformException && e.code == 'CANCELED') {
+              debugPrint('로그인 실패 $e');
+              return LoginStatus.failed;
+            } else {
+              token = await UserApi.instance.loginWithKakaoAccount();
+            }
+          }
         } else {
           token = await UserApi.instance.loginWithKakaoAccount();
         }
@@ -239,12 +241,23 @@ class AuthProvider extends ChangeNotifier {
       debugPrint('발급된 토큰 없음');
       try {
         OAuthToken token;
-        if (await isKakaoTalkInstalled()) {
-          token = await UserApi.instance.loginWithKakaoTalk();
+        bool talkInstalled = await isKakaoTalkInstalled();
+
+        if (talkInstalled) {
+          try {
+            token = await UserApi.instance.loginWithKakaoTalk();
+          } catch (e) {
+            if (e is PlatformException && e.code == 'CANCELED') {
+              debugPrint('로그인 실패 $e');
+              return LoginStatus.failed;
+            } else {
+              token = await UserApi.instance.loginWithKakaoAccount();
+            }
+          }
         } else {
           token = await UserApi.instance.loginWithKakaoAccount();
         }
-        debugPrint('로그인 성공 ${token.accessToken}');
+
         var response =
             await ApiAuth.loginKakaoService(token: token.accessToken);
         debugPrint('res: ${response!.body}');
