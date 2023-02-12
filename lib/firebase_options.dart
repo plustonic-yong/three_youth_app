@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -46,32 +49,22 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAt0L_4BjMTfBH0vidYrLbaUqUpMvsqTcU',
-    appId: '1:620834252127:web:135a2cf79ab841d43e82ea',
-    messagingSenderId: '620834252127',
-    projectId: 'three-youth-app',
-    authDomain: 'three-youth-app.firebaseapp.com',
-    storageBucket: 'three-youth-app.appspot.com',
-    measurementId: 'G-SCVTXNB05N',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCp37SGKg2aX-8PhDH1ty33LVRgNbIslLs',
-    appId: '1:620834252127:android:a3f911ecde775c413e82ea',
-    messagingSenderId: '620834252127',
-    projectId: 'three-youth-app',
-    storageBucket: 'three-youth-app.appspot.com',
+    apiKey: 'AIzaSyC5cQhYZWWIpo8tSEJcGL4-PkowMBgtSiA',
+    appId: '1:409696307486:android:2a0df5041537c7d10b610f',
+    messagingSenderId: '409696307486',
+    projectId: 'running-heart-4faf0',
+    storageBucket: 'running-heart-4faf0.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDYFopIuPWupDdI_FerGgaydUZFW81jpRw',
-    appId: '1:620834252127:ios:601facd5c10724ce3e82ea',
-    messagingSenderId: '620834252127',
-    projectId: 'three-youth-app',
-    storageBucket: 'three-youth-app.appspot.com',
-    iosClientId:
-        '620834252127-gfep92avvtggm430a2bb4amno7svjrrt.apps.googleusercontent.com',
-    iosBundleId: 'com.three-youth-app.bleapp',
+    apiKey: 'AIzaSyCuF3gc93-k0dxJiB8-S3494w0l4ZK--ig',
+    appId: '1:409696307486:ios:4197db4204fad9170b610f',
+    messagingSenderId: '409696307486',
+    projectId: 'running-heart-4faf0',
+    storageBucket: 'running-heart-4faf0.appspot.com',
+    androidClientId: '409696307486-te1f1q07h0g579l5pcsvvorjchdhrpf8.apps.googleusercontent.com',
+    iosClientId: '409696307486-0i4upd92pr212rj0di01jliole2v7jcu.apps.googleusercontent.com',
+    iosBundleId: 'com.threeyouth.runningHeart',
   );
 }
