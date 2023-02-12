@@ -1,40 +1,48 @@
 {
   "project_info": {
-    "project_number": "620834252127",
-    "project_id": "three-youth-app",
-    "storage_bucket": "three-youth-app.appspot.com"
+    "project_number": "409696307486",
+    "project_id": "running-heart-4faf0",
+    "storage_bucket": "running-heart-4faf0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:620834252127:android:a3f911ecde775c413e82ea",
+        "mobilesdk_app_id": "1:409696307486:android:2a0df5041537c7d10b610f",
         "android_client_info": {
-          "package_name": "com.three_youth_app.bleapp"
+          "package_name": "com.threeyouth.runningHeart"
         }
       },
       "oauth_client": [
         {
-          "client_id": "620834252127-paj2vmvg9q2g7bhlqb4prbpq8gmk76nn.apps.googleusercontent.com",
+          "client_id": "409696307486-te1f1q07h0g579l5pcsvvorjchdhrpf8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.threeyouth.runningHeart",
+            "certificate_hash": "878562b2a4829af09b82fd67a4a4c18fdbb374f6"
+          }
+        },
+        {
+          "client_id": "409696307486-ui79bni6rs16olhda97jd237bqare542.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCp37SGKg2aX-8PhDH1ty33LVRgNbIslLs"
+          "current_key": "AIzaSyC5cQhYZWWIpo8tSEJcGL4-PkowMBgtSiA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "620834252127-paj2vmvg9q2g7bhlqb4prbpq8gmk76nn.apps.googleusercontent.com",
+              "client_id": "409696307486-ui79bni6rs16olhda97jd237bqare542.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "620834252127-rult3gtpb8oq6nor6oo5hsnhsbrcd65b.apps.googleusercontent.com",
+              "client_id": "409696307486-0i4upd92pr212rj0di01jliole2v7jcu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.three-youth-app.bleapp"
+                "bundle_id": "com.threeyouth.runningHeart"
               }
             }
           ]

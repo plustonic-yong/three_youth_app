@@ -1,4 +1,4 @@
-package com.three_youth_app.bleapp
+package com.threeyouth.runningHeart
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
