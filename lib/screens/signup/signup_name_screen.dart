@@ -20,11 +20,10 @@ class SignupNameScreen extends StatelessWidget {
           ),
           SizedBox(height: height * 0.16),
           const Text(
-            '당신의 이름은 무엇인가요?',
+            '당신의 이름은 무엇인가요?\n(필수입력)',
             style: TextStyle(color: Colors.white, fontSize: 18.0),
           ),
           SizedBox(height: height * 0.06),
-          const SizedBox(height: 30.0),
           _nameInput(context: context, width: width, height: height)
         ],
       ),

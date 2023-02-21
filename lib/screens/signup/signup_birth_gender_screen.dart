@@ -40,7 +40,7 @@ class SignupBirthGenderScreen extends StatelessWidget {
         ),
         const Spacer(),
         const Text(
-          '생년월일과 성별을 입력해주세요.',
+          '생년월일과 성별을 입력해주세요.\n(필수입력)',
           style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
         // SizedBox(height: height * 0.06),
@@ -77,6 +77,9 @@ class SignupBirthGenderScreen extends StatelessWidget {
                               child: ScrollDatePicker(
                                 locale: const Locale('ko'),
                                 selectedDate: _birth,
+                                minimumDate: DateTime(1910, 1, 1),
+                                maximumDate: DateTime.now()
+                                    .add(const Duration(days: 365)),
                                 scrollViewOptions:
                                     const DatePickerScrollViewOptions(
                                         day: ScrollViewDetailOptions(
