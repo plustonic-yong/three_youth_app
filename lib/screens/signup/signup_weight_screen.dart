@@ -22,11 +22,10 @@ class SignupWeightScreen extends StatelessWidget {
           ),
           SizedBox(height: height * 0.16),
           const Text(
-            '몸무게는 어떻게 되세요?',
+            '몸무게는 어떻게 되세요?\n(필수입력)',
             style: TextStyle(color: Colors.white, fontSize: 18.0),
           ),
           SizedBox(height: height * 0.06),
-          const SizedBox(height: 30.0),
           _weightInput(context: context, width: width, height: height)
         ],
       ),

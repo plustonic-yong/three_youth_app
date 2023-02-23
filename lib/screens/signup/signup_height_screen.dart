@@ -22,11 +22,10 @@ class SignupHeightScreen extends StatelessWidget {
           ),
           SizedBox(height: height * 0.16),
           const Text(
-            '키는 몇 이신가요?',
+            '키는 몇 이신가요?\n(필수입력)',
             style: TextStyle(color: Colors.white, fontSize: 18.0),
           ),
           SizedBox(height: height * 0.06),
-          const SizedBox(height: 30.0),
           _heightInput(context: context, width: width, height: height)
         ],
       ),

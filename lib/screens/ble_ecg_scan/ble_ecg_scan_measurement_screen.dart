@@ -54,6 +54,14 @@ class _BleEcgScanMeasurementScreenState
   }
 
   @override
+  void dispose() {
+    if (Provider.of<BleEcgProvider>(context, listen: false).bleEcgState == 1) {
+      Provider.of<BleEcgProvider>(context, listen: false).stopMeasure();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
     _bleEcgState = context.watch<BleEcgProvider>().bleEcgState;
