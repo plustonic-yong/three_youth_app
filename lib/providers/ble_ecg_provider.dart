@@ -145,7 +145,7 @@ class BleEcgProvider extends ChangeNotifier {
       isPairing = false;
       flutterBlue.startScan(timeout: const Duration(seconds: 10)).then((value) {
         if (isPairing == false) {
-          showToast('다시 시도 해주세요');
+          showToast('"해당 의료기기를 휴대폰 블루투스 목록에서 등록해제 후, 재연동 해주세요"');
           Navigator.of(context).pop();
         }
       });

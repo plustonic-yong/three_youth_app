@@ -54,31 +54,36 @@ class _BleEcgScanMeasurementScreenState
   }
 
   @override
-  void dispose() {
-    if (Provider.of<BleEcgProvider>(context, listen: false).bleEcgState == 1) {
-      Provider.of<BleEcgProvider>(context, listen: false).stopMeasure();
-    }
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
     _bleEcgState = context.watch<BleEcgProvider>().bleEcgState;
-    return Stack(
-      children: [
-        //배경이미지
-        Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/bg.png'),
-              fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () async {
+        if (Provider.of<BleEcgProvider>(context, listen: false).bleEcgState ==
+            1) {
+          await Provider.of<BleEcgProvider>(context, listen: false)
+              .stopMeasure();
+          Provider.of<BleEcgProvider>(context, listen: false).bleEcgState = 0;
+          Provider.of<BleEcgProvider>(context, listen: false).lsData.clear();
+          Provider.of<BleEcgProvider>(context, listen: false).lDataECG.clear();
+        }
+        return true;
+      },
+      child: Stack(
+        children: [
+          //배경이미지
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/bg.png'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        _buildMeasure(_screenWidth),
-        if (_isLoading) const Center(child: CircularProgressIndicator()),
-      ],
+          _buildMeasure(_screenWidth),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
+        ],
+      ),
     );
   }
 

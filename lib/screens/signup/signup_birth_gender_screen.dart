@@ -52,64 +52,70 @@ class SignupBirthGenderScreen extends StatelessWidget {
                 showModalBottomSheet(
                     context: context,
                     enableDrag: false,
-                    builder: (context) {
-                      return SizedBox(
-                        height: 250.0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              child: GestureDetector(
-                                onTap: () => Navigator.pop(context),
-                                behavior: HitTestBehavior.translucent,
-                                child: Text(
-                                  '확인',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color: Theme.of(context).primaryColor),
+                    builder: (context) =>
+                        StatefulBuilder(builder: (context1, setState) {
+                          _birth = context.watch<SignupProvider>().birth;
+                          return SizedBox(
+                            height: 250.0,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.pop(context),
+                                    behavior: HitTestBehavior.translucent,
+                                    child: Text(
+                                      '확인',
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 200.0,
+                                  child: ScrollDatePicker(
+                                    locale: const Locale('ko'),
+                                    selectedDate: _birth,
+                                    minimumDate: DateTime(1910, 1, 1),
+                                    maximumDate: DateTime.now(),
+                                    scrollViewOptions:
+                                        const DatePickerScrollViewOptions(
+                                            day: ScrollViewDetailOptions(
+                                                margin: EdgeInsets.all(16),
+                                                textStyle:
+                                                    TextStyle(fontSize: 20),
+                                                selectedTextStyle:
+                                                    TextStyle(fontSize: 20)),
+                                            month: ScrollViewDetailOptions(
+                                                margin: EdgeInsets.all(16),
+                                                textStyle:
+                                                    TextStyle(fontSize: 20),
+                                                selectedTextStyle:
+                                                    TextStyle(fontSize: 20)),
+                                            year: ScrollViewDetailOptions(
+                                                margin: EdgeInsets.all(16),
+                                                textStyle:
+                                                    TextStyle(fontSize: 20),
+                                                selectedTextStyle:
+                                                    TextStyle(fontSize: 20))),
+                                    options:
+                                        const DatePickerOptions(itemExtent: 35),
+                                    onDateTimeChanged: (value) async {
+                                      context
+                                          .read<SignupProvider>()
+                                          .onChangeBirth(value: value);
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              height: 200.0,
-                              child: ScrollDatePicker(
-                                locale: const Locale('ko'),
-                                selectedDate: _birth,
-                                minimumDate: DateTime(1910, 1, 1),
-                                maximumDate: DateTime.now()
-                                    .add(const Duration(days: 365)),
-                                scrollViewOptions:
-                                    const DatePickerScrollViewOptions(
-                                        day: ScrollViewDetailOptions(
-                                            margin: EdgeInsets.all(16),
-                                            textStyle: TextStyle(fontSize: 20),
-                                            selectedTextStyle:
-                                                TextStyle(fontSize: 20)),
-                                        month: ScrollViewDetailOptions(
-                                            margin: EdgeInsets.all(16),
-                                            textStyle: TextStyle(fontSize: 20),
-                                            selectedTextStyle:
-                                                TextStyle(fontSize: 20)),
-                                        year: ScrollViewDetailOptions(
-                                            margin: EdgeInsets.all(16),
-                                            textStyle: TextStyle(fontSize: 20),
-                                            selectedTextStyle:
-                                                TextStyle(fontSize: 20))),
-                                options:
-                                    const DatePickerOptions(itemExtent: 35),
-                                onDateTimeChanged: (value) async {
-                                  context
-                                      .read<SignupProvider>()
-                                      .onChangeBirth(value: value);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    });
+                          );
+                        }));
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(
