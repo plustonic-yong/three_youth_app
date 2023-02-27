@@ -23,9 +23,14 @@ class SignupProfileImgScreen extends StatelessWidget {
         ),
         const Spacer(),
         const Text(
-          '프로필 사진을 등록해주세요(선택사항)',
+          '프로필 사진을 등록해주세요',
           style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
+        const Text(
+          '(선택사항)',
+          style: TextStyle(color: Colors.white, fontSize: 18.0),
+        ),
+
         const Spacer(),
         GestureDetector(
           onTap: () async {

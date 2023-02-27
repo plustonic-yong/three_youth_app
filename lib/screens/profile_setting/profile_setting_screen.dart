@@ -164,10 +164,14 @@ class ProfileSettingScreen extends StatelessWidget {
               const ProfileSettingBirthInputForm(),
               const SizedBox(height: 20.0),
               // //키
-              const ProfileSettingHeightInputForm(),
+              ProfileSettingHeightInputForm(
+                height: context.watch<UserProvider>().userInfo!.height,
+              ),
               const SizedBox(height: 20.0),
               // //몸무게
-              const ProfileSettingWeightInputForm(),
+              ProfileSettingWeightInputForm(
+                weight: context.watch<UserProvider>().userInfo!.weight,
+              ),
               const SizedBox(height: 20.0),
               CommonButton(
                 height: 40.0,
@@ -176,9 +180,11 @@ class ProfileSettingScreen extends StatelessWidget {
                 buttonColor: ButtonColor.primary,
                 onTap: () async {
                   FocusScope.of(context).unfocus();
+
                   var result = await context
                       .read<UserProvider>()
                       .updateUser(height: _height, weight: _weight);
+
                   showDialog(
                       context: context,
                       builder: (context) {

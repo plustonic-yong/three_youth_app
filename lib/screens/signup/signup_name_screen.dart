@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:three_youth_app/providers/signup_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -20,8 +21,22 @@ class SignupNameScreen extends StatelessWidget {
           ),
           SizedBox(height: height * 0.16),
           const Text(
-            '당신의 이름은 무엇인가요?\n(필수입력)',
+            '당신의 이름은 무엇인가요?',
             style: TextStyle(color: Colors.white, fontSize: 18.0),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text(
+                '(필수입력)',
+                style: TextStyle(color: Colors.white, fontSize: 18.0),
+              ),
+              SizedBox(width: 8),
+              Text(
+                '15자 이하',
+                style: TextStyle(color: Colors.red, fontSize: 18.0),
+              ),
+            ],
           ),
           SizedBox(height: height * 0.06),
           _nameInput(context: context, width: width, height: height)
@@ -45,6 +60,7 @@ class SignupNameScreen extends StatelessWidget {
         keyboardType: TextInputType.text,
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white),
+        maxLength: 15,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: height * 0.015),
           hintText: '홍길동',
@@ -60,6 +76,7 @@ class SignupNameScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(40.0),
             borderSide: const BorderSide(color: Colors.white),
           ),
+          counterText: '',
         ),
         onChanged: (value) =>
             context.read<SignupProvider>().onChangeName(value: value),
